@@ -1,0 +1,1 @@
+{ "name": "uso-widget", "version": "0.1.0", "description": "Barra fija sobre el prompt con el uso del plan: ventana de 5 h (sesión) y semanal, con aviso al 80/90%.", "author": { "name": "Nacho" }, "types": "./types/index.d.ts" }

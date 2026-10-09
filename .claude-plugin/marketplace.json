@@ -1,0 +1,10 @@
+{
+  "name": "claude-harness",
+  "owner": { "name": "Nacho" },
+  "metadata": { "description": "Harness de Nacho: reglas de trabajo, tablero y mods de Claude Code" },
+  "plugins": [
+    { "name": "harness-nacho", "source": "./plugins/harness-nacho", "description": "Reglas de Nacho + tablero del proyecto al arrancar" },
+    { "name": "uso-widget", "source": "./plugins/uso-widget", "description": "Barra de uso 5 h / semanal sobre el prompt" },
+    { "name": "semaforo", "source": "./plugins/semaforo", "description": "Círculo al costado del chat: rojo trabajando, verde listo" }
+  ]
+}
