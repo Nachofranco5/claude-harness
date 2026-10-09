@@ -1,6 +1,6 @@
 {
   "name": "harness-nacho",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Reglas de trabajo de Nacho para todos los proyectos + tablero del proyecto al arrancar (planes, git, pruebas pendientes)",
   "author": { "name": "Nacho" }
 }

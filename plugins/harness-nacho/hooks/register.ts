@@ -1,6 +1,6 @@
 import type { Register } from 'claude-code'
 
-import { armarTablero, type Git, type Plan } from './tablero'
+import { archivosPorcelain, armarTablero, type Git, type Plan } from './tablero'
 
 // Al armar el contexto de cada conversación nueva:
 // 1) las reglas generales (reglas.md) entran como un archivo de instrucciones más del usuario
@@ -11,7 +11,8 @@ const quiet = <T,>(p: Promise<T>) => p.catch(() => undefined)
 
 async function git($: any, args: string[]): Promise<string | undefined> {
   const r = await quiet($.process.run(['git', ...args], { timeoutMs: 8000 })) as any
-  return r && r.exitCode === 0 ? String(r.stdout).trim() : undefined
+  // trimEnd y no trim: en `git status --porcelain` el espacio inicial es parte de la columna de estado
+  return r && r.exitCode === 0 ? String(r.stdout).trimEnd() : undefined
 }
 
 async function leerGit($: any): Promise<Git | undefined> {
@@ -22,7 +23,7 @@ async function leerGit($: any): Promise<Git | undefined> {
     git($, ['status', '--porcelain', '--untracked-files=normal']),
     git($, ['rev-list', '--count', '@{u}..HEAD']),
   ])
-  const sinCommit = (estado ?? '').split(/\r?\n/).filter(Boolean).map(l => l.slice(3).trim())
+  const sinCommit = archivosPorcelain(estado)
   return {
     rama,
     ultimo: ultimo && ultimo.length > 140 ? ultimo.slice(0, 137) + '…' : ultimo,
@@ -46,6 +47,9 @@ async function leerPlanes($: any): Promise<Plan[]> {
 export const register: Register = on => {
   on('prompt.context', async ($: any, e: any, next: any) => {
     const r = await next(e)
+    // Sin bloque claudeMd = conversación que no carga instrucciones (subagentes tipo Explore): no sumar nada.
+    // Por eso ~/.claude/CLAUDE.md existe siempre (aunque sea de 1 línea): garantiza el bloque en la ventana principal.
+    if (!r.blocks.some((b: any) => b.name === 'claudeMd')) return r
     try {
       const sep = String($.plugin.root).includes('\\') ? '\\' : '/'
       const ruta = `${$.plugin.root}${sep}reglas.md`
@@ -60,8 +64,8 @@ export const register: Register = on => {
       let files = r.instructionFiles as any[] | undefined
       if (reglas) {
         const propio = { path: ruta, kind: 'user', content: reglas }
-        if (files && blocks.some(b => b.name === 'claudeMd')) files = [propio, ...files]
-        else blocks.unshift({ name: 'reglasNacho', text: reglas })
+        if (files) files = [propio, ...files]
+        else blocks.unshift({ name: 'reglasNacho', text: reglas }) // otro hook reescribió claudeMd: bloque aparte
       }
       blocks.push({ name: 'tablero', text: armarTablero({ planes, pruebas, git: g, uso: uso?.rateLimits }) })
       return files ? { ...r, blocks, instructionFiles: files } : { ...r, blocks }

@@ -1,6 +1,6 @@
 import { expect, test } from 'claude-code/testing'
 
-import { armarTablero, contarPruebas, resumenPlanes, tareas } from './tablero'
+import { archivosPorcelain, armarTablero, contarPruebas, resumenPlanes, tareas } from './tablero'
 
 const PLAN = [
   '# PLAN demo',
@@ -54,6 +54,12 @@ test('tablero completo con git y uso', async () => {
   expect(t).toMatch(/semanal 82 % \(reinicia en 15 h 0 min\)/)
   expect(t).toMatch(/viene justo/)
   expect(t).toMatch(/Pruebas pendientes de Nacho: 1/)
+})
+
+test('git status: no se come la primera letra de la ruta', async () => {
+  expect(archivosPorcelain(' M docs/PLAN-v1.37.md\nM  a.py\n?? nuevo.txt\nR  viejo.md -> nuevo.md'))
+    .toEqual(['docs/PLAN-v1.37.md', 'a.py', 'nuevo.txt', 'nuevo.md'])
+  expect(archivosPorcelain('')).toEqual([])
 })
 
 test('sin git no rompe', async () => {

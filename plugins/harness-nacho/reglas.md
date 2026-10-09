@@ -33,7 +33,7 @@ El `CLAUDE.md` del proyecto manda en lo específico. Si sos un subagente: solo a
 ## Tablero (marcas que lee el hook al arrancar)
 - Título de tarea en el plan: `## T3 — título  ⬜` (pendiente) · `🟡` (a medias) · `✅ (fecha; resumen)` (hecha). Plan terminado entero: `(cerrado)` en su título.
 - Si se corta a medias: marcar 🟡 y dejar debajo del título `> ⏸ Cortado (fecha): dónde quedó y cómo seguir`. Borrar esa línea al retomarla.
-- Pruebas para Nacho en `docs/PRUEBAS-PENDIENTES.md`: cada una en una línea que empieza con `⬜` (él prueba todo junto al final del plan; no pedirle pruebas sueltas). Al pedirle una prueba: dónde, qué tocar, qué debería ver.
+- Pruebas para Nacho en `docs/PRUEBAS-PENDIENTES.md`: cada una en una línea que empieza con `⬜` (él prueba todo junto al final del plan; no pedirle pruebas sueltas). Cada prueba con pasos concretos: "1) Abrí X → 2) tocá Y → 3) debería pasar Z; si pasa W, avisame" (lo vago no le sirve).
 
 ## Al terminar una tarea
 Pruebas → 3–8 líneas en `CHANGELOG.md` → `docs/PRUEBAS-PENDIENTES.md` → estado/mapa del `CLAUDE.md` si cambió algo estructural → ✅ en el plan → commit en español ("T2: qué se hizo") + push si el proyecto lo autorizó. Antes del commit mirar `git status`: nunca subir modelos, binarios pesados, `.venv`, datos de clientes ni respaldos. Docs viejos → `docs/archivo/` (bloqueado en deny).

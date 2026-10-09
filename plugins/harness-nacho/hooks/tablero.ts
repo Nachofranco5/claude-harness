@@ -61,6 +61,14 @@ export function contarPruebas(texto?: string): number | undefined {
   return texto.split(/\r?\n/).filter(l => /^\s*(?:(?:\d+[.)]|[-*])\s+)?(?:⬜|\[ \])/u.test(l)).length
 }
 
+// Líneas de `git status --porcelain` ("XY ruta", "XY viejo -> nuevo") → rutas.
+export function archivosPorcelain(salida?: string): string[] {
+  return (salida ?? '').split(/\r?\n/)
+    .map(l => /^.. (.+)$/.exec(l)?.[1])
+    .filter((r): r is string => !!r)
+    .map(r => r.replace(/^.* -> /, '').replace(/^"(.*)"$/, '$1'))
+}
+
 export function resumenGit(g?: Git): string[] {
   if (!g || !g.rama) return ['- Git: no es un repo (o git no está).']
   const out = [`- Git: rama \`${g.rama}\`. Último commit: ${g.ultimo ?? '(ninguno)'}`]
