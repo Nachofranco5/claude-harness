@@ -46,6 +46,18 @@ pruebas de `.claude/harness.json` y resume). `.claude/harness.json` = config del
 (molde en `plugins/harness-nacho/skills/proyecto-nuevo/plantillas/harness.json`).
 Ver qué carga y cuánto cuesta: `claude --plugin-dir plugins/harness-nacho plugin details harness-nacho@inline`.
 
+## Guardianes (hooks que controlan en vez de pedir)
+Configurables por proyecto en `.claude/harness.json` (`guardianes`: `true`/`false`).
+- **Cierre**: si la sesión cambió código (no cuenta `*.md`, `docs/`, `.claude/`) y falta algo de
+  `docs_obligatorios`, el manual (si se tocó algo de `manual.rutas`), commit o push, la IA no puede
+  terminar: recibe la lista y sigue. Anti-bucle: frena una sola vez por turno y nunca repite el mismo aviso.
+  Sin `harness.json` no actúa.
+- **Lectura cara**: leer entero un archivo de más de `archivo_grande` líneas (600) se frena con "usá Grep
+  o un rango". Actúa también sin `harness.json`.
+- **Versión atrasada**: si la ventana usa una versión vieja del plugin, si el repo local tiene una más nueva
+  sin publicar, o si el proyecto tiene una instalación vieja con alcance de proyecto, el tablero lo dice
+  (y sale un aviso) con el comando para arreglarlo.
+
 ## Cambiar las reglas
 Editar `plugins/harness-nacho/reglas.md` → subir la versión en `plugin.json` → commit + push.
 Las otras PCs lo reciben solas al arrancar. Probar el tablero: `claude plugin test plugins/harness-nacho`.

@@ -99,9 +99,10 @@ export function resumenUso(uso: Uso[] | undefined, ahora: number): string[] {
   return [`- Uso del plan al abrir: ${ls.map(u => `${NOMBRE_USO[u.kind]} ${u.percentUsed} %${falta(u.resetsAt, ahora)}`).join(' · ')}.${alerta}`]
 }
 
-export function armarTablero(d: { planes: Plan[]; pruebas?: string; git?: Git; uso?: Uso[]; ahora?: number }): string {
+export function armarTablero(d: { planes: Plan[]; pruebas?: string; git?: Git; uso?: Uso[]; ahora?: number; avisos?: string[] }): string {
   const lineas = [
     'Estado del proyecto al abrir esta ventana (lo calcula el plugin harness-nacho; no hace falta releerlo):',
+    ...(d.avisos ?? []),
     ...resumenPlanes(d.planes),
     ...resumenGit(d.git),
     ...resumenUso(d.uso, d.ahora ?? Date.now()),

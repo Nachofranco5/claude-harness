@@ -6,11 +6,16 @@
   "manual": {
     "archivo": "docs/manual/manual.md",
     "cuando": "la tarea agrega o cambia algo que el usuario ve",
+    "_ayuda_rutas": "Carpetas/archivos que el usuario ve (ej. [\"ui/\"]): si se tocan y no el manual, el guardián de cierre lo pide. Vacío = no lo controla.",
+    "rutas": [],
     "regenerar": "<comando que regenera el PDF/HTML del manual>"
   },
   "git": { "commit": true, "push": true },
   "archivo_grande": 600,
+  "_ayuda_guardianes": "cierre: no deja terminar si hubo código y falta docs_obligatorios/manual/commit/push. lectura_cara: frena leer entero un archivo de más de archivo_grande líneas. false = apagado.",
   "guardianes": { "cierre": true, "lectura_cara": true },
+  "_ayuda_no_es_codigo": "Lo que NO cuenta como cambio de código (una charla/plan no se frena). Por defecto: *.md, *.txt, docs/, .claude/",
+  "no_es_codigo": ["*.md", "*.txt", "docs/", ".claude/"],
   "_ayuda_plugins": "Plugins forzados a mano por Nacho: la skill plugins-proyecto los respeta. Ej. {\"playwright@claude-plugins-official\": true}",
   "plugins_fijos": {}
 }
