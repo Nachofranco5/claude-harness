@@ -1,6 +1,6 @@
 {
   "name": "harness-nacho",
-  "version": "0.1.1",
-  "description": "Reglas de trabajo de Nacho para todos los proyectos + tablero del proyecto al arrancar (planes, git, pruebas pendientes)",
+  "version": "0.2.0",
+  "description": "Reglas de trabajo de Nacho + tablero al arrancar + skills (tarea, cerrar-tarea, planificar, proyecto-nuevo, cierre-charla, podar, plugins-proyecto) y subagentes (explorador, verificador)",
   "author": { "name": "Nacho" }
 }

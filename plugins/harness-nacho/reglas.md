@@ -9,10 +9,10 @@ El `CLAUDE.md` del proyecto manda en lo específico. Si sos un subagente: solo a
 ## Tokens
 - Cada prompt suele ser una sesión nueva: el `CLAUDE.md` del proyecto + el tablero de abajo son la memoria. No recorrer el proyecto para "orientarse": ir directo al mapa.
 - Grep + rangos de líneas; nunca leer enteros archivos grandes. No leer lo de `permissions.deny`.
-- Búsquedas amplias → subagente Explore; tareas mecánicas → modelo barato.
+- Búsquedas amplias → subagente `explorador` (Haiku, solo lectura); tareas mecánicas → modelo barato.
 - Límite de 5 h: el tablero trae el uso al abrir; en cada prompt siguiente mirar `get_usage` (o `/usage`). Si es dudoso que alcance, re-mirarlo entre etapas y no arrancar pasos que no se pueden dejar a medias (migraciones, borrar/mover datos, commit+push, descargas largas); cortar en un punto seguro y anotarlo en el plan (ver Tablero).
 
-## Plan antes que código
+## Plan antes que código (skill `planificar`; ejecutar una tarea: skill `tarea`)
 - Pedido grande o ambiguo → NO ejecutar: dividirlo en tareas de UNA sesión en `docs/PLAN-<tema>.md` y esperar OK. Cambios grandes: plan corto + OK (salvo "no preguntes").
 - Cada tarea: alcance, qué NO entra, "terminado =", cómo se prueba, y **Nota para Nacho**: modelo (planificar/arquitectura/bugs difíciles → Opus; punto bien especificado → Sonnet; mecánico → Haiku), esfuerzo, por qué, y **Dónde**: local o nube (nube solo si no necesita GPU, modelos grandes, Windows ni archivos fuera del repo).
 - Flujo: planificar con el modelo fuerte; cada tarea en ventana NUEVA ("Hacé la tarea Tn de docs/PLAN-X.md"). No cambiar de modelo dentro de una ventana.
@@ -35,7 +35,7 @@ El `CLAUDE.md` del proyecto manda en lo específico. Si sos un subagente: solo a
 - Si se corta a medias: marcar 🟡 y dejar debajo del título `> ⏸ Cortado (fecha): dónde quedó y cómo seguir`. Borrar esa línea al retomarla.
 - Pruebas para Nacho en `docs/PRUEBAS-PENDIENTES.md`: cada una en una línea que empieza con `⬜` (él prueba todo junto al final del plan; no pedirle pruebas sueltas). Cada prueba con pasos concretos: "1) Abrí X → 2) tocá Y → 3) debería pasar Z; si pasa W, avisame" (lo vago no le sirve).
 
-## Al terminar una tarea
+## Al terminar una tarea (skill `cerrar-tarea`: tiene la checklist completa)
 Pruebas → 3–8 líneas en `CHANGELOG.md` → `docs/PRUEBAS-PENDIENTES.md` → estado/mapa del `CLAUDE.md` si cambió algo estructural → ✅ en el plan → commit en español ("T2: qué se hizo") + push si el proyecto lo autorizó. Antes del commit mirar `git status`: nunca subir modelos, binarios pesados, `.venv`, datos de clientes ni respaldos. Docs viejos → `docs/archivo/` (bloqueado en deny).
 
 ## Cierre de cada respuesta: "Consejos" (1–4 líneas, solo si aportan algo concreto)
@@ -43,7 +43,7 @@ Pruebas → 3–8 líneas en `CHANGELOG.md` → `docs/PRUEBAS-PENDIENTES.md` →
 - Si no se logró lo esperado: qué modelo/enfoque probar; NO insistir con el mismo.
 - Cómo promptear mejor, ventana nueva vs seguir, atajos, riesgos que no ve, skills/plugins/MCP útiles que no conoce.
 - **Siempre, al final, "Próximo paso"**: una línea concreta ("Ventana nueva, Opus, esfuerzo alto: «Hacé la tarea T2 de docs/PLAN-X.md»" o "seguir en esta ventana"), según la Nota del plan.
-- Cuando Nacho cierra la charla (opina, decide, da por terminado): avisar si quedó algo por ejecutar (y con qué modelo); si no, volcar sus decisiones al plan y dar el **prompt exacto** para la ventana nueva.
+- Cuando Nacho cierra la charla (opina, decide, da por terminado): avisar si quedó algo por ejecutar (y con qué modelo); si no, volcar sus decisiones al plan y dar el **prompt exacto** para la ventana nueva (skill `cierre-charla`).
 
 ## Herramientas (proactivo)
 - En proyecto nuevo o pedido "gamechanging", evaluar sola skills/plugins/MCP que Nacho no mencionó (SearchPlugins, SearchSkills, mcp-registry). Gratis y útiles: instalar sin preguntar. Pagos, cuentas o descargas > 1 GB: preguntar.

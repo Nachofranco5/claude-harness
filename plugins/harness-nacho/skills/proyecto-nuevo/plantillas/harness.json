@@ -1,0 +1,16 @@
+{
+  "_ayuda": "Configuración del harness para ESTE proyecto. La leen /cerrar-tarea, el verificador y los guardianes (H3). Borrar las claves _ayuda*.",
+  "pruebas": "<comando que corre todos los tests offline, ej. .venv\\Scripts\\python -m unittest discover tests>",
+  "docs_obligatorios": ["CHANGELOG.md", "docs/PRUEBAS-PENDIENTES.md"],
+  "_ayuda_manual": "Solo si la app tiene usuario final. Si no, borrar la clave manual.",
+  "manual": {
+    "archivo": "docs/manual/manual.md",
+    "cuando": "la tarea agrega o cambia algo que el usuario ve",
+    "regenerar": "<comando que regenera el PDF/HTML del manual>"
+  },
+  "git": { "commit": true, "push": true },
+  "archivo_grande": 600,
+  "guardianes": { "cierre": true, "lectura_cara": true },
+  "_ayuda_plugins": "Plugins forzados a mano por Nacho: la skill plugins-proyecto los respeta. Ej. {\"playwright@claude-plugins-official\": true}",
+  "plugins_fijos": {}
+}
