@@ -16,6 +16,13 @@ En una terminal de Claude Code:
 /plugin install uso-widget@claude-harness
 /plugin install semaforo@claude-harness
 ```
+Y crear `%USERPROFILE%\.claude\CLAUDE.md` con 1 línea (ej. "Reglas: plugin harness-nacho"): el plugin se
+engancha a ese bloque de instrucciones (así no se mete en subagentes que no cargan CLAUDE.md).
+
+O, más fácil, en una ventana de Claude Code de la PC nueva: *"Instalá mi harness: marketplace
+Nachofranco5/claude-harness con auto-update, plugins harness-nacho, uso-widget y semaforo a nivel usuario,
+y creá el ~/.claude/CLAUDE.md mínimo que dice el LEEME del repo."*
+
 Después, en `/plugin` → Marketplaces → `claude-harness` → **Enable auto-update**: cada vez que arranca,
 Claude Code baja lo nuevo solo. (Repo privado: para que la actualización automática en segundo plano
 funcione, la PC necesita estar logueada en GitHub — `gh auth login` — o tener `GITHUB_TOKEN`.)
