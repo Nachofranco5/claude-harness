@@ -39,7 +39,7 @@ Se escriben con el prefijo del plugin (`/harness-nacho:tarea T5`) o se piden con
 | `proyecto-nuevo` | carpeta vacía → CLAUDE.md corto, `.claude/settings.json`, `.claude/harness.json`, git, repo privado |
 | `cierre-charla` | vuelca decisiones al plan y da el prompt exacto para la ventana nueva |
 | `podar` | CLAUDE.md ≤ 100 líneas, detalle a `.claude/rules/`, CHANGELOG/planes viejos al archivo |
-| `plugins-proyecto` | prende solo los plugins que sirven en ese proyecto (incluye los `@synced` de claude.ai) |
+| `plugins-proyecto` | prende solo los plugins que sirven en ese proyecto (los de la cuenta de claude.ai se quitan en claude.ai → Customize → Plugins) |
 
 Subagentes: `explorador` (Haiku, solo lectura, búsquedas baratas) y `verificador` (Sonnet, corre las
 pruebas de `.claude/harness.json` y resume). `.claude/harness.json` = config del harness por proyecto

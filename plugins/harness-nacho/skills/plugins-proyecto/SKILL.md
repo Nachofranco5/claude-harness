@@ -14,9 +14,12 @@ Objetivo: prendido solo lo que este proyecto usa de verdad.
    - Instalados: `~/.claude/plugins/installed_plugins.json` (ids `nombre@marketplace`; los hay de usuario y
      de proyecto).
    - Prendidos: `enabledPlugins` de `~/.claude/settings.json`, `.claude/settings.json` y `.claude/settings.local.json`.
-   - De la cuenta de claude.ai: no están en installed_plugins.json; sus skills aparecen como `finance:…`,
-     `marketing:…` y su id es `<prefijo>@synced` (ej. `finance@synced`). Si se puede, confirmarlo con
-     `claude plugin list --json`; si no, usar el prefijo y verificar en la ventana nueva (paso 6).
+   - De la cuenta de claude.ai (Cowork: `finance:…`, `marketing:…`, `data:…`): en la app de escritorio NO
+     son `@synced`: la app los baja a `%APPDATA%\Claude\local-agent-mode-sessions\…\rpm\` y los inyecta en
+     cada sesión de Code; `claude plugin list` ni los ve y `enabledPlugins` / `syncClaudeAiPlugins` no los
+     apagan (probado 2026-10-09). Única salida: que Nacho los quite en claude.ai → Customize → Plugins →
+     Yours → ⋮ → Remove y reinicie la app (Claude no puede: el clasificador bloquea "Remove"). Afecta
+     todos los proyectos y Cowork.
    - Que falten: `SearchPlugins` / `SearchSkills` / `mcp-registry` con palabras del stack y del trabajo
      (si esas herramientas no están, saltear).
 3. **Perfil del proyecto** (solo CLAUDE.md, planes abiertos y los archivos de la raíz: `requirements.txt`,
@@ -31,9 +34,7 @@ Objetivo: prendido solo lo que este proyecto usa de verdad.
      próxima ventana); pagos, con cuenta o > 1 GB → preguntar.
 5. **Escribir** `enabledPlugins` en `.claude/settings.json` del PROYECTO: FUSIONAR con lo que ya tiene (no
    perder `permissions`, `hooks`, `extraKnownMarketplaces`…), con `true`/`false` explícito para cada plugin
-   decidido. `"x@synced": false` apaga uno de la cuenta en este proyecto (los "required" de una
-   organización no se pueden apagar). No tocar `~/.claude/settings.json`: si conviene apagar los de
-   claude.ai en TODOS los proyectos, proponer a Nacho `"syncClaudeAiPlugins": false` en su settings de usuario.
+   decidido. Los de la cuenta de claude.ai no se apagan desde acá (ver paso 2). No tocar `~/.claude/settings.json`.
    Un plugin que Nacho quiere solo en SU PC → `.claude/settings.local.json` (no se commitea).
 6. **Responder**: tabla corta (plugin · prendido/apagado · por qué) + tokens antes. El "después" se ve recién
    en una ventana NUEVA: agregar a `docs/PRUEBAS-PENDIENTES.md` la línea
