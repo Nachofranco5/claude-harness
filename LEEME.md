@@ -1,68 +1,39 @@
 # claude-harness — el "cómo trabaja la IA" de Nacho
+Marketplace privado de Claude Code: `harness-nacho` (reglas de trabajo + tablero del proyecto al abrir cada
+ventana + skills + guardianes), `uso-widget` (barra de uso 5 h / semanal) y `semaforo` (rojo trabajando /
+verde listo).
 
-Marketplace privado de Claude Code con 3 plugins:
+## PC nueva (una sola vez)
+1. Instalar la app de escritorio de Claude, Git y GitHub CLI. En una terminal: `gh auth login`, después
+   `gh repo clone Nachofranco5/claude-harness "$HOME\Documents\Trabajos\claude-harness"`.
+2. Doble clic en **`INSTALAR.bat`**: agrega el marketplace, instala los 3 plugins, prende la
+   auto-actualización y crea el `~\.claude\CLAUDE.md` mínimo (no pisa nada; se puede repetir).
+3. Cerrar Claude del todo y abrirlo. La primera respuesta en cualquier proyecto ya trae el tablero.
 
-| Plugin | Qué hace |
-|---|---|
-| `harness-nacho` | Al abrir cada ventana: mete las **reglas de trabajo** (`plugins/harness-nacho/reglas.md`) y un **tablero** del proyecto (próxima tarea del plan, si quedó algo a medias, git, pruebas pendientes, uso del plan). La IA arranca sabiendo todo sin leer archivos. |
-| `uso-widget` | Barra de uso 5 h / semanal arriba del cuadro de texto. |
-| `semaforo` | Círculo rojo (trabajando) / verde (listo). |
+O decirle a Claude: *"Corré `Documents\Trabajos\claude-harness\instalar.ps1` y decime qué salió."*
+Si una PC quedó con una versión vieja: repetir `INSTALAR.bat` (también actualiza).
 
-## Instalar en una PC (una sola vez)
-En una terminal de Claude Code:
-```
-/plugin marketplace add Nachofranco5/claude-harness
-/plugin install harness-nacho@claude-harness
-/plugin install uso-widget@claude-harness
-/plugin install semaforo@claude-harness
-```
-Y crear `%USERPROFILE%\.claude\CLAUDE.md` con 1 línea (ej. "Reglas: plugin harness-nacho"): el plugin se
-engancha a ese bloque de instrucciones (así no se mete en subagentes que no cargan CLAUDE.md).
-
-O, más fácil, en una ventana de Claude Code de la PC nueva: *"Instalá mi harness: marketplace
-Nachofranco5/claude-harness con auto-update, plugins harness-nacho, uso-widget y semaforo a nivel usuario,
-y creá el ~/.claude/CLAUDE.md mínimo que dice el LEEME del repo."*
-
-Después, en `/plugin` → Marketplaces → `claude-harness` → **Enable auto-update**: cada vez que arranca,
-Claude Code baja lo nuevo solo. (Repo privado: para que la actualización automática en segundo plano
-funcione, la PC necesita estar logueada en GitHub — `gh auth login` — o tener `GITHUB_TOKEN`.)
-
-## Comandos (skills) y ayudantes de `harness-nacho`
-Se escriben con el prefijo del plugin (`/harness-nacho:tarea T5`) o se piden con palabras
-("hacé la tarea T5 de docs/PLAN-x.md"): la IA las elige sola por su descripción.
-
+## Comandos de `harness-nacho` (`/harness-nacho:<comando>` o pedidos con palabras)
 | Comando | Para qué |
 |---|---|
-| `tarea <id>` | hace UNA tarea del plan: lee solo esa, chequea modelo/uso/dónde, la ejecuta y la cierra |
-| `cerrar-tarea` | checklist de cierre: pruebas, CHANGELOG, pruebas pendientes, manual, ✅, commit+push, Consejos |
+| `tarea <id>` | hace UNA tarea del plan (solo esa; chequea modelo/uso/dónde) y la cierra |
+| `cerrar-tarea` | pruebas, CHANGELOG, pruebas pendientes, manual, ✅, commit+push, Consejos |
 | `planificar <tema>` | pedido grande → `docs/PLAN-<tema>.md` con tareas de una sesión (no ejecuta) |
-| `proyecto-nuevo` | carpeta vacía → CLAUDE.md corto, `.claude/settings.json`, `.claude/harness.json`, git, repo privado |
+| `proyecto-nuevo` | carpeta vacía → CLAUDE.md, `.claude/settings.json` + `harness.json`, git, repo privado |
 | `cierre-charla` | vuelca decisiones al plan y da el prompt exacto para la ventana nueva |
-| `podar` | CLAUDE.md ≤ 100 líneas, detalle a `.claude/rules/`, CHANGELOG/planes viejos al archivo |
-| `plugins-proyecto` | prende solo los plugins que sirven en ese proyecto (los de la cuenta de claude.ai se quitan en claude.ai → Customize → Plugins) |
+| `podar` | CLAUDE.md ≤ 100 líneas, detalle a `.claude/rules/`, lo viejo al archivo |
+| `plugins-proyecto` | deja prendidos solo los plugins útiles en ese proyecto |
 
-Subagentes: `explorador` (Haiku, solo lectura, búsquedas baratas) y `verificador` (Sonnet, corre las
-pruebas de `.claude/harness.json` y resume). `.claude/harness.json` = config del harness por proyecto
-(molde en `plugins/harness-nacho/skills/proyecto-nuevo/plantillas/harness.json`).
-Ver qué carga y cuánto cuesta: `claude --plugin-dir plugins/harness-nacho plugin details harness-nacho@inline`.
+Subagentes: `explorador` (Haiku, búsquedas baratas) y `verificador` (Sonnet, corre las pruebas).
+Config por proyecto: `.claude/harness.json` (molde en `plugins/harness-nacho/skills/proyecto-nuevo/plantillas/`).
 
-## Guardianes (hooks que controlan en vez de pedir)
-Configurables por proyecto en `.claude/harness.json` (`guardianes`: `true`/`false`).
-- **Cierre**: si la sesión cambió código (no cuenta `*.md`, `docs/`, `.claude/`) y falta algo de
-  `docs_obligatorios`, el manual (si se tocó algo de `manual.rutas`), commit o push, la IA no puede
-  terminar: recibe la lista y sigue. Anti-bucle: frena una sola vez por turno y nunca repite el mismo aviso.
-  Sin `harness.json` no actúa.
-- **Lectura cara**: leer entero un archivo de más de `archivo_grande` líneas (600) se frena con "usá Grep
-  o un rango". Actúa también sin `harness.json`.
-- **Versión atrasada**: si la ventana usa una versión vieja del plugin, si el repo local tiene una más nueva
-  sin publicar, o si el proyecto tiene una instalación vieja con alcance de proyecto, el tablero lo dice
-  (y sale un aviso) con el comando para arreglarlo.
+## Guardianes (hooks; se apagan por proyecto en `harness.json` → `guardianes`)
+- **Cierre**: si se cambió código y falta CHANGELOG/pruebas/manual/commit/push, la IA no puede terminar.
+- **Lectura cara**: leer entero un archivo de más de 600 líneas se frena ("usá Grep o un rango").
+- **Versión atrasada**: el tablero avisa si la ventana usa un plugin viejo o hay versión sin publicar.
 
-## Cambiar las reglas
-Editar `plugins/harness-nacho/reglas.md` → subir la versión en `plugin.json` → commit + push.
-Las otras PCs lo reciben solas al arrancar. Probar el tablero: `claude plugin test plugins/harness-nacho`.
-
-## Marcas que entiende el tablero
-- Plan (`docs/PLAN-*.md`): títulos de tarea con `⬜` pendiente · `🟡` a medias · `✅` hecha;
-  `> ⏸ Cortado (fecha): …` debajo de una tarea 🟡; `(cerrado)` en el título del plan lo oculta.
-- Pruebas (`docs/PRUEBAS-PENDIENTES.md`): líneas que empiezan con `⬜` (o `- [ ]`).
+## Cambiar las reglas o los mods
+Editar `plugins/harness-nacho/reglas.md` (o el mod) → subir `version` en su `plugin.json` → commit + push.
+Las otras PCs lo bajan solas al arrancar. Probar: `claude plugin test plugins/harness-nacho`.
+Marcas del tablero: tareas `⬜` / `🟡` (+ `> ⏸ Cortado…`) / `✅` en `docs/PLAN-*.md`, `(cerrado)` en el
+título del plan; pruebas = líneas con `⬜` en `docs/PRUEBAS-PENDIENTES.md`.
