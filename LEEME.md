@@ -1,5 +1,5 @@
 # claude-harness — el "cómo trabaja la IA" de Nacho
-Marketplace privado de Claude Code: `harness-nacho` (reglas de trabajo + tablero del proyecto al abrir cada
+Marketplace público de Claude Code (sin secretos: nunca subir tokens ni datos de clientes acá): `harness-nacho` (reglas de trabajo + tablero del proyecto al abrir cada
 ventana + skills + guardianes), `uso-widget` (barra de uso 5 h / semanal) y `semaforo` (rojo trabajando /
 verde listo).
 
@@ -12,6 +12,13 @@ verde listo).
 
 O decirle a Claude: *"Corré `Documents\Trabajos\claude-harness\instalar.ps1` y decime qué salió."*
 Si una PC quedó con una versión vieja: repetir `INSTALAR.bat` (también actualiza).
+
+## Nube (claude.ai/code, una sola vez por entorno)
+La nube no instala los plugins del repo. En claude.ai/code → entorno (ícono ⚙ del entorno) → **Setup script**, pegar:
+`curl -fsSL https://raw.githubusercontent.com/Nachofranco5/claude-harness/main/nube/setup.sh | bash`
+Deja reglas + skills (sin prefijo: `/tarea`) + subagentes en cada sesión de todos los repos. Sin tablero,
+guardianes ni barras (no hay app). La nube guarda el resultado hasta ~7 días: para bajar reglas nuevas ya,
+editar el Setup script (agregar o quitar un espacio) y guardar.
 
 ## Comandos de `harness-nacho` (`/harness-nacho:<comando>` o pedidos con palabras)
 | Comando | Para qué |
