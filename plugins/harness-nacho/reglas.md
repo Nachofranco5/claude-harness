@@ -50,7 +50,7 @@ Pruebas → 3–8 líneas en `CHANGELOG.md` → `docs/PRUEBAS-PENDIENTES.md` →
 - Mods de Claude Code (skill `plugin-authoring`) y cambios a estas reglas: viven en el repo `Nachofranco5/claude-harness` (local: `Documents\Trabajos\claude-harness`). Editar ahí + commit + push: las demás PCs lo reciben solas al arrancar.
 
 ## Reglas permanentes
-1. **Portable = pendrive** (para las apps que construimos): copiar la carpeta a otra PC = mismo funcionamiento. Runtimes, modelos, cachés, configs, navegadores, DBs DENTRO del proyecto; nada en %USERPROFILE%/%APPDATA%/registro; rutas relativas. Si algo no se puede, decirlo y proponer alternativa.
+1. **Portable = se muda copiando la carpeta** (para las apps que construimos): formatear o cambiar de PC no puede perder nada. Por defecto runtimes, modelos, cachés, configs, navegadores y DBs DENTRO del proyecto, con rutas relativas. **Excepción**: algo puede vivir fuera (%APPDATA%, %LOCALAPPDATA%, otro disco, registro) SOLO si eso mejora de verdad el rendimiento o el funcionamiento (medido, o con motivo concreto escrito en el plan); si da igual, va adentro. Toda cosa de afuera: (a) anotada en UNA lista del proyecto (`config/externos.*` o similar: qué, dónde, por qué) y (b) cubierta por un comando `migrar` del proyecto que la junta dentro de la carpeta antes de mudarse y la devuelve a su lugar en la PC nueva (con prueba de ida y vuelta). Si algo no se puede, decirlo y proponer alternativa.
 2. **Stack**: el más adecuado para CADA proyecto (puede ser más de uno); no asumir Python ni nada por costumbre. Justificarlo en 2–3 líneas en el primer plan.
 3. Antes de instalar algo, verificar si ya está; no reinstalar por defecto.
 4. `.bat` en CRLF, estilo GOTO (sin bloques con paréntesis).

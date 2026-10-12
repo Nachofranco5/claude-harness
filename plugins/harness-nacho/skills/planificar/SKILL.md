@@ -15,7 +15,7 @@ description: Convertir un pedido grande o ambiguo en docs/PLAN-<tema>.md con tar
    opciones y la recomendada primero. Si dijo "no preguntes": dejarlas en "Decisiones de Nacho
    (pendientes)" con la recomendada, que es lo que se asume mientras no conteste.
    Lo técnico lo decidís vos con evidencia (código, doc, web), respetando las reglas permanentes
-   (portable, .gitignore, nada en %USERPROFILE%).
+   (portable: todo adentro salvo que afuera rinda más, con lista + `migrar`; .gitignore).
 3. **Medir lo que aporte** (tamaños, tiempos, tokens, uso) y citarlo; si no aporta nada, saltear.
    Búsquedas amplias → subagente `explorador`.
 4. **Escribir `docs/PLAN-<tema>.md`** con el molde de abajo. Cada tarea entra en UNA sesión; si no, partirla
@@ -35,7 +35,7 @@ Al terminar cada una: /cerrar-tarea.
 <qué hay hoy y qué falla, con números>
 
 ## Stack  <!-- solo en el primer plan del proyecto -->
-<cuál y por qué en 2–3 líneas; portable (todo dentro de la carpeta)>
+<cuál y por qué en 2–3 líneas; portable (todo dentro de la carpeta; lo que vaya afuera: qué, por qué rinde más, y cómo lo migra `migrar`)>
 
 ## Decisiones de Nacho (<fecha>)
 <una línea por respuesta (no volver a preguntarlas). Pendientes: "- [ ] <pregunta> — recomendada: <opción> (se asume)">

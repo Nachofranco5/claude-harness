@@ -14,7 +14,8 @@ Plantillas en `plantillas/` (al lado de este archivo). Reemplazar TODOS los `<�
    quién (¿hay usuario final? → decide el manual), nombre, ¿repo privado en GitHub? (recomendado: sí),
    ¿push automático al cerrar tareas? (recomendado: sí).
 3. **Stack**: el más adecuado para ESTE proyecto (no por costumbre), justificado en 2–3 líneas. Portable
-   (runtimes, modelos, cachés y configs dentro de la carpeta; rutas relativas). Verificar qué ya está
+   (runtimes, modelos, cachés y configs dentro de la carpeta; rutas relativas; afuera solo si rinde más
+   y con lista + comando `migrar`: regla permanente 1). Verificar qué ya está
    instalado antes de proponer instalar; instalar algo grande o pago → preguntar.
 4. **Crear** (desde las plantillas):
    - `CLAUDE.md` ← `plantillas/CLAUDE.md` (≤ 100 líneas; nada de lo que ya traen las reglas del plugin).
