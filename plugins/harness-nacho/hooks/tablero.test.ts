@@ -40,6 +40,15 @@ test('cuenta solo pruebas pendientes', async () => {
   expect(contarPruebas(undefined)).toBeUndefined()
 })
 
+test('cuenta pruebas escritas como títulos (formato ordenado)', async () => {
+  const txt = '# Pruebas pendientes
+## ⬜ 1 · T7d — Despertar
+1. Abrí X
+## ✅ 2 · hecha
+### ⬜ 2a · Sub'
+  expect(contarPruebas(txt)).toBe(2)
+})
+
 test('tablero completo con git y uso', async () => {
   const t = armarTablero({
     planes: [{ nombre: 'PLAN-demo.md', texto: PLAN, mtimeMs: 1 }],

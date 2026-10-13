@@ -28,8 +28,9 @@ Plantillas en `plantillas/` (al lado de este archivo). Reemplazar TODOS los `<�
    - `.gitignore` ← `plantillas/gitignore` ajustado al stack (ojo: ignora `data/`; si `data/` es código, sacarlo).
    - `.gitattributes`: `* text=auto` y `*.bat text eol=crlf`.
    - `CHANGELOG.md`: `# Changelog` + `## 0.1.0 (<fecha>)` + `- Proyecto creado con harness-nacho.`
-   - `docs/PRUEBAS-PENDIENTES.md`: `# Pruebas pendientes` + línea de formato
-     `<!-- ⬜ <Tn> — 1) Abrí X → 2) tocá Y → 3) debería pasar Z; si pasa W, avisame. -->`
+   - `docs/PRUEBAS-PENDIENTES.md`: `# Pruebas pendientes` + `> Hacelas en orden, de arriba hacia abajo.` +
+     comentario de formato `<!-- ## ⬜ <n> · <Tn> — título / **Antes:** / 1. 2. 3. / **Avisame:** -->`
+   - `docs/PRUEBAS-REALIZADAS.md`: `# Pruebas realizadas` + `> Para Claude: resultados de Nacho, la más nueva arriba.`
    - `VERSION`: `0.1.0`. `.claude/rules/` se crea con la primera regla de área (no dejar archivos vacíos).
 5. **Plugins**: invocar la skill `plugins-proyecto` (deja `enabledPlugins` antes del primer commit).
 6. **Verificar**: no queda ningún `<…>` (Grep `<[a-zA-Z]`; solo valen los de dentro de `<!-- … -->`, que son

@@ -58,7 +58,7 @@ const corto = (titulo: string) => titulo.split(/\s+[—-]\s+/u)[0]
 
 export function contarPruebas(texto?: string): number | undefined {
   if (texto === undefined) return undefined
-  return texto.split(/\r?\n/).filter(l => /^\s*(?:(?:\d+[.)]|[-*])\s+)?(?:⬜|\[ \])/u.test(l)).length
+  return texto.split(/\r?\n/).filter(l => /^\s*(?:#{1,6}\s+)?(?:(?:\d+[.)]|[-*])\s+)?(?:⬜|\[ \])/u.test(l)).length
 }
 
 // Líneas de `git status --porcelain` ("XY ruta", "XY viejo -> nuevo") → rutas.

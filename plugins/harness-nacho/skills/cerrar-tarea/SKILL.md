@@ -16,8 +16,17 @@ Config: `.claude/harness.json` del proyecto MANDA; si no existe o le falta una c
    Versión: seguir la costumbre del proyecto (mirar las últimas entradas: por tarea o por plan); si no hay
    costumbre y existe `VERSION`, subir el último número (0.1.0 → 0.1.1) y actualizar `VERSION`.
 4. **docs/PRUEBAS-PENDIENTES.md**: solo lo que Nacho tiene que mirar en la app real (si no hay nada visible,
-   no agregar). Una línea por prueba, con este formato exacto:
-   `⬜ <Tn> — 1) Abrí <X> → 2) tocá <Y> → 3) debería pasar <Z>; si pasa <W>, avisame.`
+   no agregar). Formato (ver Reglas de Nacho → Tablero):
+   ```
+   ## ⬜ <n> · <Tn> — <qué se prueba>
+   **Antes:** <lo que tiene que saber/preparar desde el principio, o quitar la línea>
+   1. Abrí <X>
+   2. Tocá <Y> → debería pasar <Z>; si pasa <W>, avisame.
+   **Avisame:** <qué datos devolver>
+   ```
+   Insertarla en el ORDEN en que conviene hacerlas (renumerar). Si Nacho ya devolvió resultados de alguna:
+   sacarla de pendientes y resumirla arriba de `docs/PRUEBAS-REALIZADAS.md` (`## ✅ <fecha> · <Tn> — título`
+   + 1–3 viñetas: qué salió y a qué tarea fue cada problema). En pendientes nunca quedan ✅.
 5. **Manual** (`manual` de harness.json, o lo que diga el CLAUDE.md): si cambió algo que el usuario ve,
    actualizarlo y regenerarlo con su comando.
 6. **Memoria del proyecto**: si cambió algo estructural (archivo nuevo, API nueva, cómo probar) → mapa del

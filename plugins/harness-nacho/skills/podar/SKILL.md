@@ -34,7 +34,8 @@ Objetivo: que cada sesión cargue lo mínimo SIN perder conocimiento. Nada se bo
    - `CHANGELOG.md`: dejar las entradas completas más recientes hasta ~40 líneas; el resto a
      `docs/archivo/CHANGELOG-<versión más vieja>-a-<más nueva>.md` y un link arriba del CHANGELOG.
    - Planes con `(cerrado)` en el título → `docs/archivo/`.
-   - Líneas `✅` de `docs/PRUEBAS-PENDIENTES.md` → `docs/archivo/PRUEBAS-HECHAS.md`.
+   - Si quedó algún `✅` en `docs/PRUEBAS-PENDIENTES.md` → arriba de `docs/PRUEBAS-REALIZADAS.md`.
+   - `docs/PRUEBAS-REALIZADAS.md` de más de ~80 líneas: lo viejo → `docs/archivo/PRUEBAS-REALIZADAS-<fecha>.md`.
    - `docs/archivo/` suele estar bloqueado para LEER: se mueve con `git mv` sin leerlo.
 6. **Plugins**: invocar la skill `plugins-proyecto`.
 7. **Verificar**: correr `pruebas` de `.claude/harness.json` (subagente `verificador`); Grep de cada nombre

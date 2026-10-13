@@ -43,4 +43,4 @@ Config por proyecto: `.claude/harness.json` (molde en `plugins/harness-nacho/ski
 Editar `plugins/harness-nacho/reglas.md` (o el mod) → subir `version` en su `plugin.json` → commit + push.
 Las otras PCs lo bajan solas al arrancar. Probar: `claude plugin test plugins/harness-nacho`.
 Marcas del tablero: tareas `⬜` / `🟡` (+ `> ⏸ Cortado…`) / `✅` en `docs/PLAN-*.md`, `(cerrado)` en el
-título del plan; pruebas = líneas con `⬜` en `docs/PRUEBAS-PENDIENTES.md`.
+título del plan; pruebas = títulos o líneas con `⬜` en `docs/PRUEBAS-PENDIENTES.md` (solo pendientes, en orden; lo hecho va a `docs/PRUEBAS-REALIZADAS.md`).
