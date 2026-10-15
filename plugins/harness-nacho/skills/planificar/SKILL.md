@@ -20,6 +20,9 @@ description: Convertir un pedido grande o ambiguo en docs/PLAN-<tema>.md con tar
    Búsquedas amplias → subagente `explorador`.
 4. **Escribir `docs/PLAN-<tema>.md`** con el molde de abajo. Cada tarea entra en UNA sesión; si no, partirla
    (T3a/T3b). Orden por dependencias; marcar cuáles son independientes.
+   **Juntar lo compatible**: si dos tareas (nuevas o ya en el plan) tocan el mismo código y entran juntas en una
+   sesión, fusionarlas (anotar «se hace junto con Tx»); también una sola corrida de pruebas caras/bancadas para
+   varias tareas. No juntar lo que no comparte código.
 5. **Commit aparte del plan** según `git` de `.claude/harness.json` (`"Plan <tema>: …"`). No arrancar
    ninguna tarea.
 6. **Responder**: resumen del plan en 3–6 líneas + decisiones pendientes + Próximo paso con el prompt exacto
