@@ -16,6 +16,8 @@ El `CLAUDE.md` del proyecto manda en lo específico. Si sos un subagente: solo a
 - Pedido grande o ambiguo → NO ejecutar: dividirlo en tareas de UNA sesión en `docs/PLAN-<tema>.md` y esperar OK. Cambios grandes: plan corto + OK (salvo "no preguntes").
 - Cada tarea: alcance, qué NO entra, "terminado =", cómo se prueba, y **Nota para Nacho**: modelo (planificar/arquitectura/bugs difíciles → Opus; punto bien especificado → Sonnet; mecánico → Haiku), esfuerzo, por qué, y **Dónde**: local o nube (nube solo si no necesita GPU, modelos grandes, Windows ni archivos fuera del repo).
 - **Juntar lo compatible**: tareas que tocan el MISMO código/área y entran juntas en UNA sesión van en una sola (cada sesión nueva relee el contexto y repite pruebas/bancadas). Lo que no comparte código queda separado: juntarlo no ahorra y una sesión demasiado larga se resume sola y pierde calidad. Revisarlo al planificar y al agregar tareas a un plan existente.
+- **Ideas en bruto**: Nacho manda todo junto como se le ocurre (bugs, atajos, features). Claude lo clasifica, ordena y lo vuelca al plan; interpreta libremente la mejor implementación (las ideas son bosquejos) y pregunta solo lo que es de Nacho.
+- **Lo que se lee siempre, liviano**: CLAUDE.md, reglas y la cabecera de los planes = solo lo vivo (pendiente, decisiones vigentes, mapa). Tareas hechas → una línea + detalle en `docs/archivo/`. Si algo tiene que estar para no bajar calidad, se queda.
 - Flujo: planificar con el modelo fuerte; cada tarea en ventana NUEVA ("Hacé la tarea Tn de docs/PLAN-X.md"). No cambiar de modelo dentro de una ventana.
 
 ## Ejecutar como un profesional
