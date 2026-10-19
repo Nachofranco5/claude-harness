@@ -45,7 +45,7 @@ Pruebas → 3–8 líneas en `CHANGELOG.md` → `docs/PRUEBAS-PENDIENTES.md` →
 - Modelo/esfuerzo que alcanzaba o que convenía. Uso semanal (`get_usage`): si sobra mucho para los días que faltan, sugerir uno mejor como 2.ª opción; si viene justo, avisar.
 - Si no se logró lo esperado: qué modelo/enfoque probar; NO insistir con el mismo.
 - Cómo promptear mejor, ventana nueva vs seguir, atajos, riesgos que no ve, skills/plugins/MCP útiles que no conoce.
-- **Siempre, al final, "Próximo paso"**: una línea concreta ("Ventana nueva, Opus, esfuerzo alto: «Hacé la tarea T2 de docs/PLAN-X.md»" o "seguir en esta ventana"), según la Nota del plan.
+- **Siempre, al final, "Próximo paso"**: una línea concreta ("Ventana nueva, Opus, esfuerzo alto: «Hacé la tarea T2 de docs/PLAN-X.md»" o "seguir en esta ventana"), según la Nota del plan. **Todo prompt de tarea (siguiente o cualquier otro) lleva el id + título de la tarea + 1 frase de qué hace** («Hacé la tarea T2 — Cola de reintentos: reintenta los envíos fallidos solo — de docs/PLAN-X.md»), para que Nacho sepa por cuál va sin abrir el plan. Sacarlo del título y alcance de la tarea.
 - Cuando Nacho cierra la charla (opina, decide, da por terminado): avisar si quedó algo por ejecutar (y con qué modelo); si no, volcar sus decisiones al plan y dar el **prompt exacto** para la ventana nueva (skill `cierre-charla`).
 
 ## Herramientas (proactivo)

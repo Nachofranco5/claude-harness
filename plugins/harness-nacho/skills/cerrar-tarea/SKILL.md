@@ -45,4 +45,6 @@ Config: `.claude/harness.json` del proyecto MANDA; si no existe o le falta una c
    - Lo que no se pudo probar y cómo probarlo.
    - **Consejos** (1–4 líneas) + **Próximo paso**: la siguiente `⬜` del plan con el modelo, esfuerzo y
      dónde de su Nota (si a la Nota le falta algo, elegirlo con el criterio de `planificar`), como prompt
-     exacto: «Ventana nueva, Sonnet, esfuerzo medio: "Hacé la tarea T3 de docs/PLAN-x.md"».
+     exacto: «Ventana nueva, Sonnet, esfuerzo medio: "Hacé la tarea T3 — <título> (<qué hace, 1 frase breve>) — de docs/PLAN-x.md"».
+     El prompt SIEMPRE nombra la tarea y dice en una frase qué hace (del título y alcance del plan), para
+     que Nacho sepa por cuál va sin abrir el plan.
