@@ -15,7 +15,8 @@ Config: `.claude/harness.json` del proyecto MANDA; si no existe o le falta una c
 3. **CHANGELOG.md**: entrada nueva arriba, 3–8 líneas: fecha, versión, qué cambió para el usuario y por qué.
    Versión: seguir la costumbre del proyecto (mirar las últimas entradas: por tarea o por plan); si no hay
    costumbre y existe `VERSION`, subir el último número (0.1.0 → 0.1.1) y actualizar `VERSION`.
-4. **docs/PRUEBAS-PENDIENTES.md**: solo lo que Nacho tiene que mirar en la app real (si no hay nada visible,
+4. **docs/PRUEBAS-PENDIENTES.md**: solo lo que Claude NO pudo probar solo (voz, celular, reinicio, hardware, gusto);
+   lo demás se prueba acá con evidencia. Si ya hay una prueba parecida, sumar el paso ahí en vez de crear otra (si no hay nada,
    no agregar). Formato (ver Reglas de Nacho → Tablero):
    ```
    ## ⬜ <n> · <Tn> — <qué se prueba>
