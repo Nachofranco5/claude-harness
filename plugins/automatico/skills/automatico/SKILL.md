@@ -37,8 +37,8 @@ prendido: decíselo a Nacho y frená.
 3. **Elegir la próxima**: la primera ⬜ de la «Cola» de arriba del plan si existe (manda sobre el orden de abajo);
    si no, la que trae el tablero («Próxima»). Leer SOLO su rango (Grep `^## ` con `-n`) y su **Nota para Nacho**.
    Parar (paso 5) si: dice que necesita a Nacho antes (decisión pendiente, algo que él tiene que hacer o tener a
-   mano para que la tarea se pueda hacer), tiene `⏸` esperándolo, depende de una ⬜ anterior, o es **Dónde: nube**
-   (ya no hay nube: saltearla y anotarla en el resumen). Pruebas que van a `PRUEBAS-PENDIENTES.md` NO frenan.
+   mano para que la tarea se pueda hacer), tiene `⏸` esperándolo, o depende de una ⬜ anterior. «Dónde: nube»
+   de planes viejos = local (todo se trabaja en esta PC). Pruebas que van a `PRUEBAS-PENDIENTES.md` NO frenan.
 4. **¿Alcanza el uso?** `get_usage` y la estimación del paso 4. Si `ahora + estimado > tope` → parar (tope).
    Si la ventana de 5 h no alcanza pero la semanal sí → `automatico` `{accion:"despertar", minutos: hasta que se
    renueve + 2}` y terminá el turno; si al despertar el arranque es rechazado, aplica el último punto del paso 5. Límite por modelo (ej. Opus semanal) ≥ 95 % → parar.

@@ -22,7 +22,7 @@ Si no existe, la ventana es 30 días. Versión actual: `claude --version` (o la 
   vivos (stacks y trabajos de sus `CLAUDE.md`: voz, LLM local, Windows, Python…). Solo gratis o ya pagado.
 - **Fricción propia** (Haiku, solo lectura): en los proyectos de `Documents\Trabajos\*`, lo que se repite y
   cuesta: `docs/PRUEBAS-REALIZADAS.md` (fallas que volvieron), CHANGELOG y planes (tareas partidas, 🟡 que
-  duran, «Ideas extra» olvidadas), y `search_session_transcripts` de los últimos días por correcciones de Nacho
+  duran, secciones «Ideas extra» que hayan quedado), y `search_session_transcripts` de los últimos días por correcciones de Nacho
   («no», «otra vez», «te dije», «mal»). Contar, no adivinar.
 - **Gasto** (directo): `get_usage` y, si existe, `~/.claude/automatico/registro.jsonl` (gasto real por
   modelo/esfuerzo): ¿las Notas eligen bien el modelo? ¿algo se hace con Opus que Sonnet hacía igual?

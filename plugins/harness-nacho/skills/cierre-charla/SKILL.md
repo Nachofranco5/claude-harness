@@ -9,8 +9,9 @@ description: Cuando Nacho cierra la charla (opina, decide, "listo", "dejémoslo 
    `## Decisiones de Nacho (<fecha>)` (crearla si no existe; una línea numerada por decisión).
    - Si cambia una tarea existente (modelo, alcance, orden) → editar TAMBIÉN esa tarea (su Nota o su
      alcance), para que no se contradigan.
-   - Si pide algo nuevo que no tiene tarea → tarea nueva `⬜` al final del plan con su Nota (si entra en
-     una sesión) o a "Ideas extra" (si todavía es vago). Sin plan → `/planificar`.
+   - Si pide algo nuevo que no tiene tarea → sumarlo a la `⬜` del mismo código si entra en su
+     sesión, o tarea nueva `⬜` con su Nota (si es vago, interpretarlo con lo que se sabe de Nacho y anotar
+     lo asumido). Sin plan → `/planificar`.
 2. **¿Quedó algo a medias?** (`git status`, tarea empezada). Si no quedó nada, saltear.
    - Si se puede cerrar ya y el uso alcanza (`get_usage`: hay margen para pruebas + commit) → `cerrar-tarea`.
    - Si no: tarea `🟡` + `> ⏸ Cortado (fecha): dónde quedó y cómo seguir`.

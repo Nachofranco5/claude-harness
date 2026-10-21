@@ -33,8 +33,8 @@ Config: `.claude/harness.json` del proyecto MANDA; si no existe o le falta una c
 6. **Memoria del proyecto**: si cambió algo estructural (archivo nuevo, API nueva, cómo probar) → mapa del
    `CLAUDE.md` en 1 línea. El detalle de un área va a `.claude/rules/<área>.md` (con `paths:`), no al
    CLAUDE.md. Si el CLAUDE.md pasa de ~100 líneas → sugerir `/podar` en Consejos.
-7. **Plan**: título → `✅ (fecha; resumen de 1 línea)`. Borrar `> ⏸` si quedó. Lo visto de paso →
-   `## Ideas extra`. Si todas las tareas quedaron ✅ → `(cerrado)` en el título del plan.
+7. **Plan**: título → `✅ (fecha; resumen de 1 línea)`. Borrar `> ⏸` si quedó. Lo visto de paso → al plan
+   (sumado a la ⬜ del mismo código o tarea ⬜ nueva con su Nota; regla «Alcance exacto»). Si todas las tareas quedaron ✅ → `(cerrado)` en el título del plan.
 8. **Git** (`git.commit` / `git.push`):
    - `git status` primero. Frenar y avisar si aparece algo pesado o privado (modelos, binarios, `.venv`,
      zips, respaldos, datos de clientes, secretos) que no esté en `.gitignore`.

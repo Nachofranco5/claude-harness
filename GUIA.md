@@ -50,5 +50,7 @@ Escribí `/` en el cuadro de texto y aparece todo. Casi todo se puede pedir tamb
 
 ## Reglas que conviene recordar
 - Una tarea = una ventana nueva, con el modelo que dice su Nota.
+- Todo se trabaja en local, en esta PC (desde 2026-10-21). Claude no abre ni propone sesiones en la nube; si querés una, la abrís vos a mano.
+- Si una prueba falla, anotá la frase exacta que dijiste y lo que respondió: Claude la convierte en test.
 - Las pruebas que te tocan están en `docs/PRUEBAS-PENDIENTES.md` de cada proyecto: hacelas todas juntas al final.
 - Cambiar reglas o mods: pedíselo a Claude; vive en este repo y llega solo a las otras PCs.

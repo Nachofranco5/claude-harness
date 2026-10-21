@@ -53,14 +53,12 @@ T1 → T2 y T3 (independientes) → T4
 - Cómo se prueba: <comando o pasos; qué queda para Nacho en PRUEBAS-PENDIENTES>
 
 > **Nota para Nacho — T1:** Modelo: <Opus|Sonnet|Haiku> · Esfuerzo: <bajo|medio|alto>. Por qué: <1 línea>.
-> **Dónde:** <local|nube> (<motivo: GPU, modelos, Windows, archivos fuera del repo…>).
-
-## Ideas extra
-<lo visto de paso que no entra en ninguna tarea>
+> **Necesita:** <nada | GPU, reinicio, micrófono, algo de Nacho antes de empezar…>.
 ```
+Sin sección «Ideas extra»: todo lo que vale la pena es una tarea (o parte de una); lo que no, no se anota.
 
 ## Criterio para la Nota
 - Opus: planificar, arquitectura, bugs difíciles, decisiones que condicionan lo demás.
 - Sonnet: tarea bien especificada. Haiku: mecánica (renombrar, mover, completar listas).
-- Nube solo si no necesita GPU, modelos grandes, Windows ni archivos fuera del repo.
+- Todo se hace en local (regla «Todo local»): no hay tareas «nube».
 - Avisar costo/tiempo en tareas caras (horas de GPU, muchos subagentes).
