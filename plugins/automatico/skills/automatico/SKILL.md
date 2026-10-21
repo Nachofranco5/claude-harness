@@ -52,9 +52,14 @@ prendido: decíselo a Nacho y frená.
    - `background`: «Modo automático de Nacho: esta sesión la abrió la ventana coordinadora y Nacho no está mirando.
      No le preguntes nada: si algo es decisión suya o necesita algo que no tenés, dejá la tarea 🟡 con la nota ⏸
      y terminá. Cerrá con la skill cerrar-tarea (pruebas, ✅, commit y push según el proyecto). Una sola tarea.»
-   - La app solo deja arrancar sesiones en un turno que empezó Nacho o en un aviso de fin que viene detrás de
-     uno (probado 2026-10-21). Si el arranque es rechazado (ej. turno del vigía o del botón): NO reintentar;
-     parar (paso 5) pidiendo a Nacho que escriba «seguí» (eso reanuda la cadena).
+   - La app solo deja arrancar sesiones en un turno que empezó Nacho (y, según su regla, en el aviso de fin que
+     viene detrás de uno, si Nacho pidió esas tareas en ventanas propias). Probado 2026-10-21 en una ventana
+     abierta por otra sesión: arrancó en turnos de Nacho y fue RECHAZADO en el aviso de fin. Si te rechaza: NO
+     reintentar ni buscar otra vía (tareas programadas, etc.: el bloqueo es a propósito). Dejar la **tarjeta**:
+     `start_session` igual pero `initiation:"own_initiative"` (mismo model/effort/prompt/background, sin
+     `wake_when_done`) + `PushNotification` «<id> lista para arrancar: un clic en la tarjeta». Cuando Nacho la
+     arranca y termina, el aviso te despierta igual y seguís (modo «un clic por tarea»). Si escribe «seguí»,
+     arrancala vos con `user_asked` y descartá la tarjeta (`dismiss_task`).
 6. `automatico` `{accion:"tarea", tarea:"<id> de <plan>", sesion:"<id de la sesión>"}` + `get_usage` de antes
    anotado. Una línea («Arranqué T51 · Opus medio · semanal 57 %») y fin
    del turno. Nunca dos tareas a la vez.
