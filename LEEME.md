@@ -1,12 +1,12 @@
 # claude-harness — el "cómo trabaja la IA" de Nacho
 Marketplace público de Claude Code (sin secretos: nunca subir tokens ni datos de clientes acá): `harness-nacho` (reglas de trabajo + tablero del proyecto al abrir cada
-ventana + skills + guardianes), `uso-widget` (barra de uso 5 h / semanal) y `semaforo` (rojo trabajando /
-verde listo).
+ventana + skills + guardianes), `uso-widget` (barra de uso 5 h / semanal) `semaforo` (rojo trabajando /
+verde listo) y `automatico` (encadena las tareas del plan solo, hasta un tope de uso).
 
 ## PC nueva (una sola vez)
 1. Instalar la app de escritorio de Claude, Git y GitHub CLI. En una terminal: `gh auth login`, después
    `gh repo clone Nachofranco5/claude-harness "$HOME\Documents\Trabajos\claude-harness"`.
-2. Doble clic en **`INSTALAR.bat`**: agrega el marketplace, instala los 3 plugins, prende la
+2. Doble clic en **`INSTALAR.bat`**: agrega el marketplace, instala los 4 plugins, prende la
    auto-actualización y crea el `~\.claude\CLAUDE.md` mínimo (no pisa nada; se puede repetir).
 3. Cerrar Claude del todo y abrirlo. La primera respuesta en cualquier proyecto ya trae el tablero.
 
@@ -33,6 +33,13 @@ editar el Setup script (agregar o quitar un espacio) y guardar.
 
 Subagentes: `explorador` (Haiku, búsquedas baratas) y `verificador` (Sonnet, corre las pruebas).
 Config por proyecto: `.claude/harness.json` (molde en `plugins/harness-nacho/skills/proyecto-nuevo/plantillas/`).
+
+## Modo automático (`automatico`)
+En una ventana **Opus** del proyecto: «estamos en 55 % semanal, hasta 65 seguí en automático» o el botón **🤖 Automático**
+sobre el cuadro de texto. Esa ventana coordina: abre cada tarea de la cola del plan en una ventana NUEVA con el
+modelo/esfuerzo de su Nota, espera, verifica ✅ + commit y sigue, hasta el tope, una falla o algo que necesite a
+Nacho (avisa al celu). Apagar: «pará» o el mismo botón (la tarea en curso termina sola). Opus porque una ventana
+solo puede abrir otras de su modelo/esfuerzo o más baratas. Gasto por tarea: `~/.claude/automatico/registro.jsonl`.
 
 ## Guardianes (hooks; se apagan por proyecto en `harness.json` → `guardianes`)
 - **Cierre**: si se cambió código y falta CHANGELOG/pruebas/manual/commit/push, la IA no puede terminar.

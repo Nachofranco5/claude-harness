@@ -5,6 +5,7 @@
   "plugins": [
     { "name": "harness-nacho", "source": "./plugins/harness-nacho", "description": "Reglas de Nacho + tablero del proyecto al arrancar" },
     { "name": "uso-widget", "source": "./plugins/uso-widget", "description": "Barra de uso 5 h / semanal sobre el prompt" },
-    { "name": "semaforo", "source": "./plugins/semaforo", "description": "Círculo al costado del chat: rojo trabajando, verde listo" }
+    { "name": "semaforo", "source": "./plugins/semaforo", "description": "Círculo al costado del chat: rojo trabajando, verde listo" },
+    { "name": "automatico", "source": "./plugins/automatico", "description": "Modo automático: encadena las tareas del plan en ventanas nuevas hasta un tope de uso (botón 🤖)" }
   ]
 }

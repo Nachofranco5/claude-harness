@@ -26,7 +26,7 @@ Objetivo: prendido solo lo que este proyecto usa de verdad.
    `package.json`, `*.csproj`…): stack, tipo de trabajo, si tiene UI web (→ playwright, frontend-design),
    lenguaje (→ su LSP), librerías con doc cambiante (→ context7).
 4. **Decidir** cada plugin: prendido / apagado + motivo de 1 línea.
-   - Siempre: `harness-nacho` prendido. Los mods de pantalla del harness (`uso-widget`, `semaforo`) no se
+   - Siempre: `harness-nacho` prendido. Los mods de pantalla del harness (`uso-widget`, `semaforo`, `automatico`) no se
      tocan. `plugins_fijos` de `.claude/harness.json` (`{"id": true|false}`) manda sobre todo.
    - Caro = trae herramientas MCP (cada una ~200–600 tokens); barato = solo skills. En duda y barato →
      prendido; en duda y caro → apagado.

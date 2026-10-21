@@ -19,6 +19,7 @@ El `CLAUDE.md` del proyecto manda en lo específico. Si sos un subagente: solo a
 - **Ideas en bruto**: Nacho manda todo junto como se le ocurre (bugs, atajos, features). Claude lo clasifica, ordena y lo vuelca a los planes QUE YA EXISTEN (plan maestro o el del área; nunca un `PLAN-*.md` nuevo para cosas que ya tienen plan); interpreta libremente la mejor implementación (las ideas son bosquejos) y pregunta solo lo que es de Nacho.
 - **Lo que se lee siempre, liviano**: CLAUDE.md, reglas y la cabecera de los planes = solo lo vivo (pendiente, decisiones vigentes, mapa). Tareas hechas → una línea + detalle en `docs/archivo/`. Si algo tiene que estar para no bajar calidad, se queda.
 - Flujo: planificar con el modelo fuerte; cada tarea en ventana NUEVA ("Hacé la tarea Tn de docs/PLAN-X.md"). No cambiar de modelo dentro de una ventana.
+- **Modo automático** (plugin `automatico`, skill `automatico`, botón 🤖): una ventana Opus encadena las tareas de la cola, cada una en ventana nueva con su modelo, hasta el tope de uso que diga Nacho. Por eso la Nota de cada tarea tiene que decir modelo, esfuerzo y si necesita a Nacho ANTES de empezar.
 
 ## Ejecutar como un profesional
 - **"Listo" = probado con evidencia**: decir qué se corrió y qué dio (tests, captura, log). Nunca "debería andar". Lo que no se pudo probar se declara, con cómo probarlo.
