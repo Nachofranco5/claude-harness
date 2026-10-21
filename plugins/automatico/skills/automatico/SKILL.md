@@ -77,7 +77,8 @@ Después el resumen.
 
 ## 6. Resumen (al apagar o parar)
 3–6 líneas: tareas hechas (id · resultado · gasto medido), la que quedó y por qué, uso actual vs tope, y el
-**Próximo paso** con el prompt entero de la siguiente (reglas de Nacho). Sin Consejos largos.
+**Próximo paso** = la tarjeta de la siguiente (`own_initiative`, como en el paso 5; reglas de Nacho «Próximo paso =
+TARJETA»), salvo que pare porque la siguiente necesita a Nacho. Sin Consejos largos.
 
 ## Reglas
 - Una tarea por vez: la próxima se abre solo cuando la anterior terminó y quedó verificada (✅ + commit).

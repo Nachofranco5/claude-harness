@@ -1,6 +1,6 @@
 ---
 name: cierre-charla
-description: Cuando Nacho cierra la charla (opina, decide, "listo", "dejémoslo acá"): vuelca sus decisiones al plan, avisa lo que quedó sin ejecutar y da el prompt exacto para la ventana nueva.
+description: Cuando Nacho cierra la charla (opina, decide, "listo", "dejémoslo acá"): vuelca sus decisiones al plan, avisa lo que quedó sin ejecutar y deja la tarjeta de la próxima tarea (un clic abre la ventana nueva con su modelo).
 ---
 
 # /cierre-charla
@@ -19,7 +19,10 @@ description: Cuando Nacho cierra la charla (opina, decide, "listo", "dejémoslo 
 4. **Responder** (corto):
    - Qué quedó guardado (decisiones, estado de la tarea).
    - Lo que quedó sin ejecutar y con qué modelo.
-   - **Prompt exacto** SOLO de la próxima tarea, en un bloque de código para copiar:
+   - **Tarjeta** SOLO de la próxima tarea (ver «Próximo paso = TARJETA» en las reglas: `start_session`
+     `own_initiative` con el modelo y esfuerzo de su Nota) + una línea «Te dejé la tarjeta de Tn (<modelo> · <esfuerzo>)
+     — Tn · <título>: <qué hace>». Si la Nota pide más modelo/esfuerzo que esta ventana (la app no lo deja),
+     el prompt exacto en un bloque de código para copiar:
      ```
      Ventana nueva, <modelo>, esfuerzo <x>: "Hacé la tarea Tn de docs/PLAN-<tema>.md"
      ```

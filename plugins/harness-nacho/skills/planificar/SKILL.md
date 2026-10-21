@@ -25,8 +25,10 @@ description: Convertir un pedido grande o ambiguo en docs/PLAN-<tema>.md con tar
    varias tareas. No juntar lo que no comparte código.
 5. **Commit aparte del plan** según `git` de `.claude/harness.json` (`"Plan <tema>: …"`). No arrancar
    ninguna tarea.
-6. **Responder**: resumen del plan en 3–6 líneas + decisiones pendientes + Próximo paso con el prompt exacto
-   de T1 («Ventana nueva, <modelo>, esfuerzo <x>: "Hacé la tarea T1 de docs/PLAN-<tema>.md"»).
+6. **Responder**: resumen del plan en 3–6 líneas + decisiones pendientes + Próximo paso de T1. Si no quedan
+   decisiones pendientes: **tarjeta** de T1 (ver «Próximo paso = TARJETA» en las reglas); si las hay, primero
+   el OK de Nacho y la tarjeta después. Si T1 pide más modelo/esfuerzo que esta ventana: el prompt exacto
+   («Ventana nueva, <modelo>, esfuerzo <x>: "Hacé la tarea T1 de docs/PLAN-<tema>.md"»).
 
 ## Molde
 ```markdown

@@ -7,7 +7,8 @@ Escribí `/` en el cuadro de texto y aparece todo. Casi todo se puede pedir tamb
 | `/harness-nacho:tarea T5 docs/PLAN-x.md` | Hace UNA tarea del plan y la cierra (pruebas, ✅, commit) | «Hacé la tarea T5 de docs/PLAN-x.md» · «la próxima tarea» |
 | `/harness-nacho:planificar <tema>` | Pedido grande → plan con tareas de una ventana (no ejecuta) | «planificá X» |
 | `/harness-nacho:cerrar-tarea` | Checklist de cierre (lo usa Claude solo al terminar) | — |
-| `/harness-nacho:cierre-charla` | Guarda tus decisiones en el plan y te da el prompt para seguir | «listo» · «dejémoslo acá» |
+| `/harness-nacho:cierre-charla` | Guarda tus decisiones en el plan y te deja la tarjeta para seguir | «listo» · «dejémoslo acá» |
+| **Tarjeta** al terminar cada tarea | Un clic abre la próxima tarea en ventana nueva con su modelo y esfuerzo. Si la próxima pide un modelo más caro que la ventana actual (la app no deja), te da el prompt para copiar | — |
 | `/harness-nacho:proyecto-nuevo` | Arma un proyecto desde una carpeta vacía (git, repo privado, CLAUDE.md) | «arrancá un proyecto nuevo acá» |
 | `/harness-nacho:podar` | Achica la memoria del proyecto (gasta menos por ventana) | «podá el proyecto» |
 | `/harness-nacho:plugins-proyecto` | Deja prendidos solo los plugins útiles en ese proyecto | «revisá los plugins» |

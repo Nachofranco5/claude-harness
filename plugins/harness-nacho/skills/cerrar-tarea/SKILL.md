@@ -44,8 +44,10 @@ Config: `.claude/harness.json` del proyecto MANDA; si no existe o le falta una c
    - Qué cambió PARA ÉL (qué ve o hace distinto) en 1–3 líneas.
    - Evidencia: qué se corrió y qué dio (ej. "61 tests OK, 3 salteados").
    - Lo que no se pudo probar y cómo probarlo.
-   - **Consejos** (1–4 líneas) + **Próximo paso**: la siguiente `⬜` del plan con el modelo, esfuerzo y
-     dónde de su Nota (si a la Nota le falta algo, elegirlo con el criterio de `planificar`), como prompt
-     exacto ENTERO y seguido, para copiarlo de una: «Ventana nueva, Sonnet, esfuerzo medio: `Hacé la tarea T3 de docs/PLAN-x.md`»
-     y DESPUÉS, fuera del prompt: «— T3 · <título>: <qué hace, 1 frase breve>» (del título y alcance del plan),
-     para que Nacho sepa por cuál va sin abrir el plan. Nunca meter la descripción en el medio del prompt.
+   - **Consejos** (1–4 líneas) + **Próximo paso**: la siguiente `⬜` del plan con el modelo y esfuerzo de su
+     Nota (si a la Nota le falta algo, elegirlo con el criterio de `planificar`) como **TARJETA** (`start_session`
+     `own_initiative`, ver «Próximo paso = TARJETA» en las reglas), después del commit + push. En el texto una
+     línea: «Te dejé la tarjeta de T3 (Sonnet · medio) — T3 · <título>: <qué hace, 1 frase breve>».
+     Si la Nota pide un modelo o esfuerzo MAYOR que el de esta ventana, la app no lo deja: en vez de tarjeta,
+     prompt exacto ENTERO y seguido para copiar («Ventana nueva, Opus, esfuerzo alto: `Hacé la tarea T3 de docs/PLAN-x.md`»)
+     y DESPUÉS, fuera del prompt, «— T3 · <título>: <qué hace>». En modo automático no se hace esto (lo maneja `automatico`).
