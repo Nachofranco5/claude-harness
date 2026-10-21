@@ -16,10 +16,10 @@ Escribí `/` en el cuadro de texto y aparece todo. Casi todo se puede pedir tamb
 ## Modo automático (`automatico`)
 | Hacé | Qué pasa |
 |---|---|
-| En una ventana **Opus**: «estamos en 55 % semanal, hasta 65 seguí en automático» · o botón **🤖 Automático** · o `/automatico:automatico hasta 65 %` | Abre cada tarea de la cola en ventana nueva con su modelo, verifica y sigue hasta el tope |
+| En una ventana **Opus**: «estamos en 55 % semanal, hasta 65 seguí en automático» · o botón **🤖 Automático** (escribe la frase; revisás el % y Enter) · o `/automatico:automatico hasta 65 %` | Abre cada tarea de la cola en ventana nueva con su modelo, verifica y sigue hasta el tope |
 | «hasta 80 % de las 5 h» | Igual, con tope sobre la ventana de 5 h |
 | «pará» · botón **🤖 Auto ON** | No arranca más tareas (la que corre termina sola) |
-| Te avisa al celu | Cuando para: tope, falla o algo que necesita que decidas |
+| Te avisa al celu | Cuando para: tope, falla o algo que necesita que decidas. Si te pide «seguí», escribilo: reanuda |
 
 ## En pantalla
 | Qué | Cómo |

@@ -1,7 +1,7 @@
 // Modo automático: esta ventana pasa a ser la "coordinadora" que encadena las tareas del plan, cada una en una
 // ventana nueva con su modelo/esfuerzo, hasta un tope de uso. El que coordina es el modelo (skill `automatico`);
 // el mod pone lo que el modelo no puede tener solo:
-// - Botón sobre el cuadro de texto: prende (manda "seguí en automático hasta N %") y apaga (corta al instante).
+// - Botón sobre el cuadro de texto: prende (escribe "seguí en automático hasta N %"; Enter) y apaga (al instante).
 // - Herramienta `mcp__automatico__automatico`: el modelo prende/apaga, anota la tarea en curso y pide despertarse.
 // - Vigía: con el modo prendido y la ventana quieta, la despierta cada tanto (por si una tarea quedó trabada
 //   o el aviso de "terminó" no llegó) y a la hora que pidió el modelo (ej. cuando se renueva la ventana de 5 h).
@@ -16,7 +16,10 @@ const modo = atom({ plugin: 'automatico', key: 'modo' } as const, APAGADO)
 const trabajando = atom({ plugin: 'automatico', key: 'trabajando' } as const, false)
 
 const TOOL = 'mcp__automatico__automatico'
-const VIGIA_MIN = 30 // minutos de ventana quieta antes de despertarla para que revise
+// minutos de ventana quieta antes de despertarla: último recurso (tarea trabada, aviso perdido). Largo a propósito:
+// la app deja arrancar sesiones solo en turnos tuyos o en avisos de fin que vienen detrás de uno; un turno del vigía
+// en el medio puede cortar esa cadena.
+const VIGIA_MIN = 90
 const SEGUIR = 'Modo automático: revisá cómo va la tarea en curso y seguí con la próxima si corresponde (skill automatico).'
 
 type Uso = { semanal: number | null; '5h': number | null; renuevaSemanal: string | null; renueva5h: string | null }
@@ -57,7 +60,8 @@ async function despertar($: any) {
   void $.prompt.submit({ text: SEGUIR })
 }
 
-// botón: prende con el último tope (si todavía está adelante) o con el uso actual + 10; apaga al instante
+// botón: prender = deja escrita la frase con el último tope (si todavía está adelante) o el uso actual + 10;
+// apagar = al instante
 async function alternar($: any) {
   const m = await read($, modo)
   if (m.on) {
@@ -70,7 +74,9 @@ async function alternar($: any) {
   const ahora = (await uso($))[ventana] ?? 0
   const ultimo = Number(await $.store.get('tope'))
   const tope = ultimo > ahora ? ultimo : Math.min(100, Math.ceil(ahora) + 10)
-  void $.prompt.submit({ text: `Seguí en automático hasta ${tope} % ${nombreVentana(ventana)} (botón del modo automático).` })
+  // se escribe en el cuadro y Nacho aprieta Enter: la app solo deja abrir ventanas en turnos que él mandó
+  await $.prompt.fill({ text: `Seguí en automático hasta ${tope} % ${nombreVentana(ventana)}` })
+  $.ui.toast('Modo automático: revisá el tope y apretá Enter')
 }
 
 export const register: Register = on => {

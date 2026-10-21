@@ -85,13 +85,14 @@ test('botón prendido: lo apaga y manda "pará"', async ($, on) => {
   expect(enviados.join('\n')).toMatch(/Pará el modo automático/)
 })
 
-test('botón apagado: manda "seguí en automático hasta N %" con el último tope', async ($, on) => {
+test('botón apagado: escribe "seguí en automático hasta N %" con el último tope (Enter lo manda Nacho)', async ($, on) => {
   base(on)
   const enviados: string[] = []
-  on('prompt.submit', (_: any, e: any) => {
+  on('prompt.fill', (_: any, e: any) => {
     enviados.push(e.text)
-    return { drop: 'test' } as never
+    return { isFilled: true } as never
   })
+  on('ui.toast', () => ({ value: undefined }) as never)
   await llamar($, { accion: 'activar', tope: 70 })
   await llamar($, { accion: 'desactivar' })
   const ui = await $.ui.mount({ ...BANDA, surface: 'desktop' } as never)
@@ -100,7 +101,7 @@ test('botón apagado: manda "seguí en automático hasta N %" con el último top
   expect(enviados.join('\n')).toMatch(/Seguí en automático hasta 70 % semanal/)
 })
 
-test('vigía: con el modo prendido y la ventana quieta, la despierta a los 30 min (o cuando pidió el modelo)', async ($, on) => {
+test('vigía: con el modo prendido y la ventana quieta, la despierta a los 90 min (o cuando pidió el modelo)', async ($, on) => {
   base(on)
   const reloj = mock.clock(on)
   const enviados: string[] = []
@@ -117,13 +118,13 @@ test('vigía: con el modo prendido y la ventana quieta, la despierta a los 30 mi
 
   // apagado: nunca despierta
   await turno()
-  await reloj.advance(31 * 60_000)
+  await reloj.advance(91 * 60_000)
   expect(enviados.length).toBe(0)
 
-  // prendido: a los 30 min de quieta
+  // prendido: a los 90 min de quieta
   await llamar($, { accion: 'activar', tope: 65 })
   await turno()
-  await reloj.advance(29 * 60_000)
+  await reloj.advance(89 * 60_000)
   expect(enviados.length).toBe(0)
   await reloj.advance(2 * 60_000)
   expect(enviados.join('\n')).toMatch(/Modo automático: revisá/)
@@ -137,6 +138,6 @@ test('vigía: con el modo prendido y la ventana quieta, la despierta a los 30 mi
   // apagado por la herramienta: el timer armado no despierta
   await turno()
   await llamar($, { accion: 'desactivar' })
-  await reloj.advance(60 * 60_000)
+  await reloj.advance(120 * 60_000)
   expect(enviados.length).toBe(2)
 })

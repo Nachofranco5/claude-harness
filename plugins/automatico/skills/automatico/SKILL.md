@@ -28,7 +28,7 @@ prendido: decíselo a Nacho y frená.
 ## 3. Cada vez que te despiertan (aviso de sesión terminada, «Modo automático: revisá…», o recién prendido)
 1. `automatico` `{accion:"estado"}`. Apagado → solo el resumen y fin.
 2. **Hay tarea en curso** (`tarea`/`sesion` en el estado): `get_session` a su id.
-   - Sigue trabajando → `automatico` `{accion:"despertar", minutos:20}` y terminá el turno (una línea).
+   - Sigue trabajando → terminá el turno en una línea (el aviso de fin te despierta; el vigía del mod, a los 90 min).
    - Esperando a Nacho (pregunta, permiso) → parar (paso 5) diciendo qué espera.
    - Terminó → **verificar con evidencia**: título de la tarea en el plan con `✅` (Grep `^## <id> `), commit con
      su id en `git log --oneline -5`, y si el proyecto pushea, `git status -sb` sin «ahead». Registrar el gasto
@@ -41,7 +41,7 @@ prendido: decíselo a Nacho y frená.
    (ya no hay nube: saltearla y anotarla en el resumen). Pruebas que van a `PRUEBAS-PENDIENTES.md` NO frenan.
 4. **¿Alcanza el uso?** `get_usage` y la estimación del paso 4. Si `ahora + estimado > tope` → parar (tope).
    Si la ventana de 5 h no alcanza pero la semanal sí → `automatico` `{accion:"despertar", minutos: hasta que se
-   renueve + 2}` y terminá el turno (seguís cuando te despierte). Límite por modelo (ej. Opus semanal) ≥ 95 % → parar.
+   renueve + 2}` y terminá el turno; si al despertar el arranque es rechazado, aplica el último punto del paso 5. Límite por modelo (ej. Opus semanal) ≥ 95 % → parar.
 5. **Abrir la tarea** con `start_session`:
    - `initiation:"user_asked"`, `context:"fresh"`, `use_worktree:false` (misma carpeta y rama: así trabaja Nacho),
      `wake_when_done:true`, `name:"auto-<id en minúscula>"` (el mod frena las `auto-*` si lo apagaron),
@@ -52,10 +52,11 @@ prendido: decíselo a Nacho y frená.
    - `background`: «Modo automático de Nacho: esta sesión la abrió la ventana coordinadora y Nacho no está mirando.
      No le preguntes nada: si algo es decisión suya o necesita algo que no tenés, dejá la tarea 🟡 con la nota ⏸
      y terminá. Cerrá con la skill cerrar-tarea (pruebas, ✅, commit y push según el proyecto). Una sola tarea.»
-   - Si el arranque es rechazado (pasa en turnos que no empezó Nacho): NO reintentar igual; `automatico`
-     `{accion:"despertar", minutos:1}` una vez; si vuelve a fallar → parar pidiendo a Nacho que escriba «seguí».
+   - La app solo deja arrancar sesiones en un turno que empezó Nacho o en un aviso de fin que viene detrás de
+     uno (probado 2026-10-21). Si el arranque es rechazado (ej. turno del vigía o del botón): NO reintentar;
+     parar (paso 5) pidiendo a Nacho que escriba «seguí» (eso reanuda la cadena).
 6. `automatico` `{accion:"tarea", tarea:"<id> de <plan>", sesion:"<id de la sesión>"}` + `get_usage` de antes
-   anotado + `{accion:"despertar", minutos:20}`. Una línea («Arranqué T51 · Opus medio · semanal 57 %») y fin
+   anotado. Una línea («Arranqué T51 · Opus medio · semanal 57 %») y fin
    del turno. Nunca dos tareas a la vez.
 
 ## 4. Gasto por tarea (para no arrancar lo que no alcanza)

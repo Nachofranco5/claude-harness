@@ -39,7 +39,7 @@ Config por proyecto: `.claude/harness.json` (molde en `plugins/harness-nacho/ski
 
 ## Modo automático (`automatico`)
 En una ventana **Opus** del proyecto: «estamos en 55 % semanal, hasta 65 seguí en automático» o el botón **🤖 Automático**
-sobre el cuadro de texto. Esa ventana coordina: abre cada tarea de la cola del plan en una ventana NUEVA con el
+sobre el cuadro de texto (escribe la frase; Enter). Esa ventana coordina: abre cada tarea de la cola del plan en una ventana NUEVA con el
 modelo/esfuerzo de su Nota, espera, verifica ✅ + commit y sigue, hasta el tope, una falla o algo que necesite a
 Nacho (avisa al celu). Apagar: «pará» o el mismo botón (la tarea en curso termina sola). Opus porque una ventana
 solo puede abrir otras de su modelo/esfuerzo o más baratas. Gasto por tarea: `~/.claude/automatico/registro.jsonl`.
