@@ -15,7 +15,8 @@ const boton = async ($: any, surface: 'desktop' | 'terminal') => {
   return (b as { props?: { label?: string } } | undefined)?.props
 }
 
-const llamar = async ($: any, input: Record<string, unknown>) => (await $.tool.call({ tool: TOOL, input } as never)) as any
+// como el motor: los argumentos sueltos al lado de `tool`
+const llamar = async ($: any, args: Record<string, unknown>) => (await $.tool.call({ tool: TOOL, ...args } as never)) as any
 
 const base = (on: any) => {
   on('ui.render', ($: any, e: any) => {
@@ -60,7 +61,7 @@ test('activar sin tope se rechaza', async ($, on) => {
 test('freno: apagado no deja arrancar sesiones auto-*, prendido sí; las demás pasan siempre', async ($, on) => {
   base(on)
   const start = (name: string) =>
-    $.tool.call({ tool: 'mcp__ccd_session__start_session', input: { name, prompt: 'x', initiation: 'user_asked' } } as never) as Promise<any>
+    $.tool.call({ tool: 'mcp__ccd_session__start_session', name, prompt: 'x', initiation: 'user_asked' } as never) as Promise<any>
 
   const d = await start('auto-t51')
   expect(String(d.text ?? d.deny ?? '')).toMatch(/apagado/)

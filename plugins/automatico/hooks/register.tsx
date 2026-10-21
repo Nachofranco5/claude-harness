@@ -108,7 +108,8 @@ export const register: Register = on => {
 
   on('tool.call', async ($, e, next) => {
     if (e.tool === TOOL) {
-      const inp = (e.input ?? {}) as { accion?: string; tope?: number; ventana?: string; tarea?: string; sesion?: string; minutos?: number }
+      // los argumentos de la herramienta vienen sueltos en el evento (al lado de `tool`), no en `input`
+      const inp = e as unknown as { accion?: string; tope?: number; ventana?: string; tarea?: string; sesion?: string; minutos?: number }
       const responder = async (extra: Record<string, unknown> = {}) =>
         ({ result: JSON.stringify({ ...(await read($, modo)), uso: await uso($), ...extra }) }) as never
 
@@ -145,7 +146,7 @@ export const register: Register = on => {
 
     // freno: modo apagado → no arranca más tareas encadenadas
     if (e.tool === 'mcp__ccd_session__start_session') {
-      const nombre = String((e.input as { name?: string } | undefined)?.name ?? '')
+      const nombre = String((e as unknown as { name?: string }).name ?? '')
       const prendido = await read($, modo).then(m => m.on).catch(() => true) // sin estado: no frenar nada
       if (nombre.startsWith('auto-') && !prendido) {
         return { deny: 'El modo automático está apagado (botón o pedido de Nacho): no arranco más tareas.' }
