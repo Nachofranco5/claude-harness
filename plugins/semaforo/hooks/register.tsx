@@ -13,12 +13,14 @@ const ROJO = '#e53935'
 const VERDE = '#2ecc40'
 const LADO = 170 // px del círculo
 
-// Una tarea de fondo arranca: lo que responde la herramienta al lanzarla.
-const STARTS = [
-  /running in background with ID: ([A-Za-z0-9_-]+)/g, // Bash / PowerShell en segundo plano
-  /Monitor started \(task ([A-Za-z0-9_-]+)/g, // Monitor
-  /agentId[^A-Za-z0-9]+([A-Za-z0-9_-]{6,})/g, // Agent en segundo plano
-]
+// Una tarea de fondo arranca: lo que responde la herramienta al lanzarla. Solo se mira la respuesta de ESA
+// herramienta: un Read o un Bash que muestra un texto con "agentId" no es una tarea (daba rojo para siempre).
+const STARTS: Record<string, RegExp[]> = {
+  Bash: [/running in background with ID: ([A-Za-z0-9_-]+)/g],
+  PowerShell: [/running in background with ID: ([A-Za-z0-9_-]+)/g],
+  Monitor: [/Monitor started \(task ([A-Za-z0-9_-]+)/g],
+  Agent: [/agentId[^A-Za-z0-9]+([A-Za-z0-9_-]{6,})/g], // los subagentes corren de fondo y avisan al terminar
+}
 // ...y termina: el aviso que llega después (con estado final, o el monitor que venció).
 const ENDS = [
   /<task-id>([A-Za-z0-9_-]+)<\/task-id>[\s\S]{0,600}?<status>(?:completed|failed|killed|stopped|cancelled|error|timeout)/g,
@@ -112,12 +114,14 @@ export const register: Register = on => {
   on('tool.call', async ($, e, next) => {
     const r = await next(e)
     if (e.tool === 'TaskStop') {
-      const inp = e.input as { task_id?: string; shell_id?: string }
+      const inp = e as unknown as { task_id?: string; shell_id?: string } // los argumentos vienen sueltos en el evento
       const id = String(inp.task_id ?? inp.shell_id ?? '')
       if (id) await update($, tasks, ts => ts.filter(t => t !== id))
       return r
     }
-    const started = ids(JSON.stringify(r ?? ''), STARTS)
+    const res = STARTS[e.tool]
+    if (!res) return r
+    const started = ids(JSON.stringify(r ?? ''), res)
     if (started.length) await update($, tasks, ts => [...new Set([...ts, ...started])])
 
     return r

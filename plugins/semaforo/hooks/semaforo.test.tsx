@@ -31,7 +31,7 @@ test('arranca en verde (LISTO) en escritorio y terminal', async $ => {
 
 test('tarea de fondo: rojo hasta que llega su aviso de fin', async ($, on) => {
   on('tool.call', () => ({ result: 'Command running in background with ID: abc123. Output is being written to: x' }) as never)
-  await $.tool.call({ tool: 'Bash', input: { command: 'sleep 99', run_in_background: true } } as never)
+  await $.tool.call({ tool: 'Bash', command: 'sleep 99', run_in_background: true } as never)
   expect(await texto($)).toMatch(/TRABAJANDO.*1 tarea de fondo/)
 
   await $.session.append({
@@ -46,4 +46,19 @@ test('botón chico sobre el cuadro de texto', async ($, on) => {
     props: { hasSurvey: false, isWorking: false, maxRows: 10, bodyColumns: 80, scroll: { top: 0, bodyRows: 10 } } } as never)
   expect(await ui.find({ key: 'semaforo-toggle' })).toBeDefined()
   await ui.unmount()
+})
+
+test('un texto con "agentId" en otra herramienta (Read) no es una tarea de fondo', async ($, on) => {
+  on('tool.call', () => ({ result: 'docs: pass { agentId: abcdef123 } to resume' }) as never)
+  await $.tool.call({ tool: 'Read', file_path: 'x.d.ts' } as never)
+  expect(await texto($)).toMatch(/LISTO/)
+})
+
+test('TaskStop (argumentos sueltos, como en la app) saca la tarea', async ($, on) => {
+  on('tool.call', (_: any, e: any) =>
+    (e.tool === 'TaskStop' ? { result: 'stopped' } : { result: 'Command running in background with ID: zz9. Output x' }) as never)
+  await $.tool.call({ tool: 'Bash', command: 'sleep 99', run_in_background: true } as never)
+  expect(await texto($)).toMatch(/1 tarea de fondo/)
+  await $.tool.call({ tool: 'TaskStop', task_id: 'zz9' } as never)
+  expect(await texto($)).toMatch(/LISTO/)
 })
