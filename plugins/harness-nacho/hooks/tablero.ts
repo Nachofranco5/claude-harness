@@ -43,18 +43,24 @@ export function resumenPlanes(planes: Plan[]): string[] {
   for (const p of vivos.slice(0, MAX_PLANES)) {
     const pend = p.ts.filter(t => t.marca !== '✅')
     const hechas = p.ts.length - pend.length
-    const medias = pend.filter(t => t.marca === '🟡')
-    const prox = medias[0] ?? pend[0]
-    out.push(`- \`docs/${p.nombre}\`: ${hechas}/${p.ts.length} hechas. ` +
-      `${prox.marca === '🟡' ? 'A MEDIAS' : 'Próxima'}: «${prox.titulo}» (línea ${prox.linea}).` +
-      (pend.length > 1 ? ` Después: ${pend.filter(t => t !== prox).slice(0, 4).map(t => corto(t.titulo)).join(', ')}.` : ''))
+    // Pausada por decisión de Nacho: no es "lo próximo" ni gasta líneas con su nota.
+    const pausadas = pend.filter(pausada)
+    const activas = pend.filter(t => !pausada(t))
+    const medias = activas.filter(t => t.marca === '🟡')
+    const prox = medias[0] ?? activas[0]
+    out.push(`- \`docs/${p.nombre}\`: ${hechas}/${p.ts.length} hechas. ` + (prox
+      ? `${prox.marca === '🟡' ? 'A MEDIAS' : 'Próxima'}: «${prox.titulo}» (línea ${prox.linea}).` +
+        (activas.length > 1 ? ` Después: ${activas.filter(t => t !== prox).slice(0, 4).map(t => corto(t.titulo)).join(', ')}.` : '')
+      : 'Todo lo pendiente está en pausa.'))
     for (const t of medias) if (t.nota) out.push(`  - ${corto(t.titulo)}: ${t.nota}`)
+    if (pausadas.length) out.push(`  - En pausa por decisión tuya: ${pausadas.map(t => corto(t.titulo)).join(', ')}.`)
   }
   if (vivos.length > MAX_PLANES) out.push(`- (+${vivos.length - MAX_PLANES} planes más con pendientes)`)
   return out
 }
 
 const corto = (titulo: string) => titulo.split(/\s+[—-]\s+/u)[0]
+const pausada = (t: Tarea) => !!t.nota && /^⏸\s*EN PAUSA/iu.test(t.nota)
 
 export function contarPruebas(texto?: string): number | undefined {
   if (texto === undefined) return undefined

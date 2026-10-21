@@ -29,6 +29,24 @@ test('la tarea a medias va primero; plan cerrado o terminado no aparece', async 
   expect(out).not.toMatch(/viejo|listo/)
 })
 
+test('la pausada por decisión no es «A MEDIAS» ni la próxima; va en una línea aparte', async () => {
+  const plan = [
+    '# PLAN p',
+    '## T1 — Nube  🟡',
+    '> ⏸ EN PAUSA (2026-10-14): no quiere nube',
+    '## T2 — Placa  🟡',
+    '> ⏸ Cortado (2026-10-21): falta medir',
+    '## T3 — Clima  ⬜',
+  ].join('\n')
+  const out = resumenPlanes([{ nombre: 'PLAN-p.md', texto: plan, mtimeMs: 1 }]).join('\n')
+  expect(out).toMatch(/A MEDIAS: «T2 — Placa» \(línea 4\)\. Después: T3\./)
+  expect(out).toMatch(/T2: ⏸ Cortado/)
+  expect(out).toMatch(/En pausa por decisión tuya: T1\./)
+  expect(out).not.toMatch(/no quiere nube/)
+  const soloPausa = resumenPlanes([{ nombre: 'PLAN-q.md', texto: '# q\n## T1 — x  🟡\n> ⏸ EN PAUSA (hoy): y', mtimeMs: 1 }]).join('\n')
+  expect(soloPausa).toMatch(/0\/1 hechas\. Todo lo pendiente está en pausa\./)
+})
+
 test('sin planes pendientes lo dice', async () => {
   expect(resumenPlanes([]).join('')).toMatch(/ninguna tarea pendiente/)
 })

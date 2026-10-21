@@ -37,6 +37,8 @@ Objetivo: que cada sesión cargue lo mínimo SIN perder conocimiento. Nada se bo
    - Si quedó algún `✅` en `docs/PRUEBAS-PENDIENTES.md` → arriba de `docs/PRUEBAS-REALIZADAS.md`.
    - `docs/PRUEBAS-REALIZADAS.md` de más de ~80 líneas: lo viejo → `docs/archivo/PRUEBAS-REALIZADAS-<fecha>.md`.
    - `docs/archivo/` suele estar bloqueado para LEER: se mueve con `git mv` sin leerlo.
+   - `## Ideas extra` de un plan con más de ~20 ítems: lista corta para Nacho con la recomendación de cada uno
+     (→ tarea nueva, juntando las compatibles · → descartada a `docs/archivo/` · sigue). Nada se mueve sin su OK.
 6. **Plugins**: invocar la skill `plugins-proyecto`.
 7. **Verificar**: correr `pruebas` de `.claude/harness.json` (subagente `verificador`); Grep de cada nombre
    de archivo movido para corregir links rotos.

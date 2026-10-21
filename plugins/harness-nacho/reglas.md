@@ -24,7 +24,7 @@ El `CLAUDE.md` del proyecto manda en lo específico. Si sos un subagente: solo a
 ## Ejecutar como un profesional
 - **"Listo" = probado con evidencia**: decir qué se corrió y qué dio (tests, captura, log). Nunca "debería andar". Lo que no se pudo probar se declara, con cómo probarlo.
 - **No inventar**: funciones, flags, rutas, versiones o APIs se verifican en el código o en la doc (context7/web) antes de usarlas. Si no se sabe, decirlo.
-- **Anti-bucle**: 2 intentos fallidos con el mismo enfoque → parar, buscar la causa con evidencia y cambiar de enfoque (o de modelo) en vez de un 3.º igual.
+- **Anti-bucle**: 2 intentos fallidos con el mismo enfoque → parar, buscar la causa con evidencia y cambiar de enfoque (o de modelo) en vez de un 3.º igual. Igual si una prueba de Nacho falla 2 veces en el mismo tema (`PRUEBAS-REALIZADAS`): la tarea que lo arregla arranca por la causa (skill `systematic-debugging`) y suma un test con la frase/caso literal que falló.
 - **Alcance exacto**: hacer lo pedido, ni más ni menos. Lo que se ve de paso (bug, mejora, deuda) → "Ideas extra" del plan o tarea aparte, no se mete en el cambio actual.
 - Si la tarea resulta más grande que una sesión: partirla en el plan (T3a/T3b) en vez de apurarla.
 - **Bug arreglado = test que lo hubiera atrapado** (si el proyecto tiene tests).
@@ -36,7 +36,7 @@ El `CLAUDE.md` del proyecto manda en lo específico. Si sos un subagente: solo a
 
 ## Tablero (marcas que lee el hook al arrancar)
 - Título de tarea en el plan: `## T3 — título  ⬜` (pendiente) · `🟡` (a medias) · `✅ (fecha; resumen)` (hecha). Plan terminado entero: `(cerrado)` en su título.
-- Si se corta a medias: marcar 🟡 y dejar debajo del título `> ⏸ Cortado (fecha): dónde quedó y cómo seguir`. Borrar esa línea al retomarla.
+- Si se corta a medias: marcar 🟡 y dejar debajo del título `> ⏸ Cortado (fecha): dónde quedó y cómo seguir`. Borrar esa línea al retomarla. Pausada por decisión de Nacho (no por falla): `> ⏸ EN PAUSA (fecha): por qué`; el tablero no la cuenta como próxima.
 - **Pruebas: Claude prueba todo lo que puede él mismo** (tests, modo texto/CLI, capturas de la app, bancadas, logs) ANTES de entregar. A Nacho le quedan SOLO las que necesitan algo que Claude no tiene (su voz/micrófono, su celular, un reinicio, hardware a mano, su gusto), sin repetir lo que ya cubre otra prueba (juntar las parecidas en una) y con pasos que se entiendan solos, sin jerga.
 - Pruebas para Nacho en `docs/PRUEBAS-PENDIENTES.md` (él prueba todo junto al final del plan; no pedirle pruebas sueltas). Markdown prolijo: cada prueba es un título `## ⬜ <n> · <Tn> — <qué se prueba>`, debajo **Antes** (lo que tiene que saber o preparar ANTES de empezar, ej. "anotá la hora si no despierta"), los pasos en lista numerada ("Abrí X" → "tocá Y" → "debería pasar Z; si pasa W, avisame"; lo vago no le sirve) y **Avisame**: qué datos devolver; subpruebas con `### ⬜ <n>a`. SOLO lo pendiente, ordenado en el orden en que las tiene que hacer (lo que dura toda la tanda o hay que tener en cuenta desde el principio, primero). Cuando Nacho devuelve resultados: la prueba sale de pendientes y va arriba de `docs/PRUEBAS-REALIZADAS.md` (`## ✅ <fecha> · <Tn> — título` + resultado en 1–3 viñetas + a qué tarea fue cada problema); ese archivo es para Claude, no para él.
 
