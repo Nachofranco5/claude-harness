@@ -19,6 +19,7 @@ Escribí `/` en el cuadro de texto y aparece todo. Casi todo se puede pedir tamb
 |---|---|
 | En una ventana **Opus**: «estamos en 55 % semanal, hasta 65 seguí en automático» · o botón **🤖 Automático** (escribe la frase; revisás el % y Enter) · o `/automatico:automatico hasta 65 %` | Abre cada tarea de la cola en ventana nueva con su modelo, verifica y sigue hasta el tope |
 | «hasta 80 % de las 5 h» | Igual, con tope sobre la ventana de 5 h |
+| **Al empezar el día**, en una ventana **Opus alto**: «coordiná» (o «modo tarjeta») | Modo manual: te deja la **tarjeta** de cada tarea con su modelo; clic → se hace en ventana nueva → cuando termina, te deja la siguiente. Sin copiar prompts y sin el límite de modelo |
 | «pará» · botón **🤖 Auto ON** | No arranca más tareas (la que corre termina sola) |
 | Te avisa al celu | Cuando para (tope, falla, algo que decidir) o si la app no la deja abrir la próxima sola: te deja la **tarjeta** lista (un clic) o escribí «seguí» |
 

@@ -1,7 +1,7 @@
 ---
 name: automatico
 argument-hint: "hasta <N> % [semanal | de las 5 h] | pará | estado"
-description: Modo automático de Nacho — esta ventana coordina y encadena las tareas del plan (docs/PLAN-*.md), cada una en una sesión NUEVA con el modelo y esfuerzo de su «Nota para Nacho», hasta un tope de uso. Usar cuando Nacho dice «seguí en automático hasta 65 %», «estamos en 55 % semanal, hasta 65 seguí solo», «modo automático», o cuando llega «Seguí en automático…» / «Modo automático: revisá…» / «Pará el modo automático» (botón 🤖 del mod).
+description: Modo automático de Nacho — esta ventana coordina y encadena las tareas del plan (docs/PLAN-*.md), cada una en una sesión NUEVA con el modelo y esfuerzo de su «Nota para Nacho», hasta un tope de uso; o, en «modo tarjeta», le deja a Nacho la tarjeta de cada tarea (un clic) y sigue con la próxima cuando termina. Usar cuando Nacho dice «seguí en automático hasta 65 %», «estamos en 55 % semanal, hasta 65 seguí solo», «modo automático», «coordiná», «modo tarjeta», «abrime las tareas de a una», o cuando llega «Seguí en automático…» / «Modo automático: revisá…» / «Pará el modo automático» (botón 🤖 del mod).
 ---
 
 # Modo automático (ventana coordinadora)
@@ -20,6 +20,19 @@ prendido: decíselo a Nacho y frená.
 - `automatico` `{accion:"activar", tope, ventana}` · `request_keep_awake` `{until:"session_idle"}` (que la PC no se
   duerma; la tapa cerrada igual la duerme: avisalo una vez).
 - Contestá en 2 líneas: tope, uso actual, primera tarea con su modelo. Y seguí con el paso 3 en el mismo turno.
+
+## 1b. Modo tarjeta («coordiná», «modo tarjeta», «abrime las tareas de a una»)
+Lo mismo que el automático, pero cada tarea la arranca Nacho con un clic. Sirve para que el «Próximo paso» sea
+siempre una tarjeta con el modelo justo: la tarjeta de una ventana Sonnet no puede abrir Opus; la de esta (Opus) sí.
+- Mismos requisitos y estado que el paso 1 (Opus; `activar` con el tope que diga Nacho, o `tope:100` si no dice
+  ninguno). Recordá en esta charla que es **modo tarjeta** (el mod no lo guarda): todo lo de abajo vale, salvo
+  que en el paso 5 va SIEMPRE la tarjeta (`own_initiative`, sin `wake_when_done`, sin `PushNotification`) y
+  en el paso 6 se anota `sesion:"tarjeta:<task_id>"`.
+- `background` de la tarea en modo tarjeta: «Esta ventana la abrió la ventana coordinadora de Nacho (modo tarjeta).
+  Hacé la tarea normal (Nacho está; preguntale lo que sea suyo) y cerrala con cerrar-tarea, pero SIN tarjeta ni
+  prompt de la próxima: de eso se encarga la coordinadora.»
+- Al despertar con `sesion:"tarjeta:…"`: buscar la sesión con `list_sessions {"linked": true}` por su título. Si
+  Nacho todavía no la arrancó → una línea («T51 espera tu clic») y fin del turno, sin repetir la tarjeta.
 
 ## 2. Apagar («pará», botón, «apagá el automático»)
 `automatico` `{accion:"desactivar"}`. Si hay una tarea corriendo, NO la cortes: decí cuál es y que termina sola
@@ -51,7 +64,8 @@ prendido: decíselo a Nacho y frená.
    - `prompt`: EXACTO `Hacé la tarea <id> de <plan>` (como lo daría el «Próximo paso»).
    - `background`: «Modo automático de Nacho: esta sesión la abrió la ventana coordinadora y Nacho no está mirando.
      No le preguntes nada: si algo es decisión suya o necesita algo que no tenés, dejá la tarea 🟡 con la nota ⏸
-     y terminá. Cerrá con la skill cerrar-tarea (pruebas, ✅, commit y push según el proyecto). Una sola tarea.»
+     y terminá. Cerrá con la skill cerrar-tarea (pruebas, ✅, commit y push según el proyecto) pero SIN tarjeta
+     ni prompt de la próxima: de eso se encarga la coordinadora. Una sola tarea.» (Modo tarjeta: el del paso 1b.)
    - La app deja arrancar sesiones en un turno que empezó Nacho y en el aviso de fin que viene detrás (si Nacho
      pidió esas tareas en ventanas propias). Probado 2026-10-21: en una ventana que abrió Nacho, P1→P2→P3 se
      encadenaron solas; en una ventana abierta por OTRA sesión, el aviso de fin fue rechazado (por eso el

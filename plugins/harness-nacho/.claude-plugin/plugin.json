@@ -1,6 +1,6 @@
 {
   "name": "harness-nacho",
-  "version": "0.3.13",
+  "version": "0.3.14",
   "description": "Reglas de trabajo de Nacho + tablero al arrancar + skills (tarea, cerrar-tarea, planificar, proyecto-nuevo, cierre-charla, podar, plugins-proyecto, automejora) y subagentes (explorador, verificador) + guardianes (cierre, lectura cara, versión atrasada)",
   "author": { "name": "Nacho" }
 }
