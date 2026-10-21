@@ -1,6 +1,6 @@
 import { expect, test } from 'claude-code/testing'
 
-import { archivosPorcelain, armarTablero, contarPruebas, resumenPlanes, tareas } from './tablero'
+import { archivosPorcelain, armarTablero, avisoAutomejora, contarPruebas, resumenPlanes, tareas } from './tablero'
 
 const PLAN = [
   '# PLAN demo',
@@ -41,11 +41,11 @@ test('cuenta solo pruebas pendientes', async () => {
 })
 
 test('cuenta pruebas escritas como títulos (formato ordenado)', async () => {
-  const txt = '# Pruebas pendientes
+  const txt = `# Pruebas pendientes
 ## ⬜ 1 · T7d — Despertar
 1. Abrí X
 ## ✅ 2 · hecha
-### ⬜ 2a · Sub'
+### ⬜ 2a · Sub`
   expect(contarPruebas(txt)).toBe(2)
 })
 
@@ -73,4 +73,13 @@ test('git status: no se come la primera letra de la ruta', async () => {
 
 test('sin git no rompe', async () => {
   expect(armarTablero({ planes: [] })).toMatch(/no es un repo/)
+})
+
+test('automejora: avisa si nunca se corrió o pasó más de una semana; sin el archivo, nada', () => {
+  const ahora = Date.parse('2026-10-21T12:00:00Z')
+  expect(avisoAutomejora(undefined, ahora)).toBeUndefined()
+  expect(avisoAutomejora('# Automejora\nÚltima pasada: —', ahora)).toMatch(/nunca/)
+  expect(avisoAutomejora('Última pasada: 2026-10-18', ahora)).toBeUndefined()
+  expect(avisoAutomejora('Última pasada: 2026-10-10', ahora)).toMatch(/hace 11 días/)
+  expect(armarTablero({ planes: [], automejora: 'Última pasada: 2026-10-01', ahora })).toMatch(/Automejora/)
 })

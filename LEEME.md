@@ -30,6 +30,9 @@ editar el Setup script (agregar o quitar un espacio) y guardar.
 | `cierre-charla` | vuelca decisiones al plan y da el prompt exacto para la ventana nueva |
 | `podar` | CLAUDE.md ≤ 100 líneas, detalle a `.claude/rules/`, lo viejo al archivo |
 | `plugins-proyecto` | deja prendidos solo los plugins útiles en ese proyecto |
+| `automejora` | novedades de Claude/skills/mods, mejoras y críticas al harness (el tablero avisa cada semana; registro en `docs/AUTOMEJORA.md`) |
+
+**Todo lo que hay y cómo se usa, en una página: [`GUIA.md`](GUIA.md).**
 
 Subagentes: `explorador` (Haiku, búsquedas baratas) y `verificador` (Sonnet, corre las pruebas).
 Config por proyecto: `.claude/harness.json` (molde en `plugins/harness-nacho/skills/proyecto-nuevo/plantillas/`).

@@ -99,10 +99,21 @@ export function resumenUso(uso: Uso[] | undefined, ahora: number): string[] {
   return [`- Uso del plan al abrir: ${ls.map(u => `${NOMBRE_USO[u.kind]} ${u.percentUsed} %${falta(u.resetsAt, ahora)}`).join(' · ')}.${alerta}`]
 }
 
-export function armarTablero(d: { planes: Plan[]; pruebas?: string; git?: Git; uso?: Uso[]; ahora?: number; avisos?: string[] }): string {
+// Recordatorio de /automejora: la cabecera de docs/AUTOMEJORA.md del harness dice la última pasada.
+export function avisoAutomejora(texto: string | undefined, ahora: number, dias = 7): string | undefined {
+  if (texto === undefined) return undefined // sin el repo del harness a mano: no molestar
+  const m = texto.match(/[ÚU]ltima pasada:\s*(\d{4}-\d{2}-\d{2})/)
+  if (!m) return '- 🔧 Automejora: nunca se corrió → ofrecerle a Nacho `/harness-nacho:automejora` (novedades y mejoras).'
+  const d = Math.floor((ahora - Date.parse(`${m[1]}T00:00:00Z`)) / 86_400_000)
+  return d > dias ? `- 🔧 Automejora: última pasada hace ${d} días → ofrecerle a Nacho \`/harness-nacho:automejora\`.` : undefined
+}
+
+export function armarTablero(d: { planes: Plan[]; pruebas?: string; git?: Git; uso?: Uso[]; ahora?: number; avisos?: string[]; automejora?: string }): string {
+  const mejora = avisoAutomejora(d.automejora, d.ahora ?? Date.now())
   const lineas = [
     'Estado del proyecto al abrir esta ventana (lo calcula el plugin harness-nacho; no hace falta releerlo):',
     ...(d.avisos ?? []),
+    ...(mejora ? [mejora] : []),
     ...resumenPlanes(d.planes),
     ...resumenGit(d.git),
     ...resumenUso(d.uso, d.ahora ?? Date.now()),

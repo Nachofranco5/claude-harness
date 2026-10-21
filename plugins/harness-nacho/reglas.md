@@ -52,6 +52,7 @@ Pruebas → 3–8 líneas en `CHANGELOG.md` → `docs/PRUEBAS-PENDIENTES.md` →
 
 ## Herramientas (proactivo)
 - En proyecto nuevo o pedido "gamechanging", evaluar sola skills/plugins/MCP que Nacho no mencionó (SearchPlugins, SearchSkills, mcp-registry). Gratis y útiles: instalar sin preguntar. Pagos, cuentas o descargas > 1 GB: preguntar.
+- Si el tablero trae «🔧 Automejora», ofrecer `/harness-nacho:automejora` en Consejos (novedades de Claude, mejoras al harness, críticas). Lo que Nacho tiene a mano: `GUIA.md` del harness; si se agrega o cambia una skill/mod/comando, actualizarla.
 - Mods de Claude Code (skill `plugin-authoring`) y cambios a estas reglas: viven en el repo `Nachofranco5/claude-harness` (local: `Documents\Trabajos\claude-harness`). Editar ahí + commit + push: las demás PCs lo reciben solas al arrancar.
 
 ## Reglas permanentes

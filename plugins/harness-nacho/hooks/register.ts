@@ -79,6 +79,25 @@ async function leerVersiones($: any): Promise<string[]> {
   })
 }
 
+// Cabecera de docs/AUTOMEJORA.md: del clon del marketplace (se actualiza solo) o, si no, del repo local.
+async function leerAutomejora($: any): Promise<string | undefined> {
+  const root = String($.plugin.root)
+  const sep = root.includes('\\') ? '\\' : '/'
+  const i = root.toLowerCase().lastIndexOf(`${sep}cache${sep}`)
+  const plugins = i < 0 ? undefined : root.slice(0, i)
+  const home = plugins?.split(sep).slice(0, -2).join(sep)
+  const rutas = [
+    plugins && [plugins, 'marketplaces', 'claude-harness', 'docs', 'AUTOMEJORA.md'].join(sep),
+    home && [home, 'Documents', 'Trabajos', 'claude-harness', 'docs', 'AUTOMEJORA.md'].join(sep),
+    i < 0 ? [root, '..', '..', 'docs', 'AUTOMEJORA.md'].join(sep) : undefined, // --plugin-dir del repo
+  ]
+  for (const r of rutas) {
+    const t = r ? (await quiet($.fs.read(r)) as string | undefined) : undefined
+    if (t !== undefined) return t
+  }
+  return undefined
+}
+
 // ── Estado de la sesión para el guardián de cierre (variables del módulo: se rehacen al recargar) ──
 let raiz: string | undefined // raíz del repo git (con /)
 let headInicio: string | undefined
@@ -178,13 +197,14 @@ export const register: Register = on => {
     try {
       const sep = String($.plugin.root).includes('\\') ? '\\' : '/'
       const ruta = `${$.plugin.root}${sep}reglas.md`
-      const [reglas, planes, pruebas, g, uso, avisos] = await Promise.all([
+      const [reglas, planes, pruebas, g, uso, avisos, mejora] = await Promise.all([
         quiet($.fs.read(ruta)) as Promise<string | undefined>,
         leerPlanes($),
         quiet($.fs.read('docs/PRUEBAS-PENDIENTES.md')) as Promise<string | undefined>,
         leerGit($),
         quiet($.session.usage()) as Promise<any>,
         leerVersiones($).catch(() => [] as string[]),
+        leerAutomejora($),
       ])
       if (avisos.length && !avisoVersionDado) {
         avisoVersionDado = true
@@ -197,7 +217,7 @@ export const register: Register = on => {
         if (files) files = [propio, ...files]
         else blocks.unshift({ name: 'reglasNacho', text: reglas }) // otro hook reescribió claudeMd: bloque aparte
       }
-      blocks.push({ name: 'tablero', text: armarTablero({ planes, pruebas, git: g, uso: uso?.rateLimits, avisos }) })
+      blocks.push({ name: 'tablero', text: armarTablero({ planes, pruebas, git: g, uso: uso?.rateLimits, avisos, automejora: mejora }) })
       return files ? { ...r, blocks, instructionFiles: files } : { ...r, blocks }
     } catch (err) {
       $.ui.log(`harness-nacho: prompt.context falló: ${err}`, { to: 'debug' })
