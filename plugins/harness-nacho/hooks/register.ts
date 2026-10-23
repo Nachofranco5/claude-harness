@@ -197,10 +197,11 @@ export const register: Register = on => {
     try {
       const sep = String($.plugin.root).includes('\\') ? '\\' : '/'
       const ruta = `${$.plugin.root}${sep}reglas.md`
-      const [reglas, planes, pruebas, g, uso, avisos, mejora] = await Promise.all([
+      const [reglas, planes, pruebas, resumen, g, uso, avisos, mejora] = await Promise.all([
         quiet($.fs.read(ruta)) as Promise<string | undefined>,
         leerPlanes($),
         quiet($.fs.read('docs/PRUEBAS-PENDIENTES.md')) as Promise<string | undefined>,
+        quiet($.fs.read('docs/RESUMEN-pendientes.md')) as Promise<string | undefined>,
         leerGit($),
         quiet($.session.usage()) as Promise<any>,
         leerVersiones($).catch(() => [] as string[]),
@@ -217,7 +218,7 @@ export const register: Register = on => {
         if (files) files = [propio, ...files]
         else blocks.unshift({ name: 'reglasNacho', text: reglas }) // otro hook reescribió claudeMd: bloque aparte
       }
-      blocks.push({ name: 'tablero', text: armarTablero({ planes, pruebas, git: g, uso: uso?.rateLimits, avisos, automejora: mejora }) })
+      blocks.push({ name: 'tablero', text: armarTablero({ planes, pruebas, resumen, git: g, uso: uso?.rateLimits, avisos, automejora: mejora }) })
       return files ? { ...r, blocks, instructionFiles: files } : { ...r, blocks }
     } catch (err) {
       $.ui.log(`harness-nacho: prompt.context falló: ${err}`, { to: 'debug' })

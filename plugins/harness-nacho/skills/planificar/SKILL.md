@@ -23,6 +23,8 @@ description: Convertir un pedido grande o ambiguo en docs/PLAN-<tema>.md con tar
    **Juntar lo compatible**: si dos tareas (nuevas o ya en el plan) tocan el mismo código y entran juntas en una
    sesión, fusionarlas (anotar «se hace junto con Tx»); también una sola corrida de pruebas caras/bancadas para
    varias tareas. No juntar lo que no comparte código.
+   **Resumen**: sumar cada tarea nueva a `docs/RESUMEN-pendientes.md` (crearlo si falta; ver regla «Resumen de
+   pendientes»): una línea en criollo, en Importante en su lugar por valor o en Superfluo.
 5. **Commit aparte del plan** según `git` de `.claude/harness.json` (`"Plan <tema>: …"`). No arrancar
    ninguna tarea.
 6. **Responder**: resumen del plan en 3–6 líneas + decisiones pendientes + Próximo paso de T1. Si no quedan

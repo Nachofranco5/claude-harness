@@ -114,7 +114,16 @@ export function avisoAutomejora(texto: string | undefined, ahora: number, dias =
   return d > dias ? `- 🔧 Automejora: última pasada hace ${d} días → ofrecerle a Nacho \`/harness-nacho:automejora\`.` : undefined
 }
 
-export function armarTablero(d: { planes: Plan[]; pruebas?: string; git?: Git; uso?: Uso[]; ahora?: number; avisos?: string[]; automejora?: string }): string {
+// Control de Nacho: docs/RESUMEN-pendientes.md = una línea por tarea pendiente de todos los planes.
+export function lineaResumen(texto: string | undefined, hayPendientes: boolean): string | undefined {
+  if (texto === undefined) return hayPendientes
+    ? '- ⚠️ Falta `docs/RESUMEN-pendientes.md` (el control de Nacho): crearlo con una línea por cada tarea ⬜/🟡 de los planes, en orden de valor (regla «Resumen de pendientes»).'
+    : undefined
+  const n = texto.split(/\r?\n/).filter(l => /^\s*(?:\d+[.)]|[-*])\s+\*\*/u.test(l)).length
+  return `- Control de Nacho: \`docs/RESUMEN-pendientes.md\` (${n} tareas). Tarea nueva → sumar su línea; tarea ✅ → borrarla.`
+}
+
+export function armarTablero(d: { planes: Plan[]; pruebas?: string; resumen?: string; git?: Git; uso?: Uso[]; ahora?: number; avisos?: string[]; automejora?: string }): string {
   const mejora = avisoAutomejora(d.automejora, d.ahora ?? Date.now())
   const lineas = [
     'Estado del proyecto al abrir esta ventana (lo calcula el plugin harness-nacho; no hace falta releerlo):',
@@ -124,6 +133,8 @@ export function armarTablero(d: { planes: Plan[]; pruebas?: string; git?: Git; u
     ...resumenGit(d.git),
     ...resumenUso(d.uso, d.ahora ?? Date.now()),
   ]
+  const res = lineaResumen(d.resumen, d.planes.some(p => !cerrado(p.texto) && tareas(p.texto).some(t => t.marca !== '✅')))
+  if (res) lineas.push(res)
   const n = contarPruebas(d.pruebas)
   if (n !== undefined) lineas.push(`- Pruebas pendientes de Nacho: ${n} (\`docs/PRUEBAS-PENDIENTES.md\`).`)
   lineas.push('Si Nacho pide "la próxima tarea", es la de arriba: leer SOLO ese rango del plan.')

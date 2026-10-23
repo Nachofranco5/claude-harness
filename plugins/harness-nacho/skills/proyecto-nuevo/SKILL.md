@@ -30,6 +30,8 @@ Plantillas en `plantillas/` (al lado de este archivo). Reemplazar TODOS los `<�
    - `CHANGELOG.md`: `# Changelog` + `## 0.1.0 (<fecha>)` + `- Proyecto creado con harness-nacho.`
    - `docs/PRUEBAS-PENDIENTES.md`: `# Pruebas pendientes` + `> Hacelas en orden, de arriba hacia abajo.` +
      comentario de formato `<!-- ## ⬜ <n> · <Tn> — título / **Antes:** / 1. 2. 3. / **Avisame:** -->`
+   - `docs/RESUMEN-pendientes.md`: `# Todo lo pendiente, en una línea cada una` + `> El control de Nacho: …` (regla
+     «Resumen de pendientes») + `## Importante (en orden)` + `## Superfluo` (las líneas las suma `planificar`).
    - `docs/PRUEBAS-REALIZADAS.md`: `# Pruebas realizadas` + `> Para Claude: resultados de Nacho, la más nueva arriba.`
    - `VERSION`: `0.1.0`. `.claude/rules/` se crea con la primera regla de área (no dejar archivos vacíos).
 5. **Plugins**: invocar la skill `plugins-proyecto` (deja `enabledPlugins` antes del primer commit).

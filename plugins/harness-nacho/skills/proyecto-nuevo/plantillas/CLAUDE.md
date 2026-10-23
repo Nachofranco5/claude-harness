@@ -22,4 +22,4 @@ El detalle de cada área vive en `.claude/rules/<área>.md` (se carga solo al to
 - App real: <cómo se abre>.
 
 ## 6. Docs vivos
-`CHANGELOG.md` · `docs/PRUEBAS-PENDIENTES.md` · `docs/PLAN-*.md` · `VERSION`
+`CHANGELOG.md` · `docs/PRUEBAS-PENDIENTES.md` · `docs/RESUMEN-pendientes.md` (tu control: todo lo que falta) · `docs/PLAN-*.md` · `VERSION`

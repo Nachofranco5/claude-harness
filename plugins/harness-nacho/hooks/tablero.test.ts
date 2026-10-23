@@ -1,6 +1,6 @@
 import { expect, test } from 'claude-code/testing'
 
-import { archivosPorcelain, armarTablero, avisoAutomejora, contarPruebas, resumenPlanes, tareas } from './tablero'
+import { archivosPorcelain, armarTablero, avisoAutomejora, contarPruebas, lineaResumen, resumenPlanes, tareas } from './tablero'
 
 const PLAN = [
   '# PLAN demo',
@@ -100,4 +100,13 @@ test('automejora: avisa si nunca se corrió o pasó más de una semana; sin el a
   expect(avisoAutomejora('Última pasada: 2026-10-18', ahora)).toBeUndefined()
   expect(avisoAutomejora('Última pasada: 2026-10-10', ahora)).toMatch(/hace 11 días/)
   expect(armarTablero({ planes: [], automejora: 'Última pasada: 2026-10-01', ahora })).toMatch(/Automejora/)
+})
+
+test('resumen de pendientes: lo cuenta, o avisa que falta si hay tareas pendientes', () => {
+  const res = '# Todo lo pendiente\n## Importante (en orden)\n1. **T41** · algo\n2. **T58c** · otra\n## Superfluo\n- **T9** · x\n'
+  expect(lineaResumen(res, true)).toMatch(/RESUMEN-pendientes\.md` \(3 tareas\)/)
+  expect(lineaResumen(undefined, true)).toMatch(/Falta/)
+  expect(lineaResumen(undefined, false)).toBeUndefined()
+  expect(armarTablero({ planes: [{ nombre: 'PLAN-demo.md', texto: PLAN, mtimeMs: 1 }] })).toMatch(/Falta `docs\/RESUMEN/)
+  expect(armarTablero({ planes: [{ nombre: 'PLAN-demo.md', texto: PLAN, mtimeMs: 1 }], resumen: res })).toMatch(/3 tareas/)
 })
