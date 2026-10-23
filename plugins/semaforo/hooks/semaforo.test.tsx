@@ -62,3 +62,12 @@ test('TaskStop (argumentos sueltos, como en la app) saca la tarea', async ($, on
   await $.tool.call({ tool: 'TaskStop', task_id: 'zz9' } as never)
   expect(await texto($)).toMatch(/LISTO/)
 })
+
+test('al arrancar la sesión no abre el panel solo (solo con el botón)', async ($, on) => {
+  const abiertos: string[] = []
+  on('command.register', () => ({ value: undefined }) as never)
+  on('ui.open', (_: any, e: any) => { abiertos.push(String(e.id)); return { value: undefined } as never })
+  on('store.get', () => ({ value: true }) as never) // aunque antes lo hayas dejado abierto
+  await $.session.start({ cwd: '.' } as never).catch(() => undefined)
+  expect(abiertos).toEqual([])
+})

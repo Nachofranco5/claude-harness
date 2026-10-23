@@ -1,1 +1,1 @@
-{ "name": "semaforo", "version": "1.2.1", "description": "Circulo al costado del chat: rojo mientras Claude trabaja o hay tareas de fondo, verde cuando no queda nada", "author": { "name": "Nacho" }, "types": "./types/index.d.ts" }
+{ "name": "semaforo", "version": "1.3.0", "description": "Circulo al costado del chat: rojo mientras Claude trabaja o hay tareas de fondo, verde cuando no queda nada", "author": { "name": "Nacho" }, "types": "./types/index.d.ts" }

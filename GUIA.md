@@ -26,7 +26,7 @@ Escribí `/` en el cuadro de texto y aparece todo. Casi todo se puede pedir tamb
 ## En pantalla
 | Qué | Cómo |
 |---|---|
-| Semáforo (🔴 trabajando / 🟢 listo) | Botón **Semáforo** o `/semaforo` |
+| Semáforo (🔴 trabajando / 🟢 listo) | Botón **Semáforo** o `/semaforo` (nunca se abre solo) |
 | Barra de uso 5 h / semanal | Sola, arriba del cuadro de texto |
 
 ## Lo que hace Claude solo (no hace falta pedirlo)

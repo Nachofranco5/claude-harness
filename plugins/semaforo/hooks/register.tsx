@@ -1,7 +1,7 @@
 // Semáforo: círculo al costado del chat, visible desde lejos.
 // Rojo = Claude en un turno O alguna tarea de fondo corriendo (comandos en segundo plano,
 // monitores, agentes) · Verde = no queda nada corriendo.
-// /semaforo lo abre y lo cierra cuantas veces se quiera. "Reiniciar" limpia las tareas a mano.
+// Solo se abre con el botón "Semáforo" o /semaforo (nunca solo al arrancar una sesión). "Reiniciar" limpia las tareas a mano.
 import { atom, read, update } from 'claude-code'
 import type { Register } from 'claude-code'
 
@@ -41,7 +41,7 @@ function circle(color: string): string {
   )
 }
 
-// abre o cierra el panel grande y recuerda la elección (entre sesiones)
+// abre o cierra el panel grande
 async function toggle($: any): Promise<boolean> {
   const open = (await $.ui.panes()).some((p: { id: string }) => p.id === PANE)
   if (open) {
@@ -49,16 +49,13 @@ async function toggle($: any): Promise<boolean> {
   } else {
     await $.ui.open({ id: PANE, title: 'Semáforo' })
   }
-  await $.store.set('open', !open)
-
   return !open
 }
 
 export const register: Register = on => {
   on('session.start', async ($, e, next) => {
     await $.command.register({ name: 'semaforo', description: 'Abrir / cerrar el semáforo (rojo trabajando, verde listo)' })
-    // arranca cerrado, salvo que la última vez lo hayas dejado abierto
-    if ((await $.store.get('open')) === true) void $.ui.open({ id: PANE, title: 'Semáforo' })
+    // arranca SIEMPRE cerrado: se abre solo con el botón (Nacho, 2026-10-23)
 
     return next(e)
   })
@@ -68,16 +65,6 @@ export const register: Register = on => {
     const open = await toggle($)
 
     return { text: open ? 'Semáforo abierto.' : 'Semáforo cerrado (botón “Semáforo” o /semaforo lo reabre).' }
-  })
-
-  // cerrado con la X del panel: recordar que lo quisiste cerrado
-  on('ui.close', async ($, e, next) => {
-    const r = await next(e)
-    if ((e as { id?: string; origin?: string }).id === PANE && (e as { origin?: string }).origin === 'person') {
-      await $.store.set('open', false)
-    }
-
-    return r
   })
 
   // botón chico fijo sobre el cuadro de texto: punto del color actual + abre/cierra el panel
