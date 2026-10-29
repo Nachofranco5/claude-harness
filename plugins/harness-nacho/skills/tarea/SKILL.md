@@ -28,7 +28,8 @@ description: Hacer UNA tarea de un plan docs/PLAN-*.md ("/tarea T5", "hacé la t
 ## 3. Hacer
 - Contexto: el `CLAUDE.md` del proyecto (ya cargado) + su mapa; las reglas de `.claude/rules/` se cargan
   solas al tocar esos archivos. No recorrer el proyecto. Búsqueda amplia → subagente `explorador`.
-- Alcance EXACTO de la tarea ("No entra" se respeta). Lo que veas de paso → al plan: sumado a la `⬜`
+- Alcance = la CLASE del problema (regla «Arreglar la CLASE, no el caso»: regla general escrita, todos los lugares donde
+  aplica, test con el literal + ≥ 3 casos de otros temas); "No entra" se respeta. Lo que veas de paso y NO es de esa clase → al plan: sumado a la `⬜`
   del mismo código si entra en su sesión, o tarea `⬜` nueva con su Nota (nunca una sección «Ideas extra»).
 - Si resulta más grande que una sesión: partirla en el plan (T3a ⬜ / T3b ⬜, cada una con su Nota) y hacer
   la primera.

@@ -11,7 +11,9 @@ Config: `.claude/harness.json` del proyecto MANDA; si no existe o le falta una c
 1. **Pruebas** → subagente `verificador` (si no está disponible, correr vos el comando `pruebas`). Si algo
    falla: arreglar y volver a correr; NO se cierra con pruebas rojas. Lo que no se pudo probar (GPU, app
    real, red) se declara con cómo probarlo.
-2. **Bug arreglado** → test que lo hubiera atrapado (si el proyecto tiene tests).
+2. **Bug arreglado** → test que lo hubiera atrapado (si el proyecto tiene tests). **¿Se arregló la CLASE?** (regla
+   «Arreglar la CLASE, no el caso»): regla general escrita, todos los lugares donde aplica revisados, test con el literal +
+   ≥ 3 casos de otros temas. Si no, NO se cierra: completarlo o partir lo que falta en una tarea ⬜.
 3. **CHANGELOG.md**: entrada nueva arriba, 3–8 líneas: fecha, versión, qué cambió para el usuario y por qué.
    Versión: seguir la costumbre del proyecto (mirar las últimas entradas: por tarea o por plan); si no hay
    costumbre y existe `VERSION`, subir el último número (0.1.0 → 0.1.1) y actualizar `VERSION`.
@@ -34,7 +36,7 @@ Config: `.claude/harness.json` del proyecto MANDA; si no existe o le falta una c
    `CLAUDE.md` en 1 línea. El detalle de un área va a `.claude/rules/<área>.md` (con `paths:`), no al
    CLAUDE.md. Si el CLAUDE.md pasa de ~100 líneas → sugerir `/podar` en Consejos.
 7. **Plan**: título → `✅ (fecha; resumen de 1 línea)`. Borrar `> ⏸` si quedó. En `docs/RESUMEN-pendientes.md`: borrar la línea de la tarea y sumar la de cada tarea nueva. Lo visto de paso → al plan
-   (sumado a la ⬜ del mismo código o tarea ⬜ nueva con su Nota; regla «Alcance exacto»). Si todas las tareas quedaron ✅ → `(cerrado)` en el título del plan.
+   (sumado a la ⬜ del mismo código o tarea ⬜ nueva con su Nota; regla «Lo que NO es de la misma clase»). Si todas las tareas quedaron ✅ → `(cerrado)` en el título del plan.
 8. **Git** (`git.commit` / `git.push`):
    - `git status` primero. Frenar y avisar si aparece algo pesado o privado (modelos, binarios, `.venv`,
      zips, respaldos, datos de clientes, secretos) que no esté en `.gitignore`.
