@@ -9,8 +9,8 @@ Descartado (no volver a proponer salvo que cambie algo): CodeRabbit (cuenta exte
 - Hecho: regla «editar con Edit/Write, no heredoc ni `sed -i`; borrar = ELIMINAR/ o Papelera, no `rm`» (heredocs metieron caracteres de control en T53/T58d; 2.1.309: `sed` no se deshace con `/rewind` y `rm` se niega en bypass).
 - Claude Code 2.1.307–312: nada rompe el harness (sin hooks PowerShell, sin `SubagentStop`, ningún mod lee «session limit»). Útil: pasado 200K compacta y sigue (antes cortaba); `ultrathink` = xhigh.
 - Gasto: semanal 87 % con 22 % de la semana por delante (adelantado). Modo automático: 30/32 tareas Opus, las 15 últimas en alto (~3,8 %/tarea; Opus medio ~2,8 %; Sonnet 1 %, 2/2 ok). Notas de los planes: 67 Opus / 15 Sonnet.
-- Propuesto a Nacho: probar Sonnet 5.5 alto en las próximas 3 tareas bien especificadas (A/B contra Opus); si salen igual, Sonnet por defecto en `planificar`.
-- context7 no conecta (OAuth `invalid_target`): Nacho lo reconecta desde la app (Conectores / `/mcp` en terminal).
+- **Aceptado por Nacho — A/B de modelo EN CURSO**: Jarvis I15, I17c y T65b (eran Opus · medio) van con Sonnet · alto. La próxima pasada compara en `registro.jsonl` (% semanal por tarea vs Opus medio ~2,8 %) y en `PRUEBAS-REALIZADAS` (fallas de esas tareas); si empata → `planificar`: Sonnet · alto por defecto en lo bien especificado.
+- context7 falló al arrancar (OAuth `invalid_target`) y se reconectó solo más tarde en la misma sesión: vigilar si se repite.
 ### 2026-10-21 (0.3.12, automatico 0.1.5) — decisiones de Nacho tras la pasada
 - «Todo local»: sin sesiones en la nube; las Notas dicen **Necesita** en vez de **Dónde**; `tarea` y `automatico` toman «nube» vieja como local.
 - Sin «Ideas extra»: lo visto de paso va directo al plan (o no se anota). Jarvis: ~100 ideas repartidas en T52–T57, I10, I11.
