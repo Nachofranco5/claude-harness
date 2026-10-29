@@ -81,6 +81,14 @@ test('tablero completo con git y uso', async () => {
   expect(t).toMatch(/semanal 82 % \(reinicia en 15 h 0 min\)/)
   expect(t).toMatch(/viene justo/)
   expect(t).toMatch(/Pruebas pendientes de Nacho: 1/)
+  expect(t).not.toMatch(/tanda de pruebas/)
+})
+
+test('con 6 o más pruebas atrasadas, pide la tanda antes de seguir', async () => {
+  const pruebas = Array.from({ length: 6 }, (_, i) => `## ⬜ ${i + 1} · T${i} — algo`).join('\n')
+  const t = armarTablero({ planes: [], pruebas })
+  expect(t).toMatch(/Pruebas pendientes de Nacho: 6/)
+  expect(t).toMatch(/tanda de pruebas ANTES de la próxima tarea/)
 })
 
 test('git status: no se come la primera letra de la ruta', async () => {

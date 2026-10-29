@@ -123,6 +123,8 @@ export function lineaResumen(texto: string | undefined, hayPendientes: boolean):
   return `- Control de Nacho: \`docs/RESUMEN-pendientes.md\` (${n} tareas). Tarea nueva → sumar su línea; tarea ✅ → borrarla.`
 }
 
+export const TANDA_PRUEBAS = 6
+
 export function armarTablero(d: { planes: Plan[]; pruebas?: string; resumen?: string; git?: Git; uso?: Uso[]; ahora?: number; avisos?: string[]; automejora?: string }): string {
   const mejora = avisoAutomejora(d.automejora, d.ahora ?? Date.now())
   const lineas = [
@@ -137,6 +139,8 @@ export function armarTablero(d: { planes: Plan[]; pruebas?: string; resumen?: st
   if (res) lineas.push(res)
   const n = contarPruebas(d.pruebas)
   if (n !== undefined) lineas.push(`- Pruebas pendientes de Nacho: ${n} (\`docs/PRUEBAS-PENDIENTES.md\`).`)
+  // Jarvis 21–29/10: con 6–8 pruebas atrasadas, 17 de 41 versiones arreglaron algo ya «hecho»: se construía encima sin probar.
+  if (n !== undefined && n >= TANDA_PRUEBAS) lineas.push(`  - ⚠️ ${n} ≥ ${TANDA_PRUEBAS}: ofrecerle a Nacho la tanda de pruebas ANTES de la próxima tarea (lo nuevo se apoya en lo que no probó).`)
   lineas.push('Si Nacho pide "la próxima tarea", es la de arriba: leer SOLO ese rango del plan.')
   return lineas.join('\n')
 }
