@@ -104,7 +104,8 @@ Pruebas → 3–8 líneas en `CHANGELOG.md` → `docs/PRUEBAS-PENDIENTES.md` →
   de CPU con pausas y sin `-n` gigante. La GPU no calienta (sus errores `nvlddmkm` son otra cosa).
 - Claude: app de escritorio (pestaña Code, sesiones locales; NUNCA nube). Claude Code viene dentro de la app (MSIX en
   `%LOCALAPPDATA%\Claude-Data\…`); `claude` de consola = `~\.local\bin\claude.cmd` (lo deja `instalar.ps1`) y NO tiene
-  sesión propia: `claude -p` dice «Not logged in» hasta que Nacho corra `claude` → `/login` una vez en una terminal.
+  sesión propia: en una PC nueva `claude -p` dice «Not logged in» hasta que Nacho corra `claude` → `/login` una vez en
+  una terminal (en la notebook ya está, 2026-11-01: TokenEconomizer con `microskills=on`; en otra PC, `envfacts` hasta el login).
 - Plugins de todos los proyectos: harness-nacho, uso-widget, semáforo, automático y TokenEconomizer (Microsoft:
   poda herramientas que un repo no usa, aprende hechos del repo, frena bucles; config `~\.tokeneconomizer\config.json`,
   comandos `/tokeneconomizer:status`, `…:toolprune restore` si falta una herramienta).
