@@ -16,6 +16,8 @@
   "guardianes": { "cierre": true, "lectura_cara": true },
   "_ayuda_no_es_codigo": "Lo que NO cuenta como cambio de código (una charla/plan no se frena). Por defecto: *.md, *.txt, docs/, .claude/",
   "no_es_codigo": ["*.md", "*.txt", "docs/", ".claude/"],
+  "_ayuda_errores": "Regla «La app anota sus errores»: archivo que la app escribe sola (gitignorado) y comando con que Claude saca uno arreglado. El tablero los cuenta al abrir.",
+  "errores": { "archivo": "errores/ERRORES.md", "resolver": "<comando de la app, ej. uv run app --errores resuelto <id> --nota \"…\">" },
   "_ayuda_plugins": "Plugins forzados a mano por Nacho: la skill plugins-proyecto los respeta. Ej. {\"playwright@claude-plugins-official\": true}",
   "plugins_fijos": {}
 }

@@ -1,6 +1,7 @@
 ---
 name: cerrar-tarea
-description: Checklist para dar por terminada una tarea (o cambio de código): pruebas con evidencia, CHANGELOG, pruebas pendientes, manual, CLAUDE.md/reglas de área, ✅ en el plan, commit+push y Consejos. Usar SIEMPRE al terminar una tarea.
+description: >-
+  Checklist para dar por terminada una tarea (o cambio de código): pruebas con evidencia, CHANGELOG, pruebas pendientes, manual, CLAUDE.md/reglas de área, ✅ en el plan, commit+push y Consejos. Usar SIEMPRE al terminar una tarea.
 ---
 
 # /cerrar-tarea
@@ -14,6 +15,8 @@ Config: `.claude/harness.json` del proyecto MANDA; si no existe o le falta una c
 2. **Bug arreglado** → test que lo hubiera atrapado (si el proyecto tiene tests). **¿Se arregló la CLASE?** (regla
    «Arreglar la CLASE, no el caso»): regla general escrita, todos los lugares donde aplica revisados, test con el literal +
    ≥ 3 casos de otros temas. Si no, NO se cierra: completarlo o partir lo que falta en una tarea ⬜.
+   **Errores de la app** (`errores.archivo` de harness.json, por defecto `errores/ERRORES.md`): cada uno que esta tarea
+   arregló se saca con `errores.resolver` (con la nota de qué se arregló); nunca editando el archivo a mano.
 3. **CHANGELOG.md**: entrada nueva arriba, 3–8 líneas: fecha, versión, qué cambió para el usuario y por qué.
    Versión: seguir la costumbre del proyecto (mirar las últimas entradas: por tarea o por plan); si no hay
    costumbre y existe `VERSION`, subir el último número (0.1.0 → 0.1.1) y actualizar `VERSION`.
@@ -37,6 +40,9 @@ Config: `.claude/harness.json` del proyecto MANDA; si no existe o le falta una c
    CLAUDE.md. Si el CLAUDE.md pasa de ~100 líneas → sugerir `/podar` en Consejos.
 7. **Plan**: título → `✅ (fecha; resumen de 1 línea)`. Borrar `> ⏸` si quedó. En `docs/RESUMEN-pendientes.md`: borrar la línea de la tarea y sumar la de cada tarea nueva. Lo visto de paso → al plan
    (sumado a la ⬜ del mismo código o tarea ⬜ nueva con su Nota; regla «Lo que NO es de la misma clase»). Si todas las tareas quedaron ✅ → `(cerrado)` en el título del plan.
+7b. **Aprender** (regla «Aprender siempre»): correcciones de Nacho, fallas repetidas y datos nuevos de su PC/programas/forma
+   de trabajar de ESTA sesión → al Perfil/Lecciones del harness (si vale para todo proyecto; commit + push del harness) o a la
+   memoria/`CLAUDE.md` del proyecto. Si se puede volver test/hook/guardián, eso en vez de una línea.
 8. **Git** (`git.commit` / `git.push`):
    - `git status` primero. Frenar y avisar si aparece algo pesado o privado (modelos, binarios, `.venv`,
      zips, respaldos, datos de clientes, secretos) que no esté en `.gitignore`.

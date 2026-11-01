@@ -10,8 +10,9 @@
 #   3) Cerrá Claude del todo y abrilo de nuevo. En cualquier proyecto, la primera respuesta ya trae el tablero.
 #
 # Qué hace: agrega el marketplace privado Nachofranco5/claude-harness, instala harness-nacho + uso-widget +
-# semaforo + automatico (alcance usuario), prende la auto-actualización y crea el CLAUDE.md global mínimo (sin pisar
-# uno que ya exista). Repetirlo también ACTUALIZA los plugins (si la auto-actualización no los bajó).
+# semaforo + automatico (alcance usuario), prende la auto-actualización, crea el CLAUDE.md global mínimo (sin pisar
+# uno que ya exista), deja `claude` en la línea de comandos (~\.local\bin\claude.cmd) e instala TokenEconomizer
+# (Microsoft: gasta menos tokens). Repetirlo también ACTUALIZA los plugins (si la auto-actualización no los bajó).
 # Respeta CLAUDE_CONFIG_DIR (sirve para probarlo en una carpeta vacía).
 
 $ErrorActionPreference = 'Stop'
@@ -26,18 +27,26 @@ function Falla($t) { Write-Host "`nERROR: $t" -ForegroundColor Red; exit 1 }
 # --- 1. Claude Code (CLI en el PATH o el que trae la app de escritorio) ---
 Paso 'Buscando Claude Code'
 $Claude = $null
-$cmd = Get-Command claude -ErrorAction SilentlyContinue
+$cmd = Get-Command claude.exe -ErrorAction SilentlyContinue
 if ($cmd) { $Claude = $cmd.Source }
-if (-not $Claude) {
-    $base = Join-Path $env:APPDATA 'Claude\claude-code'
-    if (Test-Path $base) {
-        $Claude = Get-ChildItem $base -Recurse -Filter claude.exe -ErrorAction SilentlyContinue |
-            Sort-Object { try { [version]$_.Directory.Parent.Name } catch { [version]'0.0' } } -Descending |
-            Select-Object -First 1 -ExpandProperty FullName
-    }
-}
+# La app de la tienda (MSIX) lo pone en %LOCALAPPDATA%\Claude-Data\…; la clásica en %APPDATA%\Claude\… (antes solo se
+# buscaba ahí y en la PC de Nacho no lo encontraba). Una sola búsqueda para todo: herramientas\claude-buscar.ps1.
+if (-not $Claude) { $Claude = & (Join-Path $PSScriptRoot 'herramientas\claude-buscar.ps1') }
 if (-not $Claude) { Falla 'No encontré Claude Code. Instalá la app de escritorio de Claude, abrila una vez y volvé a correr esto.' }
 Ok $Claude
+
+# `claude` para la línea de comandos (la app no lo pone en el PATH): lo usan plugins como TokenEconomizer (`claude -p`)
+$bin = Join-Path $env:USERPROFILE '.local\bin'
+New-Item -ItemType Directory -Force $bin | Out-Null
+$cmdTexto = (Get-Content (Join-Path $PSScriptRoot 'herramientas\claude.cmd') -Raw) -replace "`r?`n", "`r`n"
+[IO.File]::WriteAllText((Join-Path $bin 'claude.cmd'), $cmdTexto, [Text.Encoding]::ASCII)
+Copy-Item (Join-Path $PSScriptRoot 'herramientas\claude-buscar.ps1') $bin -Force
+$enPath = ($env:PATH -split ';') | Where-Object { $_.TrimEnd('\') -ieq $bin }
+if (-not $enPath) {
+    $userPath = [Environment]::GetEnvironmentVariable('PATH', 'User')
+    [Environment]::SetEnvironmentVariable('PATH', ($userPath.TrimEnd(';') + ";$bin"), 'User')
+    Ok "acceso claude.cmd en $bin (sumado al PATH del usuario)"
+} else { Ok "acceso claude.cmd en $bin" }
 
 $ConfigDir = if ($env:CLAUDE_CONFIG_DIR) { $env:CLAUDE_CONFIG_DIR } else { Join-Path $env:USERPROFILE '.claude' }
 New-Item -ItemType Directory -Force $ConfigDir | Out-Null
@@ -119,11 +128,37 @@ if (-not (Test-Path $global)) {
     Ok 'ya existía: le agregué el bloque del harness al final'
 } else { Ok 'ya estaba' }
 
-# --- 7. Verificar ---
+# --- 7. TokenEconomizer (Microsoft, Apache 2.0): menos tokens. Herramientas que un repo nunca usa quedan afuera,
+#        hechos del repo aprendidos de las sesiones, y aviso si una vuelta se queda en un bucle de fallas.
+#        Se instala desde un clon local (así lo pide su README) en Documents\Trabajos\TokenEconomizer. ---
+Paso 'TokenEconomizer'
+$te = Join-Path $env:USERPROFILE 'Documents\Trabajos\TokenEconomizer'
+if (Test-Path (Join-Path $te '.git')) { & git -C $te pull --ff-only *> $null }
+else { & git clone --depth 1 https://github.com/microsoft/TokenEconomizer.git $te }
+if (-not (Test-Path (Join-Path $te '.claude-plugin\marketplace.json'))) { Falla 'No pude bajar TokenEconomizer (mensaje arriba).' }
+$lista = (& $Claude plugin marketplace list) -join "`n"
+if ($lista -notmatch '(?m)^\s*>?\s*tokeneconomizer\s*$') { & $Claude plugin marketplace add ($te -replace '\\', '/') --scope user }
+& $Claude plugin install 'tokeneconomizer@tokeneconomizer' --scope user
+if ($LASTEXITCODE -ne 0) { Falla 'No pude instalar TokenEconomizer (mensaje arriba).' }
+$teCfg = Join-Path $env:USERPROFILE '.tokeneconomizer\config.json'
+if (-not (Test-Path $teCfg)) {
+    New-Item -ItemType Directory -Force (Split-Path $teCfg) | Out-Null
+    # microskills=envfacts: aprende sin llamar a ningún modelo. Lo que nunca se poda: MCP que el harness usa a propósito
+    # pocas veces (huggingface en /buscar-modelos, microsoft-learn, context7), las tarjetas de sesión y los del navegador.
+    $cfg = [ordered]@{ microskills = 'envfacts'; toolprune_protect = (@(
+        'mcp__huggingface__*', 'mcp__microsoft-learn__*', 'mcp__plugin_context7_context7__*', 'mcp__ccd_*',
+        'mcp__automatico__*', 'mcp__claude-in-chrome__*', 'mcp__Claude_Browser__*', 'Skill', 'Agent',
+        'AskUserQuestion', 'WebSearch', 'WebFetch', 'Artifact', 'ToolSearch', 'EnterPlanMode', 'ExitPlanMode') -join ',') }
+    [IO.File]::WriteAllText($teCfg, ($cfg | ConvertTo-Json), (New-Object Text.UTF8Encoding $false))
+}
+Ok 'instalado (config en ~\.tokeneconomizer\config.json)'
+
+# --- 8. Verificar ---
 Paso 'Verificando'
 $inst = (& $Claude plugin list) -join "`n"
-$faltan = @($Plugins | Where-Object { $inst -notmatch [regex]::Escape("$_@$Market") })
+$faltan = @(@($Plugins | ForEach-Object { "$_@$Market" }) + 'tokeneconomizer@tokeneconomizer' |
+    Where-Object { $inst -notmatch [regex]::Escape($_) })
 if ($faltan.Count) { Falla ("No aparecen instalados: " + ($faltan -join ', ')) }
-Ok 'los 3 plugins aparecen instalados'
+Ok 'todos los plugins aparecen instalados'
 Write-Host "`nLISTO. Cerrá Claude del todo y abrilo de nuevo: en cualquier proyecto la primera respuesta trae el tablero." -ForegroundColor Green
 exit 0

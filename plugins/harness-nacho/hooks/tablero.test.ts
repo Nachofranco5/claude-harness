@@ -1,6 +1,37 @@
 import { expect, test } from 'claude-code/testing'
 
-import { archivosPorcelain, armarTablero, avisoAutomejora, contarPruebas, lineaResumen, resumenPlanes, tareas } from './tablero'
+import { archivosPorcelain, armarTablero, avisoAutomejora, contarPruebas, lineaErrores, lineaResumen, resumenPlanes, tareas } from './tablero'
+import { leerConfig } from './guardianes'
+
+const ERRORES = [
+  '# Errores de Jarvis sin resolver', '', 'Pendientes: **3**', '',
+  '## [a1b2c3d4] caida · Jarvis se cerró solo', '', '- Veces: **1**', '',
+  '## [0f0f0f0f] excepcion · KeyError: x', '', '- ⚠ **VOLVIÓ**: se había dado por arreglado', '',
+  '## [12345678] aviso · ⚠ No pude cargar la voz', '',
+].join('\n')
+
+test('errores de la app: cuenta por tipo, avisa los que volvieron y pide arreglarlos antes', async () => {
+  const l = lineaErrores({ texto: ERRORES, archivo: 'errores/ERRORES.md', resolver: 'uv run jarvis --errores resuelto <id>' })!
+  expect(l).toMatch(/sin resolver: 3 \(caida 1, excepcion 1, aviso 1\)/)
+  expect(l).toMatch(/1 VOLVIERON/)
+  expect(l).toMatch(/ANTES de la próxima tarea/)
+  expect(l).toMatch(/--errores resuelto <id>/)
+  expect(armarTablero({ planes: [], errores: { texto: ERRORES, archivo: 'errores/ERRORES.md' } })).toMatch(/🐞/)
+})
+
+test('errores de la app: sin archivo o sin pendientes no suma nada; solo avisos = no apura', async () => {
+  expect(lineaErrores({ archivo: 'errores/ERRORES.md' })).toBeUndefined()
+  expect(lineaErrores({ texto: '# Errores\n\nNada pendiente.\n', archivo: 'x' })).toBeUndefined()
+  const avisos = lineaErrores({ texto: '## [abcdef12] aviso · ⚠ algo\n', archivo: 'x' })!
+  expect(avisos).toMatch(/Solo avisos/)
+  expect(avisos).not.toMatch(/ANTES/)
+})
+
+test('harness.json: errores.archivo por defecto es la convención y se puede cambiar', async () => {
+  expect(leerConfig(undefined).errores.archivo).toBe('errores/ERRORES.md')
+  const c = leerConfig(JSON.stringify({ errores: { archivo: 'logs/ERR.md', resolver: 'npm run errores -- resuelto' } }))
+  expect(c.errores).toEqual({ archivo: 'logs/ERR.md', resolver: 'npm run errores -- resuelto' })
+})
 
 const PLAN = [
   '# PLAN demo',

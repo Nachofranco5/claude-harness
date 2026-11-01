@@ -30,7 +30,12 @@ Escribí `/` en el cuadro de texto y aparece todo. Casi todo se puede pedir tamb
 | Barra de uso 5 h / semanal | Sola, arriba del cuadro de texto |
 
 ## Lo que hace Claude solo (no hace falta pedirlo)
-- **Tablero** al abrir cada ventana: tareas, git, uso, pruebas pendientes, avisos.
+- **Tablero** al abrir cada ventana: tareas, git, uso, pruebas pendientes, avisos y 🐞 errores de la app sin resolver.
+- **Errores de la app**: la app (p. ej. Jarvis) anota sola cada error en `errores/ERRORES.md`; Claude los ve en el tablero,
+  te ofrece arreglarlos antes de la próxima tarea y los saca cuando quedan arreglados (si vuelven, aparecen «VOLVIÓ»).
+- **Aprende**: tus correcciones, sus errores y datos de tu PC quedan en «Perfil» y «Lecciones» de las reglas (todas las PCs).
+- **TokenEconomizer** (Microsoft): gasta menos tokens solo. Si alguna vez falta una herramienta: `/tokeneconomizer:toolprune restore`.
+  Estado: `/tokeneconomizer:status`. Para que su «juez» anti-bucles ande: en una terminal, `claude` → `/login` (una vez).
 - **Guardianes**: no termina sin CHANGELOG/pruebas/commit; frena lecturas caras; avisa plugin viejo.
 - **Subagentes**: `explorador` (busca barato) y `verificador` (corre las pruebas). Podés pedirlos: «usá el explorador para…».
 

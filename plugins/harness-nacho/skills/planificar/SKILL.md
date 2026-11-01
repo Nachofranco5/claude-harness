@@ -1,7 +1,8 @@
 ---
 name: planificar
 argument-hint: "<tema o pedido>"
-description: Convertir un pedido grande o ambiguo en docs/PLAN-<tema>.md con tareas de UNA sesión (alcance, no entra, terminado =, cómo se prueba, Nota para Nacho con modelo/esfuerzo/dónde). No ejecuta nada: deja el plan y espera OK.
+description: >-
+  Convertir un pedido grande o ambiguo en docs/PLAN-<tema>.md con tareas de UNA sesión (alcance, no entra, terminado =, cómo se prueba, Nota para Nacho con modelo/esfuerzo/dónde). No ejecuta nada: deja el plan y espera OK.
 ---
 
 # /planificar <tema o pedido>

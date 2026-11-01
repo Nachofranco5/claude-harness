@@ -123,9 +123,28 @@ export function lineaResumen(texto: string | undefined, hayPendientes: boolean):
   return `- Control de Nacho: \`docs/RESUMEN-pendientes.md\` (${n} tareas). Tarea nueva → sumar su línea; tarea ✅ → borrarla.`
 }
 
+// Errores que la app anotó sola (regla «La app anota sus errores»): cada uno es `## [id] tipo · mensaje`.
+export type Errores = { texto?: string; archivo: string; resolver?: string }
+const GRAVES = new Set(['caida', 'excepcion', 'error'])
+
+export function lineaErrores(e?: Errores): string | undefined {
+  if (!e || e.texto === undefined) return undefined
+  const cabezas = e.texto.split(/\r?\n/).map(l => l.match(/^## \[([0-9a-f]+)\]\s+(\S+)/i)).filter(Boolean) as RegExpMatchArray[]
+  if (!cabezas.length) return undefined
+  const porTipo = new Map<string, number>()
+  for (const c of cabezas) porTipo.set(c[2], (porTipo.get(c[2]) ?? 0) + 1)
+  const graves = cabezas.filter(c => GRAVES.has(c[2].toLowerCase())).length
+  const volvieron = (e.texto.match(/\*\*VOLVI[ÓO]\*\*/g) ?? []).length
+  const detalle = [...porTipo].map(([t, n]) => `${t} ${n}`).join(', ')
+  return `- 🐞 Errores de la app sin resolver: ${cabezas.length} (${detalle}) en \`${e.archivo}\`` +
+    (volvieron ? ` · ⚠️ ${volvieron} VOLVIERON después de darse por arreglados` : '') +
+    (graves ? '. Ofrecerle a Nacho arreglarlos ANTES de la próxima tarea (leer solo los que tocan; cada uno es una CLASE)' : '. Solo avisos: mirarlos si la tarea toca esas áreas') +
+    (e.resolver ? `; al arreglar uno: \`${e.resolver}\`.` : '.')
+}
+
 export const TANDA_PRUEBAS = 6
 
-export function armarTablero(d: { planes: Plan[]; pruebas?: string; resumen?: string; git?: Git; uso?: Uso[]; ahora?: number; avisos?: string[]; automejora?: string }): string {
+export function armarTablero(d: { planes: Plan[]; pruebas?: string; resumen?: string; git?: Git; uso?: Uso[]; ahora?: number; avisos?: string[]; automejora?: string; errores?: Errores }): string {
   const mejora = avisoAutomejora(d.automejora, d.ahora ?? Date.now())
   const lineas = [
     'Estado del proyecto al abrir esta ventana (lo calcula el plugin harness-nacho; no hace falta releerlo):',
@@ -141,6 +160,8 @@ export function armarTablero(d: { planes: Plan[]; pruebas?: string; resumen?: st
   if (n !== undefined) lineas.push(`- Pruebas pendientes de Nacho: ${n} (\`docs/PRUEBAS-PENDIENTES.md\`).`)
   // Jarvis 21–29/10: con 6–8 pruebas atrasadas, 17 de 41 versiones arreglaron algo ya «hecho»: se construía encima sin probar.
   if (n !== undefined && n >= TANDA_PRUEBAS) lineas.push(`  - ⚠️ ${n} ≥ ${TANDA_PRUEBAS}: ofrecerle a Nacho la tanda de pruebas ANTES de la próxima tarea (lo nuevo se apoya en lo que no probó).`)
+  const err = lineaErrores(d.errores)
+  if (err) lineas.push(err)
   lineas.push('Si Nacho pide "la próxima tarea", es la de arriba: leer SOLO ese rango del plan.')
   return lineas.join('\n')
 }

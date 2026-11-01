@@ -38,6 +38,8 @@ Si no existe, la ventana es 30 días. Versión actual: `claude --version` (o la 
 - **Críticas a Nacho** (sin tapujos, máximo 4, cada una con el dato que la respalda y qué hacer distinto):
   cómo pide, cómo prueba, cómo usa modelos/ventanas, qué deja a medias. Si no hay evidencia, no va.
 - **Descartado**: una línea cada uno (para no volver a evaluarlo).
+- **Lecciones y Perfil** (`reglas.md`): ¿alguna lección se repitió o se puede volver test/hook/guardián? → hacerlo y
+  sacarla de Lecciones. ¿El Perfil quedó viejo (programas, PC, plugins)? → corregirlo.
 
 ## 4. Anotar y responder
 - `docs/AUTOMEJORA.md`: cabecera actualizada (fecha, versión vista) + una entrada de ≤ 8 líneas (hecho /

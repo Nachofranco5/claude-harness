@@ -81,3 +81,42 @@ Pruebas → 3–8 líneas en `CHANGELOG.md` → `docs/PRUEBAS-PENDIENTES.md` →
 6. Bugs: causa real con evidencia, no parches. Probar antes de entregar; declarar lo que no se pudo probar y cómo diagnosticarlo.
 7. Software profesional: rápido, prolijo, atajos, clic derecho. Toda opción automática tiene su versión manual.
 8. GitHub: repo PRIVADO; `.gitignore` sin modelos/binarios/`.venv`/datos de clientes.
+9. **La app anota sus errores** (Nacho, 2026-11-01): toda app que construimos escribe SOLA cada error (excepción, caída,
+   traba, aviso) en `errores/ERRORES.md` (gitignorado, sin secretos, iguales juntos con «veces», con tope) para que
+   Claude lo lea; al arreglarlo, Claude lo saca con un comando de la app (nunca a mano) y si vuelve entra marcado
+   «VOLVIÓ». Ruta y comando en `errores` de `.claude/harness.json`; el tablero los cuenta al abrir. Modelo a copiar:
+   Jarvis `src/jarvis/nucleo/errores.py` (+ test que recorre el código: ningún error atrapado se pierde callado).
+
+## Aprender siempre (Nacho, 2026-11-01: «aprendé de cómo trabajo, de mis errores y de tus errores»)
+- **Antes de cerrar cada respuesta con cambios**: ¿Nacho me corrigió? ¿algo falló 2 veces? ¿supe algo nuevo y estable
+  de su PC, programas, planes o forma de trabajar? → guardarlo YA en el lugar más general donde aplica: todo proyecto →
+  Perfil o Lecciones de abajo (repo del harness + commit + push); un solo proyecto → su memoria (feedback) o su
+  `CLAUDE.md`/`.claude/rules`. Nunca duplicado: si ya está, se corrige. Lo que se puede comprobar con código
+  (test, hook, guardián, `claude plugin validate`) se hace código: la memoria es el último recurso.
+- **Sugerir sin que lo pida** (en Consejos, 1 línea, con evidencia): un atajo, una herramienta, un modelo o enfoque mejor,
+  un riesgo que no ve, algo de su hardware que conviene aprovechar o cuidar.
+- Lecciones: una línea con fecha, «qué pasó → qué hacer». Si una se repite o se vuelve estructural, pasa a regla o
+  guardián y sale de acá (`/automejora` las revisa).
+
+### Perfil (PC y programas de Nacho; vale en todo proyecto)
+- Notebook Windows 11 (Insider, en INGLÉS: carpetas «Downloads», «Documents»), i7-12700H, 32 GB RAM, RTX 3080 Ti Laptop
+  16 GB VRAM. El CPU caliente APAGA la PC (Kernel-Power 41 con cargas largas): lo que rinda en GPU va a la GPU; lo pesado
+  de CPU con pausas y sin `-n` gigante. La GPU no calienta (sus errores `nvlddmkm` son otra cosa).
+- Claude: app de escritorio (pestaña Code, sesiones locales; NUNCA nube). Claude Code viene dentro de la app (MSIX en
+  `%LOCALAPPDATA%\Claude-Data\…`); `claude` de consola = `~\.local\bin\claude.cmd` (lo deja `instalar.ps1`) y NO tiene
+  sesión propia: `claude -p` dice «Not logged in» hasta que Nacho corra `claude` → `/login` una vez en una terminal.
+- Plugins de todos los proyectos: harness-nacho, uso-widget, semáforo, automático y TokenEconomizer (Microsoft:
+  poda herramientas que un repo no usa, aprende hechos del repo, frena bucles; config `~\.tokeneconomizer\config.json`,
+  comandos `/tokeneconomizer:status`, `…:toolprune restore` si falta una herramienta).
+- Programas: Git for Windows (Bash), GitHub CLI, Python 3.12 global (+ `uv` por proyecto), Node (nvm), FFmpeg, Brave,
+  AIMP, Steam. NO tiene Paint; en pruebas que abren apps: la Calculadora (nunca el Bloc de notas). Su IPv6 se cae a
+  ráfagas: todo HTTP con tope por dirección.
+- Forma de trabajar: prueba en tandas (no pruebas sueltas); en procesos largos quiere cada aviso con cuánto falta.
+
+### Lecciones (errores de Claude que no se repiten)
+- 2026-11-01 · Abrí un video de YouTube en el navegador interno para leerlo y quedó SONANDO → para leer una página con
+  audio/video: sacar el dato (JS/`get_page_text`) y cerrar la pestaña en el mismo paso; nunca dejar algo reproduciéndose.
+- 2026-11-01 · Dos skills del harness tenían el encabezado YAML roto («: » dentro del texto) sin que nadie lo notara →
+  al tocar una skill o un mod: `claude plugin validate <carpeta>`; descripciones largas como `description: >-`.
+- 2026-11-01 · Un módulo importado como `errores` chocó con variables locales `errores` (5 tests rotos) → un módulo
+  con nombre común se importa con alias (`reg_errores`) y un test lo exige.

@@ -10,6 +10,9 @@ export type Config = {
   archivo_grande: number
   guardianes: { cierre: boolean; lectura_cara: boolean }
   no_es_codigo: string[]
+  // Registro de errores de la app que se construye (regla «La app anota sus errores»): archivo que escribe la app sola
+  // y el comando con que Claude saca uno arreglado. Sin la clave vale la convención `errores/ERRORES.md`.
+  errores: { archivo: string; resolver?: string }
 }
 
 // Lo que NO cuenta como "cambio de código": una charla, un plan o docs no se frenan.
@@ -32,6 +35,10 @@ export function leerConfig(texto?: string): Config {
     // Sin harness.json el de cierre no actúa (no sabe qué exigir); el de lectura sí (regla general).
     guardianes: { cierre: existe && j.guardianes?.cierre !== false, lectura_cara: j.guardianes?.lectura_cara !== false },
     no_es_codigo: lista(j.no_es_codigo) ?? NO_ES_CODIGO,
+    errores: {
+      archivo: typeof j.errores?.archivo === 'string' && j.errores.archivo.trim() ? j.errores.archivo : 'errores/ERRORES.md',
+      resolver: typeof j.errores?.resolver === 'string' ? j.errores.resolver : undefined,
+    },
   }
 }
 
