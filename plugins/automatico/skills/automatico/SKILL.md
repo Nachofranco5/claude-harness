@@ -24,14 +24,17 @@ prendido: decíselo a Nacho y frená.
 ## 1b. Modo tarjeta («coordiná», «modo tarjeta», «abrime las tareas de a una»)
 Lo mismo que el automático, pero cada tarea la arranca Nacho con un clic. Sirve para que el «Próximo paso» sea
 siempre una tarjeta con el modelo justo: la tarjeta de una ventana Sonnet no puede abrir Opus; la de esta (Opus) sí.
-- Mismos requisitos y estado que el paso 1 (Opus; `activar` con el tope que diga Nacho, o `tope:100` si no dice
-  ninguno). Recordá en esta charla que es **modo tarjeta** (el mod no lo guarda): todo lo de abajo vale, salvo
-  que en el paso 5 va SIEMPRE la tarjeta (`own_initiative`, sin `wake_when_done`, sin `PushNotification`) y
-  en el paso 6 se anota `sesion:"tarjeta:<task_id>"`.
+- **NUNCA prender el automático** (Nacho, 2026-11-02: «si no te lo digo no lo actives nunca»): en modo tarjeta NO se
+  llama a `automatico` con `activar` ni `tarea` ni `despertar`, ni `request_keep_awake`. El 🤖 queda apagado; el modo
+  tarjeta vive SOLO en esta charla. `activar` únicamente cuando Nacho dice en palabras «automático», «seguí solo» o
+  «hasta N %», o toca el botón 🤖. Ante la duda, es modo tarjeta.
+- Requisito igual que el paso 1: ventana Opus. Todo lo de abajo vale, salvo: paso 3.1 (estado del mod) y paso 6 se
+  saltean (la tarea en curso se recuerda en la charla: «tarjeta <task_id> = T51»); en el paso 5 va SIEMPRE la tarjeta
+  (`own_initiative`, sin `wake_when_done`, sin `PushNotification`, `name` SIN el prefijo `auto-`).
 - `background` de la tarea en modo tarjeta: «Esta ventana la abrió la ventana coordinadora de Nacho (modo tarjeta).
   Hacé la tarea normal (Nacho está; preguntale lo que sea suyo) y cerrala con cerrar-tarea, pero SIN tarjeta ni
   prompt de la próxima: de eso se encarga la coordinadora.»
-- Al despertar con `sesion:"tarjeta:…"`: buscar la sesión con `list_sessions {"linked": true}` por su título. Si
+- Al despertar con una tarjeta pendiente: buscar la sesión con `list_sessions {"linked": true}` por su título. Si
   Nacho todavía no la arrancó → una línea («T51 espera tu clic») y fin del turno, sin repetir la tarjeta.
 
 ## 2. Apagar («pará», botón, «apagá el automático»)

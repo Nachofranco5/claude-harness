@@ -121,3 +121,5 @@ Pruebas → 3–8 líneas en `CHANGELOG.md` → `docs/PRUEBAS-PENDIENTES.md` →
   al tocar una skill o un mod: `claude plugin validate <carpeta>`; descripciones largas como `description: >-`.
 - 2026-11-01 · Un módulo importado como `errores` chocó con variables locales `errores` (5 tests rotos) → un módulo
   con nombre común se importa con alias (`reg_errores`) y un test lo exige.
+- 2026-11-02 · «Coordiná» prendió el 🤖 automático (la skill hacía `activar` también en modo tarjeta) → el automático
+  se prende SOLO si Nacho dice «automático»/«seguí solo»/«hasta N %» o toca el botón; el modo tarjeta no toca el mod.
