@@ -12,7 +12,7 @@ Escribí `/` en el cuadro de texto y aparece todo. Casi todo se puede pedir tamb
 | `/harness-nacho:proyecto-nuevo` | Arma un proyecto desde una carpeta vacía (git, repo privado, CLAUDE.md) | «arrancá un proyecto nuevo acá» |
 | `/harness-nacho:podar` | Achica la memoria del proyecto (gasta menos por ventana) | «podá el proyecto» |
 | `/harness-nacho:plugins-proyecto` | Deja prendidos solo los plugins útiles en ese proyecto | «revisá los plugins» |
-| `/harness-nacho:automejora` | Novedades de Claude, skills/mods nuevos, mejoras y críticas (el tablero avisa cada semana) | «¿hay algo nuevo?» · «mejorate» |
+| `/harness-nacho:automejora` | Novedades de Claude, skills/mods nuevos, mejoras y críticas (el tablero avisa cuando hay novedades) | «¿hay algo nuevo?» · «mejorate» |
 
 ## Modo automático (`automatico`)
 | Hacé | Qué pasa |
@@ -34,8 +34,13 @@ Escribí `/` en el cuadro de texto y aparece todo. Casi todo se puede pedir tamb
 - **Errores de la app**: la app (p. ej. Jarvis) anota sola cada error en `errores/ERRORES.md`; Claude los ve en el tablero,
   te ofrece arreglarlos antes de la próxima tarea y los saca cuando quedan arreglados (si vuelven, aparecen «VOLVIÓ»).
 - **Aprende**: tus correcciones, sus errores y datos de tu PC quedan en «Perfil» y «Lecciones» de las reglas (todas las PCs).
-- **TokenEconomizer** (Microsoft): gasta menos tokens solo. Si alguna vez falta una herramienta: `/tokeneconomizer:toolprune restore`.
-  Estado: `/tokeneconomizer:status`. Para que su «juez» anti-bucles ande: en una terminal, `claude` → `/login` (una vez).
+- **Busca novedades solo**: una vez por semana, sin gastar tokens, junta lo nuevo para Claude Code (GitHub, plugins,
+  changelog, Hacker News) y el tablero te ofrece `/automejora` con esa lista corta. Si ves algo en YouTube, pasale el canal
+  a Claude y lo suma a la búsqueda.
+- **TokenEconomizer** (Microsoft): A PRUEBA hasta el 16/11 (medido el 2/11: todavía no ahorró nada y suma ~0,5 s por herramienta;
+  detalle en `docs/MEDICION-tokens.md`). Si alguna vez falta una herramienta: `/tokeneconomizer:toolprune restore`.
+- **Medidor de tokens** (sin gastar tokens): `python plugins/harness-nacho/scripts/medir_tokens.py` en este repo → cuánto
+  gastó cada sesión, de qué está hecho el contexto (`--contexto`) y antes vs después de un cambio (`--corte FECHA`).
 - **Guardianes**: no termina sin CHANGELOG/pruebas/commit; frena lecturas caras; avisa plugin viejo.
 - **Subagentes**: `explorador` (busca barato) y `verificador` (corre las pruebas). Podés pedirlos: «usá el explorador para…».
 

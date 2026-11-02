@@ -98,6 +98,29 @@ async function leerAutomejora($: any): Promise<string | undefined> {
   return undefined
 }
 
+// Novedades (scripts/buscar_novedades.py): estado por PC en ~/.claude/harness-nacho/novedades/.
+function carpetaNovedades($: any): string | undefined {
+  const root = String($.plugin.root)
+  const sep = root.includes('\\') ? '\\' : '/'
+  const i = root.toLowerCase().lastIndexOf(`${sep}plugins${sep}cache${sep}`)
+  return i < 0 ? undefined : [root.slice(0, i), 'harness-nacho', 'novedades'].join(sep) // i = …/.claude
+}
+
+const leerNovedades = async ($: any) => {
+  const c = carpetaNovedades($)
+  const sep = String($.plugin.root).includes('\\') ? '\\' : '/'
+  return c ? quiet($.fs.read(`${c}${sep}pendientes.md`)) as Promise<string | undefined> : undefined
+}
+
+// Una vez por sesión: el script mira si pasó una semana y, si pasó, se relanza solo en segundo plano y vuelve
+// enseguida (la búsqueda tarda ~1 min; no frena el arranque ni gasta tokens).
+function lanzarNovedades($: any) {
+  const root = String($.plugin.root)
+  const win = root.includes('\\')
+  const script = [root, 'scripts', 'buscar_novedades.py'].join(win ? '\\' : '/')
+  void quiet($.process.run([win ? 'python' : 'python3', script, '--si-toca'], { timeoutMs: 15000 }))
+}
+
 // ── Estado de la sesión para el guardián de cierre (variables del módulo: se rehacen al recargar) ──
 let raiz: string | undefined // raíz del repo git (con /)
 let headInicio: string | undefined
@@ -126,6 +149,7 @@ export const register: Register = on => {
   on('session.start', async ($: any, e: any, next: any) => {
     const r = await next(e)
     await foto($).catch(() => undefined)
+    lanzarNovedades($)
     return r
   })
   on('session.end', async ($: any, e: any, next: any) => {
@@ -198,7 +222,7 @@ export const register: Register = on => {
       const sep = String($.plugin.root).includes('\\') ? '\\' : '/'
       const ruta = `${$.plugin.root}${sep}reglas.md`
       const cfg = await leerConfigProyecto($)
-      const [reglas, planes, pruebas, resumen, g, uso, avisos, mejora, textoErrores] = await Promise.all([
+      const [reglas, planes, pruebas, resumen, g, uso, avisos, mejora, textoErrores, novedades] = await Promise.all([
         quiet($.fs.read(ruta)) as Promise<string | undefined>,
         leerPlanes($),
         quiet($.fs.read('docs/PRUEBAS-PENDIENTES.md')) as Promise<string | undefined>,
@@ -208,6 +232,7 @@ export const register: Register = on => {
         leerVersiones($).catch(() => [] as string[]),
         leerAutomejora($),
         quiet($.fs.read(cfg.errores.archivo)) as Promise<string | undefined>,
+        leerNovedades($),
       ])
       if (avisos.length && !avisoVersionDado) {
         avisoVersionDado = true
@@ -220,7 +245,7 @@ export const register: Register = on => {
         if (files) files = [propio, ...files]
         else blocks.unshift({ name: 'reglasNacho', text: reglas }) // otro hook reescribió claudeMd: bloque aparte
       }
-      blocks.push({ name: 'tablero', text: armarTablero({ planes, pruebas, resumen, git: g, uso: uso?.rateLimits, avisos, automejora: mejora, errores: { texto: textoErrores, ...cfg.errores } }) })
+      blocks.push({ name: 'tablero', text: armarTablero({ planes, pruebas, resumen, git: g, uso: uso?.rateLimits, avisos, automejora: mejora, errores: { texto: textoErrores, ...cfg.errores }, novedades }) })
       return files ? { ...r, blocks, instructionFiles: files } : { ...r, blocks }
     } catch (err) {
       $.ui.log(`harness-nacho: prompt.context falló: ${err}`, { to: 'debug' })

@@ -1,6 +1,6 @@
 import { expect, test } from 'claude-code/testing'
 
-import { archivosPorcelain, armarTablero, avisoAutomejora, contarPruebas, lineaErrores, lineaResumen, resumenPlanes, tareas } from './tablero'
+import { archivosPorcelain, armarTablero, avisoAutomejora, contarPruebas, lineaErrores, lineaNovedades, lineaResumen, resumenPlanes, tareas } from './tablero'
 import { leerConfig } from './guardianes'
 
 const ERRORES = [
@@ -139,6 +139,18 @@ test('automejora: avisa si nunca se corrió o pasó más de una semana; sin el a
   expect(avisoAutomejora('Última pasada: 2026-10-18', ahora)).toBeUndefined()
   expect(avisoAutomejora('Última pasada: 2026-10-10', ahora)).toMatch(/hace 11 días/)
   expect(armarTablero({ planes: [], automejora: 'Última pasada: 2026-10-01', ahora })).toMatch(/Automejora/)
+})
+
+test('novedades: cuenta las candidatas de pendientes.md y reemplaza el aviso de 7 días', () => {
+  const ahora = Date.parse('2026-11-02T12:00:00Z')
+  const pend = '## Corrida 2026-11-02 11:58\n### GitHub · para el harness\n- ★4380 · ⚑ microsoft/TokenEconomizer · 2026-10-13 · Cost\n- ★1106 · ⚑ a/b · x\n'
+  expect(lineaNovedades(undefined)).toBeUndefined()
+  expect(lineaNovedades('## Corrida 2026-11-02\n')).toBeUndefined() // corrida sin nada nuevo
+  expect(lineaNovedades(pend)).toMatch(/2 candidatas nuevas/)
+  const t = armarTablero({ planes: [], automejora: 'Última pasada: 2026-10-01', novedades: pend, ahora })
+  expect(t).toMatch(/Novedades para Claude Code: 2/)
+  expect(t).not.toMatch(/última pasada hace/) // una sola línea que ofrece /automejora
+  expect(armarTablero({ planes: [], automejora: 'Última pasada: 2026-10-01', ahora })).toMatch(/última pasada hace/)
 })
 
 test('resumen de pendientes: lo cuenta, o avisa que falta si hay tareas pendientes', () => {

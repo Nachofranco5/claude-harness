@@ -114,6 +114,13 @@ export function avisoAutomejora(texto: string | undefined, ahora: number, dias =
   return d > dias ? `- 🔧 Automejora: última pasada hace ${d} días → ofrecerle a Nacho \`/harness-nacho:automejora\`.` : undefined
 }
 
+// Novedades para Claude Code que juntó scripts/buscar_novedades.py (sin LLM, una vez por semana, en segundo plano).
+// Nacho encontró TokenEconomizer en YouTube antes que /automejora (2026-11-01): ahora la lista llega sola.
+export function lineaNovedades(texto: string | undefined): string | undefined {
+  const n = (texto ?? '').split(/\r?\n/).filter(l => l.startsWith('- ')).length
+  return n ? `- 🔧 Novedades para Claude Code: ${n} candidatas nuevas (GitHub, Hacker News, changelog…) → ofrecerle a Nacho \`/harness-nacho:automejora\` (lee solo esa lista).` : undefined
+}
+
 // Control de Nacho: docs/RESUMEN-pendientes.md = una línea por tarea pendiente de todos los planes.
 export function lineaResumen(texto: string | undefined, hayPendientes: boolean): string | undefined {
   if (texto === undefined) return hayPendientes
@@ -144,8 +151,9 @@ export function lineaErrores(e?: Errores): string | undefined {
 
 export const TANDA_PRUEBAS = 6
 
-export function armarTablero(d: { planes: Plan[]; pruebas?: string; resumen?: string; git?: Git; uso?: Uso[]; ahora?: number; avisos?: string[]; automejora?: string; errores?: Errores }): string {
-  const mejora = avisoAutomejora(d.automejora, d.ahora ?? Date.now())
+export function armarTablero(d: { planes: Plan[]; pruebas?: string; resumen?: string; git?: Git; uso?: Uso[]; ahora?: number; avisos?: string[]; automejora?: string; errores?: Errores; novedades?: string }): string {
+  // Con novedades a la vista alcanza con esa línea: también ofrece /automejora.
+  const mejora = lineaNovedades(d.novedades) ?? avisoAutomejora(d.automejora, d.ahora ?? Date.now())
   const lineas = [
     'Estado del proyecto al abrir esta ventana (lo calcula el plugin harness-nacho; no hace falta releerlo):',
     ...(d.avisos ?? []),

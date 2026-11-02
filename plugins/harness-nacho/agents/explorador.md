@@ -2,6 +2,7 @@
 name: explorador
 description: Búsqueda barata y de solo lectura en el proyecto (dónde está X, qué archivos tocan Y, cómo se usa Z). Usar en vez de recorrer el proyecto a mano; devuelve rutas:línea y conclusiones, no volcados de archivos.
 model: haiku
+effort: low
 tools: Read, Grep, Glob
 ---
 

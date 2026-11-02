@@ -1,9 +1,20 @@
 # Automejora del harness (skill `/harness-nacho:automejora`)
-Última pasada: 2026-10-29
-Claude Code visto: 2.1.312 (el CLI no está en el PATH: la app lo trae adentro; tests del tablero corridos con node + reemplazo de `claude-code/testing`)
-Descartado (no volver a proponer salvo que cambie algo): CodeRabbit (cuenta externa) · groundwork-specflow, Roll Call, AI Skills (duplican el harness) · LocalLore (duplica la memoria) · Kobiton (móvil) · Exa (ya hay WebSearch) · coding-agent-skills, py-pit (pisan superpowers/uv) · claude-telegram-voice, plugin oficial de Telegram (Jarvis tiene su bot) · code-review-harness (lo cubre el verificador) · AnythingMCP (nube de terceros).
+Última pasada: 2026-11-02
+Claude Code visto: 2.1.316 en el CHANGELOG (la app trae 2.1.309; `claude` de consola = `~\.local\bin\claude.cmd`)
+A re-medir: **TokenEconomizer el 2026-11-16** con `medir_tokens.py --corte 2026-11-01T18:26` + `te --host claude status` (si no ahorró > 0,5 % → sacarlo; ver `docs/MEDICION-tokens.md`).
+Descartado (no volver a proponer salvo que cambie algo): de la 1.ª lista corta (2/11): pixelfx, founder-skill, bama, animate, day-trader-skill, replica-skill, cleanyourtv, free-my-tv (un dominio, no el harness) · new-term-radar (duplica `buscar_novedades.py`) · my-claude-code-mods (mods personales) · CodeRabbit (cuenta externa) · groundwork-specflow, Roll Call, AI Skills (duplican el harness) · LocalLore (duplica la memoria) · Kobiton (móvil) · Exa (ya hay WebSearch) · coding-agent-skills, py-pit (pisan superpowers/uv) · claude-telegram-voice, plugin oficial de Telegram (Jarvis tiene su bot) · code-review-harness (lo cubre el verificador) · AnythingMCP (nube de terceros).
 
 ## Historial (lo más nuevo arriba; ≤ 8 líneas por pasada)
+### 2026-11-02 (0.3.20) — Nacho encontró TokenEconomizer en YouTube antes que esta skill
+- Por qué falló: solo miraba catálogos (SearchPlugins/registro MCP) con palabras de los proyectos (voz, Windows…); TE es
+  un repo de GitHub (13/10, tema `claude-code`, 4.380 ⭐) que nunca entra ahí. Y solo corría si Nacho aceptaba el aviso.
+- Hecho: `scripts/buscar_novedades.py` (sin LLM: GitHub por temas con ⚑ para lo del harness, marketplaces, awesome-claude-code,
+  CHANGELOG, Hacker News; RSS de YouTube opcional) + el tablero lo dispara cada 7 días en segundo plano y avisa con la cuenta.
+  Backtest al 20, 29 y 31/10: TE sale 3.º, 2.º y 1.º de la lista ⚑ (estrellas de hoy: GitHub ya no da la fecha de cada una);
+  la lista cuesta ~650 tokens. Tests del plugin: 32/32 (nuevo: `register.ts` carga).
+- Hecho: `scripts/medir_tokens.py` + `docs/MEDICION-tokens.md`: TE ahorró 0 hasta ahora, techo ~0,1–1 %, +0,5 s por herramienta.
+- Hecho (changelog 2.1.316: los subagentes heredan el esfuerzo de la ventana): `explorador` effort low, `verificador` medium.
+- Propuesto: lista de skills por proyecto (~6k tokens fijos, 1,8 % del gasto) y podar el «Mapa» del CLAUDE.md de Jarvis (~4,5k, 1,3 %).
 ### 2026-10-29 (0.3.17)
 - Hecho: tablero avisa con ≥ 6 pruebas pendientes y pide ofrecer la tanda ANTES de la próxima tarea (Jarvis 21–29/10: 17 de 41 versiones arreglaron algo ya «hecho»; 13 temas fallaron en ≥ 2 tandas; T14 🟡 desde 14/10 esperando solo la prueba). Test nuevo, 12/12.
 - Hecho: regla «editar con Edit/Write, no heredoc ni `sed -i`; borrar = ELIMINAR/ o Papelera, no `rm`» (heredocs metieron caracteres de control en T53/T58d; 2.1.309: `sed` no se deshace con `/rewind` y `rm` se niega en bypass).

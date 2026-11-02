@@ -2,6 +2,7 @@
 name: verificador
 description: Corre las pruebas del proyecto (comando `pruebas` de .claude/harness.json, o el del CLAUDE.md) y devuelve un resumen corto con evidencia - cuántas pasan, cuáles fallan y por qué. Usar al cerrar cada tarea o cambio de código.
 model: sonnet
+effort: medium
 tools: Bash, PowerShell, Read, Grep, Glob
 ---
 
