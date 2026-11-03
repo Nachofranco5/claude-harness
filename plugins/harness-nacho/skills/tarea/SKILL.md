@@ -1,13 +1,19 @@
 ---
 name: tarea
-argument-hint: "<T5 | H2 [docs/PLAN-x.md] | próxima>"
-description: Hacer UNA tarea de un plan docs/PLAN-*.md ("/tarea T5", "hacé la tarea H2 de docs/PLAN-x.md", "la próxima tarea"). Lee solo esa tarea por rango, chequea modelo/uso/dónde, la ejecuta y la cierra.
+argument-hint: "<T5 | L2 | H2 [docs/PLAN-x.md] | próxima>"
+description: >-
+  Hacer UNA tarea o UN LOTE de un plan docs/PLAN-*.md ("/tarea T5", "hacé el lote L2 de docs/PLAN-x.md", "la próxima
+  tarea"). Lee solo ese rango, chequea modelo/uso/dónde, lo ejecuta y lo cierra.
 ---
 
 # /tarea <id> [plan]
 
 ## 1. Ubicar la tarea (sin leer el plan entero)
 - `<id>` = T5, H2, T3b… Sin id o "la próxima" = la que trae el tablero.
+- **Lote** (`L2`): la fila del lote en la cola de la cabecera dice sus tareas; hacerlas TODAS en esta ventana, en
+  ese orden, leyendo cada una por rango cuando le toca. Una suite completa al final del lote (tests puntuales entre
+  medio), un commit por tarea, `cerrar-tarea` por tarea pero Consejos/tarjeta una sola vez al final. Si el uso no
+  alcanza para todas: cerrar las hechas y marcar el lote `🟡` con `> ⏸ Cortado` (cuáles faltan).
 - Un solo Grep `^## ` con `-n` sobre el plan (o sobre `docs/PLAN-*.md` si no se dijo cuál; si el id está en
   más de uno, preguntar): da la línea de la tarea y la del título siguiente. Leer SOLO ese rango + las
   primeras ~5 líneas del plan. "Decisiones" solo si la tarea la nombra o hay dudas.

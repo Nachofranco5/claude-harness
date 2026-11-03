@@ -21,9 +21,11 @@ description: >-
    Búsquedas amplias → subagente `explorador`.
 4. **Escribir `docs/PLAN-<tema>.md`** con el molde de abajo. Cada tarea entra en UNA sesión; si no, partirla
    (T3a/T3b). Orden por dependencias; marcar cuáles son independientes.
-   **Juntar lo compatible**: si dos tareas (nuevas o ya en el plan) tocan el mismo código y entran juntas en una
-   sesión, fusionarlas (anotar «se hace junto con Tx»); también una sola corrida de pruebas caras/bancadas para
-   varias tareas. No juntar lo que no comparte código.
+   **Lotes** (regla «Lotes»): la cola se escribe como LOTES (L1, L2…) = tareas que tocan el mismo código y entran
+   juntas en una sesión, con UNA Nota (modelo/esfuerzo/necesita) por lote y una sola corrida de pruebas caras/bancadas.
+   No juntar lo que no comparte código. Una sola cola vigente en la cabecera; la vieja → `docs/archivo/`.
+   **Pruebas**: si una tarea solo se puede probar con Nacho porque falta una herramienta (simulador, lector de
+   registro), el primer lote la construye.
    **Resumen**: sumar cada tarea nueva a `docs/RESUMEN-pendientes.md` (crearlo si falta; ver regla «Resumen de
    pendientes»): una línea en criollo, en Importante en su lugar por valor o en Superfluo.
 5. **Commit aparte del plan** según `git` de `.claude/harness.json` (`"Plan <tema>: …"`). No arrancar
