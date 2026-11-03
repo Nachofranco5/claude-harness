@@ -124,3 +124,9 @@ Pruebas → 3–8 líneas en `CHANGELOG.md` → `docs/PRUEBAS-PENDIENTES.md` →
   con nombre común se importa con alias (`reg_errores`) y un test lo exige.
 - 2026-11-02 · «Coordiná» prendió el 🤖 automático (la skill hacía `activar` también en modo tarjeta) → el automático
   se prende SOLO si Nacho dice «automático»/«seguí solo»/«hasta N %» o toca el botón; el modo tarjeta no toca el mod.
+- 2026-11-03 · Puse EcoQoS/prioridad a un hijo con el PID de `Popen` y medí «no cambia nada»: era el LANZADOR del venv de
+  uv (`.venv\Scripts\python.exe` arranca el Python real como otro proceso) y lo declarado no se hereda → lo que se le
+  aplica a un proceso Python hijo lo hace el propio hijo sobre sí mismo (o se busca el nieto); verificar que llegó antes de medir.
+- 2026-11-03 · Corté con `kill` de Git Bash un comando lanzado en segundo plano y sus procesos de Windows siguieron vivos
+  (bloquearon 2 bancadas) → cortar lo de `run_in_background` con `TaskStop`; mirar procesos con PowerShell
+  (`Get-CimInstance Win32_Process`), no con `tasklist | grep` de Bash.
