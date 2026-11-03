@@ -135,3 +135,6 @@ Pruebas → 3–8 líneas en `CHANGELOG.md` → `docs/PRUEBAS-PENDIENTES.md` →
 - 2026-11-03 · Corté con `kill` de Git Bash un comando lanzado en segundo plano y sus procesos de Windows siguieron vivos
   (bloquearon 2 bancadas) → cortar lo de `run_in_background` con `TaskStop`; mirar procesos con PowerShell
   (`Get-CimInstance Win32_Process`), no con `tasklist | grep` de Bash.
+- 2026-11-03 · Iba a pedirle a Nacho «dejá la PC 10 min sin tocar» para ver si se duerme; `powercfg /requests` pide admin
+  → si la PC se durmió sola lo dice el Visor de eventos sin admin: System, Kernel-Power 42, «Sleep Reason» (System Idle =
+  sola; Button or Lid / Application API = pedida). Antes de pedirle una prueba a Nacho, buscar el registro que ya la tiene.
