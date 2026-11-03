@@ -151,7 +151,21 @@ export function lineaErrores(e?: Errores): string | undefined {
 
 export const TANDA_PRUEBAS = 6
 
-export function armarTablero(d: { planes: Plan[]; pruebas?: string; resumen?: string; git?: Git; uso?: Uso[]; ahora?: number; avisos?: string[]; automejora?: string; errores?: Errores; novedades?: string }): string {
+// Lo que se carga en CADA ventana se mide en peso, no en líneas: el CLAUDE.md de Jarvis cumplía «≤ 100 líneas» con
+// 22 KB (~7k tokens en cada ventana, coordinadoras incluidas; 2026-11-03).
+export const TOPE_KB = { claudeMd: 12, reglas: 21 }
+
+export function lineaPeso(d: { claudeMd?: string; reglas?: string }): string | undefined {
+  const kb = (t?: string) => (t === undefined ? 0 : Math.round(new TextEncoder().encode(t).length / 1024))
+  const pesados: string[] = []
+  if (kb(d.claudeMd) > TOPE_KB.claudeMd) pesados.push(`\`CLAUDE.md\` ${kb(d.claudeMd)} KB (tope ${TOPE_KB.claudeMd})`)
+  if (kb(d.reglas) > TOPE_KB.reglas) pesados.push(`reglas del harness ${kb(d.reglas)} KB (tope ${TOPE_KB.reglas})`)
+  return pesados.length
+    ? `- ⚖️ Pesa de más lo que se carga en CADA ventana: ${pesados.join(', ')} → ofrecerle a Nacho \`/harness-nacho:podar\` (el detalle pasa a \`.claude/rules/\` con \`paths:\`).`
+    : undefined
+}
+
+export function armarTablero(d: { planes: Plan[]; pruebas?: string; resumen?: string; git?: Git; uso?: Uso[]; ahora?: number; avisos?: string[]; automejora?: string; errores?: Errores; novedades?: string; claudeMd?: string; reglas?: string }): string {
   // Con novedades a la vista alcanza con esa línea: también ofrece /automejora.
   const mejora = lineaNovedades(d.novedades) ?? avisoAutomejora(d.automejora, d.ahora ?? Date.now())
   const lineas = [
@@ -170,6 +184,8 @@ export function armarTablero(d: { planes: Plan[]; pruebas?: string; resumen?: st
   if (n !== undefined && n >= TANDA_PRUEBAS) lineas.push(`  - ⚠️ ${n} ≥ ${TANDA_PRUEBAS}: ofrecerle a Nacho la tanda de pruebas ANTES de la próxima tarea (lo nuevo se apoya en lo que no probó).`)
   const err = lineaErrores(d.errores)
   if (err) lineas.push(err)
+  const peso = lineaPeso(d)
+  if (peso) lineas.push(peso)
   lineas.push('Si Nacho pide "la próxima tarea", es la de arriba: leer SOLO ese rango del plan.')
   return lineas.join('\n')
 }

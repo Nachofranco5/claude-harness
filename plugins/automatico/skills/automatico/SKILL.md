@@ -7,9 +7,12 @@ description: Modo automático de Nacho — esta ventana coordina y encadena las 
 # Modo automático (ventana coordinadora)
 
 Esta ventana NO hace tareas: elige la próxima, la abre en una sesión nueva, espera, verifica y sigue. Turnos cortos:
-lo caro lo hace cada sesión de tarea. Estado en el mod: herramienta `mcp__automatico__automatico` (cargala con
-ToolSearch `select:mcp__automatico__automatico` si está diferida). Si no existe, el plugin `automatico` no está
-prendido: decíselo a Nacho y frená.
+lo caro lo hace cada sesión de tarea. Estado en el mod (SOLO automático, nunca en modo tarjeta): herramienta
+`mcp__automatico__automatico` (cargala con ToolSearch `select:mcp__automatico__automatico` si está diferida). Si no
+existe, el plugin `automatico` no está prendido: decíselo a Nacho y frená.
+
+**Costo** (medido 2026-11-03): cualquier ventana arranca en ~95k tokens (herramientas de la app, MCP, reglas, CLAUDE.md)
+antes de hacer nada; «coordiná» bien hecho suma ~5–10k. Lo que lo infla es leer de más: NUNCA `Read` de un plan entero.
 
 ## 1. Prender («hasta N %», botón)
 - Tope = N; ventana = «5 h» si lo dice, si no semanal. Lo que Nacho diga del uso actual («estamos en 55 %») se
@@ -51,7 +54,8 @@ siempre una tarjeta con el modelo justo: la tarjeta de una ventana Sonnet no pue
      (paso 4). Si no quedó ✅ (🟡, ⬜, sin commit) → parar (paso 5) con lo que dejó.
    - Después, `automatico` `{accion:"tarea"}` (sin tarea = limpiar).
 3. **Elegir la próxima**: la primera ⬜ de la «Cola» de arriba del plan si existe (manda sobre el orden de abajo);
-   si no, la que trae el tablero («Próxima»). Leer SOLO su rango (Grep `^## ` con `-n`) y su **Nota para Nacho**.
+   si no, la que trae el tablero («Próxima»). Leer SOLO su **Nota para Nacho** con UN Grep
+   (`Nota para Nacho — <id>` con `-A 3`; si salió `⏸`/«Necesita» no alcanza, Grep `^## <id> ` con `-A 2`).
    Parar (paso 5) si: dice que necesita a Nacho antes (decisión pendiente, algo que él tiene que hacer o tener a
    mano para que la tarea se pueda hacer), tiene `⏸` esperándolo, o depende de una ⬜ anterior. «Dónde: nube»
    de planes viejos = local (todo se trabaja en esta PC). Pruebas que van a `PRUEBAS-PENDIENTES.md` NO frenan.

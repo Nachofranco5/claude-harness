@@ -222,7 +222,7 @@ export const register: Register = on => {
       const sep = String($.plugin.root).includes('\\') ? '\\' : '/'
       const ruta = `${$.plugin.root}${sep}reglas.md`
       const cfg = await leerConfigProyecto($)
-      const [reglas, planes, pruebas, resumen, g, uso, avisos, mejora, textoErrores, novedades] = await Promise.all([
+      const [reglas, planes, pruebas, resumen, g, uso, avisos, mejora, textoErrores, novedades, claudeMd] = await Promise.all([
         quiet($.fs.read(ruta)) as Promise<string | undefined>,
         leerPlanes($),
         quiet($.fs.read('docs/PRUEBAS-PENDIENTES.md')) as Promise<string | undefined>,
@@ -233,6 +233,7 @@ export const register: Register = on => {
         leerAutomejora($),
         quiet($.fs.read(cfg.errores.archivo)) as Promise<string | undefined>,
         leerNovedades($),
+        quiet($.fs.read('CLAUDE.md')) as Promise<string | undefined>,
       ])
       if (avisos.length && !avisoVersionDado) {
         avisoVersionDado = true
@@ -245,7 +246,7 @@ export const register: Register = on => {
         if (files) files = [propio, ...files]
         else blocks.unshift({ name: 'reglasNacho', text: reglas }) // otro hook reescribió claudeMd: bloque aparte
       }
-      blocks.push({ name: 'tablero', text: armarTablero({ planes, pruebas, resumen, git: g, uso: uso?.rateLimits, avisos, automejora: mejora, errores: { texto: textoErrores, ...cfg.errores }, novedades }) })
+      blocks.push({ name: 'tablero', text: armarTablero({ planes, pruebas, resumen, git: g, uso: uso?.rateLimits, avisos, automejora: mejora, errores: { texto: textoErrores, ...cfg.errores }, novedades, claudeMd, reglas }) })
       return files ? { ...r, blocks, instructionFiles: files } : { ...r, blocks }
     } catch (err) {
       $.ui.log(`harness-nacho: prompt.context falló: ${err}`, { to: 'debug' })

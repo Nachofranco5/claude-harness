@@ -1,5 +1,5 @@
 # CLAUDE.md — <Nombre> (leer ESTO primero; alcanza para trabajar)
-Las reglas generales las trae el plugin `harness-nacho`. Acá va SOLO lo propio de este proyecto (≤ 100 líneas).
+Las reglas generales las trae el plugin `harness-nacho`. Acá va SOLO lo propio de este proyecto (≤ 100 líneas y ≤ 12 KB).
 El detalle de cada área vive en `.claude/rules/<área>.md` (se carga solo al tocar esos archivos).
 
 ## 1. Qué es

@@ -37,7 +37,7 @@ Config: `.claude/harness.json` del proyecto MANDA; si no existe o le falta una c
    actualizarlo y regenerarlo con su comando.
 6. **Memoria del proyecto**: si cambió algo estructural (archivo nuevo, API nueva, cómo probar) → mapa del
    `CLAUDE.md` en 1 línea. El detalle de un área va a `.claude/rules/<área>.md` (con `paths:`), no al
-   CLAUDE.md. Si el CLAUDE.md pasa de ~100 líneas → sugerir `/podar` en Consejos.
+   CLAUDE.md. Si el CLAUDE.md pasa de ~100 líneas o 12 KB → sugerir `/podar` en Consejos.
 7. **Plan**: título → `✅ (fecha; resumen de 1 línea)`. Borrar `> ⏸` si quedó. En `docs/RESUMEN-pendientes.md`: borrar la línea de la tarea y sumar la de cada tarea nueva. Lo visto de paso → al plan
    (sumado a la ⬜ del mismo código o tarea ⬜ nueva con su Nota; regla «Lo que NO es de la misma clase»). Si todas las tareas quedaron ✅ → `(cerrado)` en el título del plan.
 7b. **Aprender** (regla «Aprender siempre»): correcciones de Nacho, fallas repetidas y datos nuevos de su PC/programas/forma

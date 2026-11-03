@@ -1,6 +1,6 @@
 ---
 name: podar
-description: Mantener liviana la memoria del proyecto - CLAUDE.md ≤ 100 líneas, detalle por área a .claude/rules/, CHANGELOG y docs viejos al archivo, planes cerrados archivados, plugins revisados. Usar cuando el CLAUDE.md crece o cada tanto.
+description: Mantener liviana la memoria del proyecto - CLAUDE.md ≤ 100 líneas y ≤ 12 KB, detalle por área a .claude/rules/, CHANGELOG y docs viejos al archivo, planes cerrados archivados, plugins revisados. Usar cuando el CLAUDE.md crece o cada tanto.
 ---
 
 # /podar
@@ -9,10 +9,13 @@ Objetivo: que cada sesión cargue lo mínimo SIN perder conocimiento. Nada se bo
 
 1. **Medir antes**: líneas y caracteres de `CLAUDE.md`, `CHANGELOG.md`, `.claude/rules/*` (tokens ≈ caracteres/4).
    Si hay `get_usage`: categorías "Memory files", "Skills", "MCP tools". Si todo ya está liviano
-   (CLAUDE.md ≤ 100 líneas, CHANGELOG ≤ ~40, nada cerrado para archivar) → decirlo y saltar al paso 6.
+   (CLAUDE.md ≤ 100 líneas Y ≤ 12 KB, CHANGELOG ≤ ~40, nada cerrado para archivar) → decirlo y saltar al paso 6.
+   Se mide en KB, no solo en líneas: una línea de 1.900 caracteres «cumple» las 100 líneas y pesa como 20 (Jarvis
+   2026-11-03: 95 líneas = 22 KB ≈ 7k tokens en CADA ventana). El tablero avisa (⚖️) si pasa del tope.
 2. **Proponer antes de mover** (si se mueve más de ~30 líneas): tabla corta "qué bloque → adónde" y esperar
    OK (salvo "no preguntes"). Antes de mover: commit de lo pendiente (si el proyecto autoriza git) o copia.
-3. **CLAUDE.md ≤ 100 líneas**: queda qué es, reglas propias, mapa (1 línea por archivo), cómo probar y un
+3. **CLAUDE.md ≤ 100 líneas y ≤ 12 KB** (cada línea del mapa ≤ ~200 caracteres: qué hace, no cómo): queda qué es,
+   reglas propias, mapa (1 línea por archivo), cómo probar y un
    puntero de 1 línea a las reglas de área (cuenta dentro de las 100). El detalle → `.claude/rules/<área>.md`:
    - Un archivo por ÁREA del código (agrupar por los archivos que menciona cada bloque: ej. importación,
      timeline, render), no uno por tarea. Un bloque que toca varias áreas va a la principal.

@@ -1,6 +1,6 @@
 import { expect, test } from 'claude-code/testing'
 
-import { archivosPorcelain, armarTablero, avisoAutomejora, contarPruebas, lineaErrores, lineaNovedades, lineaResumen, resumenPlanes, tareas } from './tablero'
+import { archivosPorcelain, armarTablero, avisoAutomejora, contarPruebas, lineaErrores, lineaNovedades, lineaPeso, lineaResumen, resumenPlanes, tareas, TOPE_KB } from './tablero'
 import { leerConfig } from './guardianes'
 
 const ERRORES = [
@@ -151,6 +151,20 @@ test('novedades: cuenta las candidatas de pendientes.md y reemplaza el aviso de 
   expect(t).toMatch(/Novedades para Claude Code: 2/)
   expect(t).not.toMatch(/última pasada hace/) // una sola línea que ofrece /automejora
   expect(armarTablero({ planes: [], automejora: 'Última pasada: 2026-10-01', ahora })).toMatch(/última pasada hace/)
+})
+
+test('peso: lo que se carga en cada ventana se mide en KB, no en líneas (CLAUDE.md y reglas)', () => {
+  const kb = (n: number) => 'x'.repeat(n * 1024)
+  // el caso que pasó: Jarvis con 95 líneas pero 22 KB
+  const jarvis = Array.from({ length: 95 }, () => 'y'.repeat(237)).join('\n')
+  expect(lineaPeso({ claudeMd: jarvis })).toMatch(/CLAUDE\.md` 22 KB/)
+  expect(lineaPeso({ claudeMd: kb(TOPE_KB.claudeMd) })).toBeUndefined()
+  expect(lineaPeso({ reglas: kb(TOPE_KB.reglas + 3) })).toMatch(/reglas del harness/)
+  expect(lineaPeso({ claudeMd: '' })).toBeUndefined()
+  expect(lineaPeso({})).toBeUndefined() // proyecto sin CLAUDE.md
+  // tildes y «» pesan más de un byte: se cuenta en bytes, que es lo que se acerca a los tokens
+  expect(lineaPeso({ claudeMd: 'á'.repeat(7 * 1024) })).toMatch(/14 KB/)
+  expect(armarTablero({ planes: [], claudeMd: jarvis })).toMatch(/⚖️.*podar/)
 })
 
 test('resumen de pendientes: lo cuenta, o avisa que falta si hay tareas pendientes', () => {

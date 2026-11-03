@@ -18,7 +18,7 @@ Plantillas en `plantillas/` (al lado de este archivo). Reemplazar TODOS los `<�
    y con lista + comando `migrar`: regla permanente 1). Verificar qué ya está
    instalado antes de proponer instalar; instalar algo grande o pago → preguntar.
 4. **Crear** (desde las plantillas):
-   - `CLAUDE.md` ← `plantillas/CLAUDE.md` (≤ 100 líneas; nada de lo que ya traen las reglas del plugin).
+   - `CLAUDE.md` ← `plantillas/CLAUDE.md` (≤ 100 líneas y ≤ 12 KB; nada de lo que ya traen las reglas del plugin).
      Línea de Git según la respuesta de push. Mapa sin código todavía: una fila "(se completa en T1)".
    - `.claude/settings.json` ← `plantillas/settings.json`: `permissions.deny` ajustado al stack (sacar lo
      que no aplica, sumar sus carpetas pesadas y `data/` si guarda datos del usuario).
