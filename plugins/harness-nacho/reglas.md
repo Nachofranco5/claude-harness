@@ -59,7 +59,7 @@ El `CLAUDE.md` del proyecto manda en lo específico. Si sos un subagente: solo a
 - Pruebas para Nacho en `docs/PRUEBAS-PENDIENTES.md` (él prueba todo junto: al final del plan o cuando se juntan ≥ 6, que el tablero avisa y se le ofrece la tanda ANTES de la próxima tarea; no pedirle pruebas sueltas). Markdown prolijo: cada prueba es un título `## ⬜ <n> · <Tn> — <qué se prueba>`, debajo **Antes** (lo que tiene que saber o preparar ANTES de empezar, ej. "anotá la hora si no despierta"), los pasos en lista numerada ("Abrí X" → "tocá Y" → "debería pasar Z; si pasa W, avisame"; lo vago no le sirve) y **Avisame**: qué datos devolver (si falla: la frase exacta que dijo/escribió y lo que respondió la app, para convertirlo en test); subpruebas con `### ⬜ <n>a`. SOLO lo pendiente, ordenado en el orden en que las tiene que hacer (lo que dura toda la tanda o hay que tener en cuenta desde el principio, primero). Cuando Nacho devuelve resultados: la prueba sale de pendientes y va arriba de `docs/PRUEBAS-REALIZADAS.md` (`## ✅ <fecha> · <Tn> — título` + resultado en 1–3 viñetas + a qué tarea fue cada problema); ese archivo es para Claude, no para él.
 
 ## Al terminar una tarea (skill `cerrar-tarea`: tiene la checklist completa)
-Pruebas → 3–8 líneas en `CHANGELOG.md` → `docs/PRUEBAS-PENDIENTES.md` → estado/mapa del `CLAUDE.md` si cambió algo estructural → ✅ en el plan → commit en español ("T2: qué se hizo") + push si el proyecto lo autorizó. Antes del commit mirar `git status`: nunca subir modelos, binarios pesados, `.venv`, datos de clientes ni respaldos. Docs viejos → `docs/archivo/` (bloqueado en deny).
+Pruebas → 3–8 líneas en `CHANGELOG.md` → `docs/PRUEBAS-PENDIENTES.md` → estado/mapa del `CLAUDE.md` si cambió algo estructural → ✅ en el plan → **nada colgado** (`scripts/procesos_colgados.py` del harness: lo que Claude lanzó y ya no sirve se corta) → commit en español ("T2: qué se hizo") + push si el proyecto lo autorizó. Antes del commit mirar `git status`: nunca subir modelos, binarios pesados, `.venv`, datos de clientes ni respaldos. Docs viejos → `docs/archivo/` (bloqueado en deny).
 
 ## Cierre de cada respuesta: "Consejos" (1–4 líneas, solo si aportan algo concreto)
 - Modelo/esfuerzo que alcanzaba o que convenía. Uso semanal (`get_usage`): si sobra mucho para los días que faltan, sugerir uno mejor como 2.ª opción; si viene justo, avisar.
@@ -119,6 +119,8 @@ Pruebas → 3–8 líneas en `CHANGELOG.md` → `docs/PRUEBAS-PENDIENTES.md` →
   AIMP, Steam. NO tiene Paint; en pruebas que abren apps: la Calculadora (nunca el Bloc de notas). Su IPv6 se cae a
   ráfagas: todo HTTP con tope por dirección.
 - Forma de trabajar: prueba en tandas (no pruebas sueltas); en procesos largos quiere cada aviso con cuánto falta.
+  Cuando deja a Claude trabajando solo, está en el mismo cuarto con el VOLUMEN BAJO: ninguna prueba automática sube el
+  volumen ni pone música (si una necesita sonar, suena al volumen que hay); solo se puede devolver a como estaba.
 
 ### Lecciones (errores de Claude que no se repiten)
 - 2026-11-01 · Abrí un video de YouTube en el navegador interno para leerlo y quedó SONANDO → para leer una página con

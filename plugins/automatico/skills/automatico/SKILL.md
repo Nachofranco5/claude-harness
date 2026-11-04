@@ -50,8 +50,9 @@ siempre una tarjeta con el modelo justo: la tarjeta de una ventana Sonnet no pue
    - Sigue trabajando → terminá el turno en una línea (el aviso de fin te despierta; el vigía del mod, a los 90 min).
    - Esperando a Nacho (pregunta, permiso) → parar (paso 5) diciendo qué espera.
    - Terminó → **verificar con evidencia**: título de la tarea en el plan con `✅` (Grep `^## <id> `), commit con
-     su id en `git log --oneline -5`, y si el proyecto pushea, `git status -sb` sin «ahead». Registrar el gasto
-     (paso 4). Si no quedó ✅ (🟡, ⬜, sin commit) → parar (paso 5) con lo que dejó.
+     su id en `git log --oneline -5`, y si el proyecto pushea, `git status -sb` sin «ahead». Nada colgado: el script
+     `procesos_colgados.py` de harness-nacho (`scripts/`) da «OK» para el proyecto (si lista algo de esa tarea que ya no
+     hace falta, `--cortar PID`). Registrar el gasto (paso 4). Si no quedó ✅ (🟡, ⬜, sin commit) → parar (paso 5) con lo que dejó.
    - Después, `automatico` `{accion:"tarea"}` (sin tarea = limpiar).
 3. **Elegir la próxima**: la primera ⬜ de la «Cola» de arriba del plan si existe (manda sobre el orden de abajo);
    si no, la que trae el tablero («Próxima»). Leer SOLO su **Nota para Nacho** con UN Grep

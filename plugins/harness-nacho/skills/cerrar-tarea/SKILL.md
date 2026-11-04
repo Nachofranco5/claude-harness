@@ -46,6 +46,10 @@ Config: `.claude/harness.json` del proyecto MANDA; si no existe o le falta una c
    de trabajar de ESTA sesión → al Perfil/Lecciones del harness (si vale para todo proyecto; commit + push del harness) o a la
    memoria/`CLAUDE.md` del proyecto. Si se puede volver test/hook/guardián, eso en vez de una línea.
 8. **Git** (`git.commit` / `git.push`):
+   - **Nada colgado** (Nacho, 2026-11-04: quedaban procesos de agentes/subagentes corriendo por horas): tareas de fondo
+     de esta sesión que ya no hacen falta → `TaskStop`; después `python <base de esta skill>/../../scripts/procesos_colgados.py .`
+     (Windows; lista lo que lanzó Claude y sigue vivo hace > 10 min, o quedó huérfano) → cortar lo que ya no sirve con
+     `--cortar PID…`. Lo del usuario (su app, su terminal) no aparece y no se toca.
    - `git status` primero. Frenar y avisar si aparece algo pesado o privado (modelos, binarios, `.venv`,
      zips, respaldos, datos de clientes, secretos) que no esté en `.gitignore`.
    - Commit en español `"<id>: qué se hizo"` + `git push` si corresponde. Nunca `--force`, `reset --hard`

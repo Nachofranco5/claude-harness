@@ -41,6 +41,8 @@ Escribí `/` en el cuadro de texto y aparece todo. Casi todo se puede pedir tamb
   detalle en `docs/MEDICION-tokens.md`). Si alguna vez falta una herramienta: `/tokeneconomizer:toolprune restore`.
 - **Medidor de tokens** (sin gastar tokens): `python plugins/harness-nacho/scripts/medir_tokens.py` en este repo → cuánto
   gastó cada sesión, de qué está hecho el contexto (`--contexto`) y antes vs después de un cambio (`--corte FECHA`).
+- **Procesos colgados**: `python plugins/harness-nacho/scripts/procesos_colgados.py <carpeta del proyecto>` → lo que
+  Claude dejó corriendo hace > 10 min (o huérfano); `--cortar PID` lo corta. Claude lo corre antes de cada commit.
 - **Guardianes**: no termina sin CHANGELOG/pruebas/commit; frena lecturas caras; avisa plugin viejo.
 - **Subagentes**: `explorador` (busca barato) y `verificador` (corre las pruebas). Podés pedirlos: «usá el explorador para…».
 
