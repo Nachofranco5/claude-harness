@@ -99,7 +99,7 @@ def main() -> int:
             r = subprocess.run(["taskkill", "/PID", str(pid), "/T", "/F"], capture_output=True, text=True)
             print(f"{pid}: {'cortado' if r.returncode == 0 else (r.stderr or r.stdout).strip()}")
         return 0
-    lista = colgados(procesos(), a.carpeta, a.min)
+    lista = colgados(procesos(), str(Path(a.carpeta).resolve()), a.min)   # «.» a secas está en todo
     if not lista:
         print(f"OK: nada de Claude corriendo hace más de {a.min:g} min.")
         return 0
