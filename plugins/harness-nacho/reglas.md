@@ -120,7 +120,8 @@ Pruebas → 3–8 líneas en `CHANGELOG.md` → `docs/PRUEBAS-PENDIENTES.md` →
   ráfagas: todo HTTP con tope por dirección.
 - Forma de trabajar: prueba en tandas (no pruebas sueltas); en procesos largos quiere cada aviso con cuánto falta.
   Cuando deja a Claude trabajando solo, está en el mismo cuarto con el VOLUMEN BAJO: ninguna prueba automática sube el
-  volumen ni pone música (si una necesita sonar, suena al volumen que hay); solo se puede devolver a como estaba.
+  volumen ni pone música (si una necesita sonar, suena al volumen que hay). Tampoco lo «devuelve» al terminar: si lo
+  bajó mientras corría, devolverlo se lo SUBE; solo se baja lo que subió la prueba (Jarvis: `ajustes.devolver_volumen`).
 
 ### Lecciones (errores de Claude que no se repiten)
 - 2026-11-01 · Abrí un video de YouTube en el navegador interno para leerlo y quedó SONANDO → para leer una página con
@@ -145,3 +146,8 @@ Pruebas → 3–8 líneas en `CHANGELOG.md` → `docs/PRUEBAS-PENDIENTES.md` →
   (qué línea y por qué) para que lo apruebe él una vez.
 - 2026-11-05 · Dos veces arranqué un comando con `cat > algo;` sin heredoc y quedó esperando teclado hasta el tope (2 min
   perdidos cada vez) → un script de prueba va con Write a un `.py` del scratchpad y se corre; nunca `cat >` suelto.
+- 2026-11-07 · El ensayo de Jarvis «dejaba el volumen como estaba» poniendo el valor que leyó al empezar: Nacho lo había
+  bajado en el medio y se lo volvió a subir (y él ya lo había pedido) → una prueba solo deshace lo que ELLA cambió y
+  nunca pisa un cambio de Nacho; restaurar un ajuste = comparar con el valor de ahora, nunca escribir el de antes a ciegas.
+- 2026-11-07 · Agregué líneas a un test con `cat >> archivo <<'EOF'` y Git Bash se comió las `\\` (SyntaxError) → igual
+  que la regla de Edit/Write: tampoco para AGREGAR al final de un archivo.
