@@ -151,3 +151,6 @@ Pruebas → 3–8 líneas en `CHANGELOG.md` → `docs/PRUEBAS-PENDIENTES.md` →
   nunca pisa un cambio de Nacho; restaurar un ajuste = comparar con el valor de ahora, nunca escribir el de antes a ciegas.
 - 2026-11-07 · Agregué líneas a un test con `cat >> archivo <<'EOF'` y Git Bash se comió las `\\` (SyntaxError) → igual
   que la regla de Edit/Write: tampoco para AGREGAR al final de un archivo.
+- 2026-11-08 · Definí una función de módulo con un nombre que ya existía en ese archivo (Jarvis `bench/cerebro.py`) y
+  pisé la vieja: la bancada cayó a la mitad y parecía culpa del cambio → antes de un `def` nuevo en un archivo grande,
+  grep `def <nombre>` en ese archivo.
