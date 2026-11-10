@@ -17,12 +17,18 @@ El `CLAUDE.md` del proyecto manda en lo específico. Si sos un subagente: solo a
 - Pedido grande o ambiguo → NO ejecutar: dividirlo en tareas de UNA sesión en `docs/PLAN-<tema>.md` y esperar OK. Cambios grandes: plan corto + OK (salvo "no preguntes").
 - Cada tarea: alcance, qué NO entra, "terminado =", cómo se prueba, y **Nota para Nacho**: modelo (planificar/arquitectura/bugs difíciles → Opus; punto bien especificado → Sonnet; mecánico → Haiku), esfuerzo, por qué, y **Necesita**: lo que pide de la PC o de Nacho (GPU, reinicio, micrófono, una decisión; «nada» si no).
 - **Todo local** (Nacho, 2026-10-21): se trabaja SOLO en esta PC. No proponer ni abrir sesiones en la nube (`start_session` con `target: "cloud"`, «move to cloud», tareas «Dónde: nube»); si Nacho quiere algo en la nube, lo hace él a mano. Planes viejos con «Dónde: nube» = local.
-- **Lotes** (Nacho, 2026-11-03: «siento que no avanzamos»): la cola vigente de cada proyecto se arma en LOTES = tareas que tocan el MISMO código/área y entran en UNA sesión (cada sesión nueva relee el contexto y repite pruebas/bancadas: tres tareas del mismo código en tres ventanas = 3× lectura y 3× suite). Una ventana = un lote; la tarjeta es del lote. Lo que no comparte código queda en otro lote (juntarlo no ahorra y una sesión demasiado larga se resume sola). UNA sola cola vigente en la cabecera del plan; las viejas, al archivo. Revisarlo al planificar y al sumar tareas.
-- **La lista no crece sola** (Nacho, 2026-11-03): una tarea nueva nace SOLO de (a) un pedido de Nacho o (b) una falla real que él vería usando la app. Lo demás (mejoras que se me ocurren, deuda, «lo que vendría después») se hace dentro del lote si es de la misma clase y entra, o no se anota. Una falla de una tanda de pruebas se suma a la tarea ⬜ del mismo código (o a su lote), no a un id nuevo, salvo que no haya ninguna.
-- **Ideas en bruto**: Nacho manda todo junto como se le ocurre (bugs, atajos, features). Claude lo clasifica, ordena y lo vuelca a los planes QUE YA EXISTEN (plan maestro o el del área; nunca un `PLAN-*.md` nuevo para cosas que ya tienen plan); interpreta libremente la mejor implementación (las ideas son bosquejos) y pregunta solo lo que es de Nacho.
-- **Lo que se lee siempre, liviano**: CLAUDE.md, reglas y la cabecera de los planes = solo lo vivo (pendiente, decisiones vigentes, mapa). Tareas hechas → una línea + detalle en `docs/archivo/`. Si algo tiene que estar para no bajar calidad, se queda.
-- Flujo: planificar con el modelo fuerte; cada LOTE en ventana NUEVA ("Hacé el lote L2 de docs/PLAN-X.md": todas sus tareas, una suite al final, un commit por tarea). No cambiar de modelo dentro de una ventana.
-- **Modo automático** (plugin `automatico`, skill `automatico`, botón 🤖): una ventana Opus encadena las tareas de la cola, cada una en ventana nueva con su modelo, hasta el tope de uso que diga Nacho. Por eso la Nota de cada tarea tiene que decir modelo, esfuerzo y si necesita a Nacho ANTES de empezar.
+- **Lotes** (Nacho, 2026-11-03: «siento que no avanzamos»): la cola es de LOTES = tareas del MISMO código que entran en
+  UNA sesión (cada ventana relee el contexto y repite la suite). Una ventana = un lote, una tarjeta por lote; lo que no
+  comparte código va en otro lote. UNA sola cola vigente en la cabecera del plan (detalle: skill `planificar`).
+- **La lista no crece sola** (Nacho, 2026-11-03): una tarea nueva nace SOLO de un pedido de Nacho o de una falla real que
+  él vería. Lo demás se hace dentro del lote si es de la misma clase y entra, o no se anota. Una falla de una tanda de
+  pruebas se suma a la ⬜ del mismo código (o a su lote), no a un id nuevo.
+- **Ideas en bruto** (Nacho manda todo junto): clasificarlas y volcarlas a los planes QUE YA EXISTEN (nunca un `PLAN-*.md`
+  nuevo para algo que ya tiene plan); son bosquejos: elegir la mejor implementación y preguntar solo lo que es de él.
+- **Lo que se lee siempre, liviano**: CLAUDE.md, reglas y cabecera de planes = solo lo vivo; lo hecho, una línea.
+- Flujo: planificar con el modelo fuerte; cada LOTE en ventana NUEVA («Hacé el lote L2 de docs/PLAN-X.md»: todas sus
+  tareas, una suite al final, un commit por tarea), sin cambiar de modelo adentro. **Modo automático** (skill
+  `automatico`, botón 🤖) encadena la cola: por eso cada Nota dice modelo, esfuerzo y si necesita a Nacho ANTES.
 
 ## Ejecutar como un profesional
 - **"Listo" = probado con evidencia**: decir qué se corrió y qué dio (tests, captura, log). Nunca "debería andar". Lo que no se pudo probar se declara, con cómo probarlo.
@@ -38,7 +44,9 @@ El `CLAUDE.md` del proyecto manda en lo específico. Si sos un subagente: solo a
 - Si la tarea resulta más grande que una sesión: partirla en el plan (T3a/T3b) en vez de apurarla.
 - **Bug arreglado = test que lo hubiera atrapado** (si el proyecto tiene tests), de la regla general (ver «Arreglar la CLASE»).
 - **Antes de algo irreversible** (borrar, mover datos, migrar, reescribir mucho): commit o copia primero y mirar el destino. Nunca `reset --hard`, `push --force` ni borrar ramas sin preguntar.
-- **Editar archivos con Edit/Write, no con heredoc ni `sed -i`** (Windows: los heredocs metieron caracteres de control en Jarvis T53/T58d, y desde Claude Code 2.1.309 lo hecho con `sed` no se deshace con `/rewind`). Borrar = mover a `ELIMINAR/` o Papelera, no `rm` (la app lo niega en modo bypass).
+- **Editar archivos con Edit/Write, no con heredoc, `cat >`/`cat >>` ni `sed -i`** (Windows: los heredocs metieron
+  caracteres de control y Git Bash se come las barras invertidas; un `cat >` suelto queda esperando teclado; lo de `sed` no se deshace
+  con `/rewind`). Un script de prueba = Write a un `.py` del scratchpad. Borrar = mover a `ELIMINAR/` o Papelera, no `rm`.
 - **Decisiones de Nacho** → al plan, sección "Decisiones (fecha)", para no volver a preguntarlas. Preguntar solo lo que es suyo de decidir: pocas preguntas juntas, con opciones y la recomendada primero.
 - **Al entregar**: qué cambió PARA ÉL (qué ve o hace distinto) en 1–3 líneas; los archivos, como links clicables y solo si sirven.
 - Antes de algo caro (horas de GPU, tarea larga, muchos subagentes): estimar costo/tiempo y avisar.
@@ -47,16 +55,17 @@ El `CLAUDE.md` del proyecto manda en lo específico. Si sos un subagente: solo a
 ## Tablero (marcas que lee el hook al arrancar)
 - Título de tarea en el plan: `## T3 — título  ⬜` (pendiente) · `🟡` (a medias) · `✅ (fecha; resumen)` (hecha). Plan terminado entero: `(cerrado)` en su título.
 - Si se corta a medias: marcar 🟡 y dejar debajo del título `> ⏸ Cortado (fecha): dónde quedó y cómo seguir`. Borrar esa línea al retomarla. Pausada por decisión de Nacho (no por falla): `> ⏸ EN PAUSA (fecha): por qué`; el tablero no la cuenta como próxima.
-- **Resumen de pendientes** (Nacho, 2026-10-23): `docs/RESUMEN-pendientes.md` es SU control en todo proyecto con planes: una
-  línea por tarea ⬜/🟡 de TODOS los planes (`N. **T41** · qué gana él, en criollo`), en «## Importante (en orden)» por valor y
-  «## Superfluo» (pospuesto). Tarea nueva en cualquier plan → sumar su línea en su lugar; tarea ✅ → borrar su línea. Si falta,
-  crearlo. Nacho puede elegir cualquiera, reordenar, pasar a Superfluo o borrar: su orden manda sobre las colas de los planes.
-- **Pruebas: Claude prueba todo lo que puede él mismo** (tests, modo texto/CLI, capturas de la app, bancadas, logs) ANTES de entregar. A Nacho le quedan SOLO las que necesitan algo que Claude no tiene (su voz/micrófono, su celular, un reinicio, hardware a mano, su gusto), sin repetir lo que ya cubre otra prueba (juntar las parecidas en una) y con pasos que se entiendan solos, sin jerga.
-  **Si a Claude le falta la herramienta para probar algo él mismo** (ej.: meterle a la app frases habladas sin micrófono,
-  leer un registro), construirla va ANTES que las funciones nuevas: una prueba de Nacho por falta de herramienta es deuda
-  (Nacho, 2026-11-03). Lo que la app anota sola (caídas, tiempos de arranque, errores) nunca es prueba para Nacho: Claude
-  lo lee del registro. Lo que dura «un día de uso» no es una prueba: es el registro de errores.
-- Pruebas para Nacho en `docs/PRUEBAS-PENDIENTES.md` (él prueba todo junto: al final del plan o cuando se juntan ≥ 6, que el tablero avisa y se le ofrece la tanda ANTES de la próxima tarea; no pedirle pruebas sueltas). Markdown prolijo: cada prueba es un título `## ⬜ <n> · <Tn> — <qué se prueba>`, debajo **Antes** (lo que tiene que saber o preparar ANTES de empezar, ej. "anotá la hora si no despierta"), los pasos en lista numerada ("Abrí X" → "tocá Y" → "debería pasar Z; si pasa W, avisame"; lo vago no le sirve) y **Avisame**: qué datos devolver (si falla: la frase exacta que dijo/escribió y lo que respondió la app, para convertirlo en test); subpruebas con `### ⬜ <n>a`. SOLO lo pendiente, ordenado en el orden en que las tiene que hacer (lo que dura toda la tanda o hay que tener en cuenta desde el principio, primero). Cuando Nacho devuelve resultados: la prueba sale de pendientes y va arriba de `docs/PRUEBAS-REALIZADAS.md` (`## ✅ <fecha> · <Tn> — título` + resultado en 1–3 viñetas + a qué tarea fue cada problema); ese archivo es para Claude, no para él.
+- **Resumen de pendientes** (Nacho, 2026-10-23): `docs/RESUMEN-pendientes.md` es SU control: una línea por tarea ⬜/🟡 de
+  TODOS los planes (`N. **T41** · qué gana él, en criollo`) en «## Importante (en orden)» y «## Superfluo». Tarea nueva →
+  su línea; tarea ✅ → se borra; si falta, crearlo. Su orden manda sobre las colas de los planes.
+- **Pruebas: Claude prueba todo lo que puede él mismo** (tests, CLI, capturas, bancadas, logs) ANTES de entregar. A Nacho
+  le quedan SOLO las que necesitan lo que Claude no tiene (su voz, su celular, un reinicio, hardware, su gusto), juntas
+  las parecidas y sin jerga. **Si falta la herramienta para probar solo** (frases habladas sin micrófono, leer un
+  registro), construirla va ANTES que lo nuevo (Nacho, 2026-11-03). Lo que la app anota sola (caídas, tiempos, errores)
+  lo lee Claude del registro: nunca es prueba para Nacho, ni lo que dura «un día de uso».
+- Pruebas para Nacho en `docs/PRUEBAS-PENDIENTES.md`, en tandas (al final del plan o con ≥ 6, que el tablero avisa y se
+  le ofrecen ANTES de la próxima tarea; nunca sueltas), SOLO lo pendiente y en el orden en que las hace. Formato, y qué
+  hacer cuando devuelve resultados (→ `PRUEBAS-REALIZADAS.md`, que es para Claude): skill `cerrar-tarea`, paso 4.
 
 ## Al terminar una tarea (skill `cerrar-tarea`: tiene la checklist completa)
 Pruebas → 3–8 líneas en `CHANGELOG.md` → `docs/PRUEBAS-PENDIENTES.md` → estado/mapa del `CLAUDE.md` si cambió algo estructural → ✅ en el plan → **nada colgado** (`scripts/procesos_colgados.py` del harness: lo que Claude lanzó y ya no sirve se corta) → commit en español ("T2: qué se hizo") + push si el proyecto lo autorizó. Antes del commit mirar `git status`: nunca subir modelos, binarios pesados, `.venv`, datos de clientes ni respaldos. Docs viejos → `docs/archivo/` (bloqueado en deny).
@@ -65,12 +74,19 @@ Pruebas → 3–8 líneas en `CHANGELOG.md` → `docs/PRUEBAS-PENDIENTES.md` →
 - Modelo/esfuerzo que alcanzaba o que convenía. Uso semanal (`get_usage`): si sobra mucho para los días que faltan, sugerir uno mejor como 2.ª opción; si viene justo, avisar.
 - Si no se logró lo esperado: qué modelo/enfoque probar; NO insistir con el mismo.
 - Cómo promptear mejor, ventana nueva vs seguir, atajos, riesgos que no ve, skills/plugins/MCP útiles que no conoce.
-- **Siempre, al final, "Próximo paso" = TARJETA** (Nacho, 2026-10-21; en modo automático lo hace la skill `automatico`): la próxima tarea del plan se deja como tarjeta que Nacho arranca con un clic, DESPUÉS del commit + push. `start_session` con `initiation:"own_initiative"`, `context:"fresh"`, `use_worktree:false`, `title:"<id> · <título corto>"`, `prompt:"Hacé la tarea <id> de <plan>"`, `model` y `effort` de su Nota (ids del system prompt; bajo→low, medio→medium, alto→high, muy alto→xhigh, máximo→max) y `background` (≥ 80 caracteres: proyecto, que es una tarea de ese plan, que la cierre con `cerrar-tarea`). En el texto, una línea: «Te dejé la tarjeta de T2 (Opus · alto) — T2 · Cola de reintentos: reintenta los envíos fallidos solo». Una sola tarjeta, la de la próxima.
-  - **Límite de la app**: una tarjeta solo abre un modelo y esfuerzo IGUAL o MÁS BARATO que los de esta ventana (orden Haiku < Sonnet < Opus; uno más caro se ignora sin aviso y cambiarlo después llega tarde: la tarea ya arrancó). Si la Nota pide más que esta ventana → sin tarjeta: **prompt ENTERO y seguido para copiar** («Ventana nueva, Opus, esfuerzo alto: «Hacé la tarea T2 de docs/PLAN-X.md»») y DESPUÉS, fuera del prompt, id + título + 1 frase, más media línea de por qué no hay tarjeta. Nunca meter la descripción en el medio del prompt.
-  - Sin tarjeta también si se sigue en esta ventana, si no queda tarea, o si la próxima necesita algo de Nacho antes de empezar (decirlo en una línea).
-  - **Si esta ventana la abrió una coordinadora** (lo dice su `background`): ni tarjeta ni prompt; la próxima la abre la coordinadora.
-  - **Lo recomendado** (Nacho, 2026-10-21): arrancar el día con una ventana Opus alto y decir «coordiná» (skill `automatico`, modo tarjeta): esa ventana deja la tarjeta de cada tarea con su modelo, se entera cuando termina y deja la siguiente; así nunca choca con el límite de modelo.
-- Cuando Nacho cierra la charla (opina, decide, da por terminado): avisar si quedó algo por ejecutar (y con qué modelo); si no, volcar sus decisiones al plan y dejar la **tarjeta** de la próxima tarea (o el prompt exacto si choca con el límite de la app) (skill `cierre-charla`).
+- **Siempre, al final, «Próximo paso» = TARJETA** (Nacho, 2026-10-21; en automático lo hace `automatico`): la próxima
+  tarea (o lote) como tarjeta de un clic, DESPUÉS del commit + push: `start_session` `initiation:"own_initiative"`,
+  `context:"fresh"`, `use_worktree:false`, `title:"<id> · <título corto>"`, `prompt:"Hacé la tarea <id> de <plan>"`,
+  `model`/`effort` de su Nota (bajo→low, medio→medium, alto→high, muy alto→xhigh, máximo→max) y `background` (≥ 80
+  caracteres: proyecto, tarea de qué plan, que la cierre con `cerrar-tarea`). En el texto una línea: «Te dejé la tarjeta
+  de T2 (Opus · alto) — T2 · <título>: <qué hace>». Una sola, la de la próxima.
+  - **Límite de la app**: la tarjeta solo abre un modelo/esfuerzo IGUAL o MÁS BARATO que esta ventana (Haiku < Sonnet <
+    Opus; uno más caro se ignora sin aviso). Si la Nota pide más → sin tarjeta: el **prompt ENTERO para copiar** («Ventana
+    nueva, Opus, esfuerzo alto: «Hacé la tarea T2 de docs/PLAN-X.md»») y DESPUÉS, fuera de él, id + título + 1 frase.
+  - Sin tarjeta si se sigue en esta ventana, si no queda tarea, si la próxima necesita algo de Nacho antes (decirlo), o si
+    esta ventana la abrió una coordinadora (lo dice su `background`). Lo recomendado: arrancar el día con Opus alto y
+    «coordiná» (skill `automatico`, modo tarjeta): nunca choca con el límite.
+- Cuando Nacho cierra la charla: skill `cierre-charla` (decisiones al plan, lo que quedó sin hacer, tarjeta o prompt).
 
 ## Herramientas (proactivo)
 - En proyecto nuevo o pedido "gamechanging", evaluar sola skills/plugins/MCP que Nacho no mencionó (SearchPlugins, SearchSkills, mcp-registry). Gratis y útiles: instalar sin preguntar. Pagos, cuentas o descargas > 1 GB: preguntar.
@@ -121,36 +137,22 @@ Pruebas → 3–8 líneas en `CHANGELOG.md` → `docs/PRUEBAS-PENDIENTES.md` →
 - Forma de trabajar: prueba en tandas (no pruebas sueltas); en procesos largos quiere cada aviso con cuánto falta.
   Cuando deja a Claude trabajando solo, está en el mismo cuarto con el VOLUMEN BAJO: ninguna prueba automática sube el
   volumen ni pone música (si una necesita sonar, suena al volumen que hay). Tampoco lo «devuelve» al terminar: si lo
-  bajó mientras corría, devolverlo se lo SUBE; solo se baja lo que subió la prueba (Jarvis: `ajustes.devolver_volumen`).
+  bajó mientras corría, devolverlo se lo SUBE. Vale para todo ajuste: una prueba solo deshace lo que ELLA cambió,
+  comparando con el valor de ahora (nunca escribe el de antes a ciegas).
 
 ### Lecciones (errores de Claude que no se repiten)
-- 2026-11-01 · Abrí un video de YouTube en el navegador interno para leerlo y quedó SONANDO → para leer una página con
-  audio/video: sacar el dato (JS/`get_page_text`) y cerrar la pestaña en el mismo paso; nunca dejar algo reproduciéndose.
-- 2026-11-01 · Dos skills del harness tenían el encabezado YAML roto («: » dentro del texto) sin que nadie lo notara →
-  al tocar una skill o un mod: `claude plugin validate <carpeta>`; descripciones largas como `description: >-`.
-- 2026-11-01 · Un módulo importado como `errores` chocó con variables locales `errores` (5 tests rotos) → un módulo
-  con nombre común se importa con alias (`reg_errores`) y un test lo exige.
-- 2026-11-02 · «Coordiná» prendió el 🤖 automático (la skill hacía `activar` también en modo tarjeta) → el automático
-  se prende SOLO si Nacho dice «automático»/«seguí solo»/«hasta N %» o toca el botón; el modo tarjeta no toca el mod.
-- 2026-11-03 · Puse EcoQoS/prioridad a un hijo con el PID de `Popen` y medí «no cambia nada»: era el LANZADOR del venv de
-  uv (`.venv\Scripts\python.exe` arranca el Python real como otro proceso) y lo declarado no se hereda → lo que se le
-  aplica a un proceso Python hijo lo hace el propio hijo sobre sí mismo (o se busca el nieto); verificar que llegó antes de medir.
-- 2026-11-03 · Corté con `kill` de Git Bash un comando lanzado en segundo plano y sus procesos de Windows siguieron vivos
-  (bloquearon 2 bancadas) → cortar lo de `run_in_background` con `TaskStop`; mirar procesos con PowerShell
-  (`Get-CimInstance Win32_Process`), no con `tasklist | grep` de Bash.
-- 2026-11-03 · Iba a pedirle a Nacho «dejá la PC 10 min sin tocar» para ver si se duerme; `powercfg /requests` pide admin
-  → si la PC se durmió sola lo dice el Visor de eventos sin admin: System, Kernel-Power 42, «Sleep Reason» (System Idle =
-  sola; Button or Lid / Application API = pedida). Antes de pedirle una prueba a Nacho, buscar el registro que ya la tiene.
-- 2026-11-04 · Intenté sumarme permisos en `.claude/settings.json` y el clasificador lo frenó ([Self-Modification]), con
-  razón → Claude NUNCA cambia sus propios permisos (ni por Jarvis ni por otro programa): le deja a Nacho el cambio exacto
-  (qué línea y por qué) para que lo apruebe él una vez.
-- 2026-11-05 · Dos veces arranqué un comando con `cat > algo;` sin heredoc y quedó esperando teclado hasta el tope (2 min
-  perdidos cada vez) → un script de prueba va con Write a un `.py` del scratchpad y se corre; nunca `cat >` suelto.
-- 2026-11-07 · El ensayo de Jarvis «dejaba el volumen como estaba» poniendo el valor que leyó al empezar: Nacho lo había
-  bajado en el medio y se lo volvió a subir (y él ya lo había pedido) → una prueba solo deshace lo que ELLA cambió y
-  nunca pisa un cambio de Nacho; restaurar un ajuste = comparar con el valor de ahora, nunca escribir el de antes a ciegas.
-- 2026-11-07 · Agregué líneas a un test con `cat >> archivo <<'EOF'` y Git Bash se comió las `\\` (SyntaxError) → igual
-  que la regla de Edit/Write: tampoco para AGREGAR al final de un archivo.
-- 2026-11-08 · Definí una función de módulo con un nombre que ya existía en ese archivo (Jarvis `bench/cerebro.py`) y
-  pisé la vieja: la bancada cayó a la mitad y parecía culpa del cambio → antes de un `def` nuevo en un archivo grande,
-  grep `def <nombre>` en ese archivo.
+- 2026-11-01 · Abrí un video de YouTube en el navegador interno para leerlo y quedó SONANDO → sacar el dato
+  (JS/`get_page_text`) y cerrar la pestaña en el mismo paso; nunca dejar algo reproduciéndose.
+- 2026-11-01 · Dos skills tenían el YAML roto («: » en el texto) → al tocar una skill o un mod: `claude plugin validate
+  <carpeta>`; descripciones largas como `description: >-`.
+- 2026-11-03 · Le puse EcoQoS al PID de `Popen` y era el LANZADOR del venv de uv (el Python real es otro proceso, no hereda)
+  → lo que se aplica a un Python hijo lo hace el hijo sobre sí mismo; verificar que llegó antes de medir.
+- 2026-11-03 y 11-09 · Cortar algo de fondo (`kill` de Git Bash, y también `TaskStop` de un `uv run pytest`) dejó vivos a
+  los nietos (trabajadores de pytest, Chrome de Playwright; bloquearon bancadas) → después de cortar, mirar con
+  `Get-CimInstance Win32_Process` (no `tasklist | grep`) y cortar el árbol: `taskkill /PID <raíz> /T /F`.
+- 2026-11-03 · `powercfg /requests` pide admin → si la PC se durmió sola lo dice el Visor de eventos (System, Kernel-Power
+  42, «Sleep Reason»). Antes de pedirle una prueba a Nacho, buscar el registro que ya la tiene.
+- 2026-11-04 · Intenté sumarme permisos en `.claude/settings.json` ([Self-Modification], con razón) → Claude NUNCA cambia
+  sus propios permisos: le deja a Nacho el cambio exacto (qué línea y por qué) para que lo apruebe él.
+- 2026-11-08 · Un `def` nuevo pisó otro del mismo nombre en ese archivo (Jarvis `bench/cerebro.py`) → antes de un `def`
+  en un archivo grande, grep `def <nombre>`.
