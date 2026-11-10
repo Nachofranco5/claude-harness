@@ -1,10 +1,17 @@
 # Automejora del harness (skill `/harness-nacho:automejora`)
-Última pasada: 2026-11-02
-Claude Code visto: 2.1.316 en el CHANGELOG (la app trae 2.1.309; `claude` de consola = `~\.local\bin\claude.cmd`)
+Última pasada: 2026-11-10
+Claude Code visto: 2.1.319 en el CHANGELOG (la app trae 2.1.309; `claude` de consola = `~\.local\bin\claude.cmd`)
 A re-medir: **TokenEconomizer el 2026-11-16** con `medir_tokens.py --corte 2026-11-01T18:26` + `te --host claude status` (si no ahorró > 0,5 % → sacarlo; ver `docs/MEDICION-tokens.md`).
-Descartado (no volver a proponer salvo que cambie algo): de la 1.ª lista corta (2/11): pixelfx, founder-skill, bama, animate, day-trader-skill, replica-skill, cleanyourtv, free-my-tv (un dominio, no el harness) · new-term-radar (duplica `buscar_novedades.py`) · my-claude-code-mods (mods personales) · CodeRabbit (cuenta externa) · groundwork-specflow, Roll Call, AI Skills (duplican el harness) · LocalLore (duplica la memoria) · Kobiton (móvil) · Exa (ya hay WebSearch) · coding-agent-skills, py-pit (pisan superpowers/uv) · claude-telegram-voice, plugin oficial de Telegram (Jarvis tiene su bot) · code-review-harness (lo cubre el verificador) · AnythingMCP (nube de terceros).
+Descartado (no volver a proponer salvo que cambie algo): de la 1.ª lista corta (2/11): pixelfx, founder-skill, bama, animate, day-trader-skill, replica-skill, cleanyourtv, free-my-tv (un dominio, no el harness) · new-term-radar (duplica `buscar_novedades.py`) · my-claude-code-mods (mods personales) · CodeRabbit (cuenta externa) · groundwork-specflow, Roll Call, AI Skills (duplican el harness) · LocalLore (duplica la memoria) · Kobiton (móvil) · Exa (ya hay WebSearch) · coding-agent-skills, py-pit (pisan superpowers/uv) · claude-telegram-voice, plugin oficial de Telegram (Jarvis tiene su bot) · code-review-harness (lo cubre el verificador) · AnythingMCP (nube de terceros) · (10/11) best-agent-memory-mcp (ranking; duplica la memoria) · agent-autoloop (duplica `automatico`) · champion-kit, xcode (otro uso).
 
 ## Historial (lo más nuevo arriba; ≤ 8 líneas por pasada)
+### 2026-11-10 — pasada corta (lista del 9/11)
+- Hecho: `.claude/settings.local.json` al `.gitignore` del harness (HN 7/11: «No preguntar de nuevo» guarda comandos con
+  contraseñas y 1.122 repos públicos los subieron). Revisados Jarvis, Karaoke, reels: ya lo ignoran; ningún settings con secretos. La plantilla de `proyecto-nuevo` ya lo traía.
+- Claude Code 2.1.317–319: nada rompe el harness. `permissions.denyInsteadOfPrompting` (negar en vez de esperar un permiso)
+  vale solo en terminal/subagentes/teammates, no en sesiones de la app → no sirve al modo automático; y los permisos los toca Nacho.
+- A/B Sonnet (I15, I17c, T65b) sigue sin datos: ninguna de las tres se hizo todavía.
+- Pendiente de Nacho: reglas 23 KB > tope 21 → `/harness-nacho:podar`.
 ### 2026-11-02 (0.3.20) — Nacho encontró TokenEconomizer en YouTube antes que esta skill
 - Por qué falló: solo miraba catálogos (SearchPlugins/registro MCP) con palabras de los proyectos (voz, Windows…); TE es
   un repo de GitHub (13/10, tema `claude-code`, 4.380 ⭐) que nunca entra ahí. Y solo corría si Nacho aceptaba el aviso.

@@ -4,3 +4,5 @@
 node_modules/
 __pycache__/
 *.pyc
+# permisos «No preguntar de nuevo»: pueden guardar comandos con secretos (HN 7/11: 1.122 repos públicos los filtraron)
+.claude/settings.local.json
