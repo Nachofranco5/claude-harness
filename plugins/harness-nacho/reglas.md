@@ -29,7 +29,8 @@ El `CLAUDE.md` del proyecto manda en lo específico. Si sos un subagente: solo a
   nuevo para algo que ya tiene plan); son bosquejos: elegir la mejor implementación y preguntar solo lo que es de él.
 - **Lo que se lee siempre, liviano**: CLAUDE.md, reglas y cabecera de planes = solo lo vivo; lo hecho, una línea.
 - Flujo: planificar con el modelo fuerte; cada LOTE en ventana NUEVA («Hacé el lote L2 de docs/PLAN-X.md»: todas sus
-  tareas, una suite al final, un commit por tarea), sin cambiar de modelo adentro. **Modo automático** (skill
+  tareas, una suite al final, un commit por tarea; uno del lote si su código quedó entrelazado y separarlo deja un
+  commit que no arranca), sin cambiar de modelo adentro. **Modo automático** (skill
   `automatico`, botón 🤖) encadena la cola: por eso cada Nota dice modelo, esfuerzo y si necesita a Nacho ANTES.
 
 ## Ejecutar como un profesional
