@@ -49,13 +49,14 @@ siempre una tarjeta con el modelo justo: la tarjeta de una ventana Sonnet no pue
 2. **Hay tarea en curso** (`tarea`/`sesion` en el estado): `get_session` a su id.
    - Sigue trabajando → terminá el turno en una línea (el aviso de fin te despierta; el vigía del mod, a los 90 min).
    - Esperando a Nacho (pregunta, permiso) → parar (paso 5) diciendo qué espera.
-   - Terminó → **verificar con evidencia**: título de la tarea en el plan con `✅` (Grep `^## <id> `), commit con
+   - Terminó → **verificar con evidencia**: título de cada tarea del lote en el plan con `✅` (Grep `^## <id> `), commit con
      su id en `git log --oneline -5`, y si el proyecto pushea, `git status -sb` sin «ahead». Nada colgado: el script
      `procesos_colgados.py` de harness-nacho (`scripts/`) da «OK» para el proyecto (si lista algo de esa tarea que ya no
      hace falta, `--cortar PID`). Registrar el gasto (paso 4). Si no quedó ✅ (🟡, ⬜, sin commit) → parar (paso 5) con lo que dejó.
    - Después, `automatico` `{accion:"tarea"}` (sin tarea = limpiar).
-3. **Elegir la próxima**: la primera ⬜ de la «Cola» de arriba del plan si existe (manda sobre el orden de abajo);
-   si no, la que trae el tablero («Próxima»). Leer SOLO su **Nota para Nacho** con UN Grep
+3. **Elegir la próxima**: el primer LOTE ⬜/🟡 de la «Cola» de arriba del plan (el tablero lo trae como «Próximo
+   LOTE»; manda sobre el orden de abajo) y se abre ENTERO en una sesión; sin cola, la tarea «Próxima» del tablero.
+   La Nota que manda es la más exigente de sus tareas. Leer SOLO su **Nota para Nacho** con UN Grep
    (`Nota para Nacho — <id>` con `-A 3`; si salió `⏸`/«Necesita» no alcanza, Grep `^## <id> ` con `-A 2`).
    Parar (paso 5) si: dice que necesita a Nacho antes (decisión pendiente, algo que él tiene que hacer o tener a
    mano para que la tarea se pueda hacer), tiene `⏸` esperándolo, o depende de una ⬜ anterior. «Dónde: nube»
@@ -66,14 +67,14 @@ siempre una tarjeta con el modelo justo: la tarjeta de una ventana Sonnet no pue
 5. **Abrir la tarea** con `start_session`:
    - `initiation:"user_asked"`, `context:"fresh"`, `use_worktree:false` (misma carpeta y rama: así trabaja Nacho),
      `wake_when_done:true`, `name:"auto-<id en minúscula>"` (el mod frena las `auto-*` si lo apagaron),
-     `title:"<id> · <título corto>"`.
+     `title:"<lote> · <tareas>"` (sin cola: `"<id> · <título corto>"`).
    - `model`: el id de la familia que pide la Nota (los ids están en tu system prompt; Opus/Sonnet/Haiku).
      `effort`: bajo→low, medio→medium, alto→high, muy alto→xhigh, máximo→max. Si pide más que el tuyo → parar.
-   - `prompt`: EXACTO `Hacé la tarea <id> de <plan>` (como lo daría el «Próximo paso»).
+   - `prompt`: EXACTO `Hacé el lote <Lx> de <plan>` (sin cola: `Hacé la tarea <id> de <plan>`), como el «Próximo paso».
    - `background`: «Modo automático de Nacho: esta sesión la abrió la ventana coordinadora y Nacho no está mirando.
      No le preguntes nada: si algo es decisión suya o necesita algo que no tenés, dejá la tarea 🟡 con la nota ⏸
      y terminá. Cerrá con la skill cerrar-tarea (pruebas, ✅, commit y push según el proyecto) pero SIN tarjeta
-     ni prompt de la próxima: de eso se encarga la coordinadora. Una sola tarea.» (Modo tarjeta: el del paso 1b.)
+     ni prompt de la próxima: de eso se encarga la coordinadora. Solo ese lote (o tarea).» (Modo tarjeta: el del paso 1b.)
    - La app deja arrancar sesiones en un turno que empezó Nacho y en el aviso de fin que viene detrás (si Nacho
      pidió esas tareas en ventanas propias). Probado 2026-10-21: en una ventana que abrió Nacho, P1→P2→P3 se
      encadenaron solas; en una ventana abierta por OTRA sesión, el aviso de fin fue rechazado (por eso el

@@ -19,7 +19,9 @@ El `CLAUDE.md` del proyecto manda en lo específico. Si sos un subagente: solo a
 - **Todo local** (Nacho, 2026-10-21): se trabaja SOLO en esta PC. No proponer ni abrir sesiones en la nube (`start_session` con `target: "cloud"`, «move to cloud», tareas «Dónde: nube»); si Nacho quiere algo en la nube, lo hace él a mano. Planes viejos con «Dónde: nube» = local.
 - **Lotes** (Nacho, 2026-11-03: «siento que no avanzamos»): la cola es de LOTES = tareas del MISMO código que entran en
   UNA sesión (cada ventana relee el contexto y repite la suite). Una ventana = un lote, una tarjeta por lote; lo que no
-  comparte código va en otro lote. UNA sola cola vigente en la cabecera del plan (detalle: skill `planificar`).
+  comparte código va en otro lote. UNA sola cola vigente en la cabecera del plan, con columna «Código» (detalle: skill
+  `planificar`). Tarea nueva o de una tanda → DENTRO del lote ⬜ que toca su código, nunca un lote propio al lado (11/11:
+  5 lotes de 1 tarea, 2 del mismo código). Pedir una tarea de un lote = hacer el lote. El tablero avisa los solapes.
 - **La lista no crece sola** (Nacho, 2026-11-03): una tarea nueva nace SOLO de un pedido de Nacho o de una falla real que
   él vería. Lo demás se hace dentro del lote si es de la misma clase y entra, o no se anota. Una falla de una tanda de
   pruebas se suma a la ⬜ del mismo código (o a su lote), no a un id nuevo.
@@ -75,14 +77,14 @@ Pruebas → 3–8 líneas en `CHANGELOG.md` → `docs/PRUEBAS-PENDIENTES.md` →
 - Si no se logró lo esperado: qué modelo/enfoque probar; NO insistir con el mismo.
 - Cómo promptear mejor, ventana nueva vs seguir, atajos, riesgos que no ve, skills/plugins/MCP útiles que no conoce.
 - **Siempre, al final, «Próximo paso» = TARJETA** (Nacho, 2026-10-21; en automático lo hace `automatico`): la próxima
-  tarea (o lote) como tarjeta de un clic, DESPUÉS del commit + push: `start_session` `initiation:"own_initiative"`,
-  `context:"fresh"`, `use_worktree:false`, `title:"<id> · <título corto>"`, `prompt:"Hacé la tarea <id> de <plan>"`,
+  LOTE (o tarea, si el plan no tiene cola) como tarjeta de un clic, DESPUÉS del commit + push: `start_session` `initiation:"own_initiative"`,
+  `context:"fresh"`, `use_worktree:false`, `title:"<lote> · <tareas>"`, `prompt:"Hacé el lote <Lx> de <plan>"`,
   `model`/`effort` de su Nota (bajo→low, medio→medium, alto→high, muy alto→xhigh, máximo→max) y `background` (≥ 80
   caracteres: proyecto, tarea de qué plan, que la cierre con `cerrar-tarea`). En el texto una línea: «Te dejé la tarjeta
-  de T2 (Opus · alto) — T2 · <título>: <qué hace>». Una sola, la de la próxima.
+  de L2 (Opus · alto) — L2 · T5 · T6: <qué gana>». Una sola, la del próximo lote.
   - **Límite de la app**: la tarjeta solo abre un modelo/esfuerzo IGUAL o MÁS BARATO que esta ventana (Haiku < Sonnet <
     Opus; uno más caro se ignora sin aviso). Si la Nota pide más → sin tarjeta: el **prompt ENTERO para copiar** («Ventana
-    nueva, Opus, esfuerzo alto: «Hacé la tarea T2 de docs/PLAN-X.md»») y DESPUÉS, fuera de él, id + título + 1 frase.
+    nueva, Opus, esfuerzo alto: «Hacé el lote L2 de docs/PLAN-X.md»») y DESPUÉS, fuera de él, lote + tareas + 1 frase.
   - Sin tarjeta si se sigue en esta ventana, si no queda tarea, si la próxima necesita algo de Nacho antes (decirlo), o si
     esta ventana la abrió una coordinadora (lo dice su `background`). Lo recomendado: arrancar el día con Opus alto y
     «coordiná» (skill `automatico`, modo tarjeta): nunca choca con el límite.

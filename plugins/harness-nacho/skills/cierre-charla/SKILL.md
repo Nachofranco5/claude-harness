@@ -10,7 +10,8 @@ description: Cuando Nacho cierra la charla (opina, decide, "listo", "dejémoslo 
    - Si cambia una tarea existente (modelo, alcance, orden) → editar TAMBIÉN esa tarea (su Nota o su
      alcance), para que no se contradigan.
    - Si pide algo nuevo que no tiene tarea → sumarlo a la `⬜` del mismo código si entra en su
-     sesión, o tarea nueva `⬜` con su Nota (si es vago, interpretarlo con lo que se sabe de Nacho y anotar
+     sesión, o tarea nueva `⬜` con su Nota DENTRO del lote ⬜ que toca su código (columna «Código» de la cola; lote
+     propio solo si no comparte código con ninguno) (si es vago, interpretarlo con lo que se sabe de Nacho y anotar
      lo asumido). Sin plan → `/planificar`.
 2. **¿Quedó algo a medias?** (`git status`, tarea empezada). Si no quedó nada, saltear.
    - Si se puede cerrar ya y el uso alcanza (`get_usage`: hay margen para pruebas + commit) → `cerrar-tarea`.
@@ -24,5 +25,5 @@ description: Cuando Nacho cierra la charla (opina, decide, "listo", "dejémoslo 
      — Tn · <título>: <qué hace>». Si la Nota pide más modelo/esfuerzo que esta ventana (la app no lo deja),
      el prompt exacto en un bloque de código para copiar:
      ```
-     Ventana nueva, <modelo>, esfuerzo <x>: "Hacé la tarea Tn de docs/PLAN-<tema>.md"
+     Ventana nueva, <modelo>, esfuerzo <x>: "Hacé el lote Ln de docs/PLAN-<tema>.md"
      ```

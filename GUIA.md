@@ -4,7 +4,7 @@ Escribí `/` en el cuadro de texto y aparece todo. Casi todo se puede pedir tamb
 ## Trabajo de todos los días (`harness-nacho`)
 | Escribí | Para qué | O decí |
 |---|---|---|
-| `/harness-nacho:tarea T5 docs/PLAN-x.md` | Hace UNA tarea del plan y la cierra (pruebas, ✅, commit) | «Hacé la tarea T5 de docs/PLAN-x.md» · «la próxima tarea» |
+| `/harness-nacho:tarea L2 docs/PLAN-x.md` | Hace un LOTE del plan (sus tareas del mismo código, en una ventana) y lo cierra (pruebas, ✅, commit por tarea). Si pedís una tarea que está en un lote, hace el lote entero | «Hacé el lote L2 de docs/PLAN-x.md» · «la próxima tarea» |
 | `/harness-nacho:planificar <tema>` | Pedido grande → plan con tareas de una ventana (no ejecuta) | «planificá X» |
 | `/harness-nacho:cerrar-tarea` | Checklist de cierre (lo usa Claude solo al terminar) | — |
 | `/harness-nacho:cierre-charla` | Guarda tus decisiones en el plan y te deja la tarjeta para seguir | «listo» · «dejémoslo acá» |

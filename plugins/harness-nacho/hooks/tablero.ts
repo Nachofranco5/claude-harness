@@ -32,6 +32,70 @@ export function tareas(texto: string): Tarea[] {
 
 const cerrado = (texto: string) => /\(cerrado\)|✅/u.test(texto.split(/\r?\n/, 1)[0] ?? '')
 
+// Cola por lotes (regla «Lotes»): la tabla `| Lote | Tareas | … | Modelo | Código |` de la cabecera del plan.
+// Jarvis 11/11: el tablero mostraba TAREAS en orden de archivo (proponía una de Superfluo) y la tarjeta abría
+// «la tarea A9» sola aunque A9 y T60c tocaban el mismo código → lo que manda es la cola, y se abre el LOTE.
+export type Lote = { id: string; marca: '⬜' | '🟡' | '✅'; tareas: string[]; pendientes: string[]; modelo?: string; codigo: string[]; aparte: boolean }
+const RE_ID_TAREA = /\b([A-Z]{1,3}\d+[a-z0-9]*)\b(\s*✅)?/gu
+const celdas = (l: string) => l.trim().replace(/^\||\|$/g, '').split('|').map(c => c.trim())
+
+export function lotes(texto: string): { lotes: Lote[]; conCodigo: boolean } | undefined {
+  const lineas = texto.split(/\r?\n/)
+  const i = lineas.findIndex(l => /^\|\s*Lote\s*\|/iu.test(l))
+  if (i < 0) return undefined
+  const cab = celdas(lineas[i]).map(c => c.toLowerCase())
+  const col = (re: RegExp) => cab.findIndex(c => re.test(c))
+  const cT = col(/^tareas/u), cM = col(/^modelo/u), cC = col(/^c[oó]digo/u)
+  const out: Lote[] = []
+  for (const l of lineas.slice(i + 1)) {
+    if (!l.trim().startsWith('|')) break
+    const c = celdas(l)
+    const m = /^\*{0,2}(L[\w.-]*?)\*{0,2}\s*(⬜|🟡|✅)?$/u.exec(c[0] ?? '')
+    if (!m) continue
+    const celdaT = (c[cT >= 0 ? cT : 1] ?? '').replace(/\(.*?\)/gu, '')
+    const ids = [...celdaT.matchAll(RE_ID_TAREA)]
+    const tareasL = ids.map(x => x[1])
+    const pendientes = ids.filter(x => !x[2]).map(x => x[1])
+    const marca = (m[2] as Lote['marca'] | undefined) ?? (pendientes.length ? '⬜' : '✅')
+    const celdaC = cC >= 0 ? c[cC] ?? '' : ''
+    out.push({
+      id: m[1], marca, tareas: tareasL, pendientes,
+      modelo: cM >= 0 ? c[cM] : undefined,
+      codigo: celdaC.replace(/\(.*?\)/gu, '').split(/[·,;]/u).map(s => s.replace(/[`*]/g, '').trim().toLowerCase()).filter(s => s && !/^aparte/u.test(s)),
+      aparte: /aparte/iu.test(celdaC),
+    })
+  }
+  return { lotes: out, conCodigo: cC >= 0 }
+}
+
+// Dos lotes pendientes que tocan lo mismo = una ventana de más (relee contexto y repite la suite).
+export function solapes(ls: Lote[]): string[] {
+  const vivos = ls.filter(l => l.marca !== '✅' && !l.aparte)
+  const out: string[] = []
+  for (let a = 0; a < vivos.length; a++)
+    for (let b = a + 1; b < vivos.length; b++) {
+      const comun = vivos[a].codigo.filter(x => vivos[b].codigo.includes(x))
+      if (comun.length) out.push(`${vivos[a].id} y ${vivos[b].id} (${comun.slice(0, 3).join(', ')})`)
+    }
+  return out
+}
+
+function resumenCola(cola: { lotes: Lote[]; conCodigo: boolean }): string[] | undefined {
+  const pend = cola.lotes.filter(l => l.marca !== '✅')
+  if (!pend.length) return undefined
+  const prox = pend.find(l => l.marca === '🟡') ?? pend[0]
+  const nombre = (l: Lote) => `${l.id} (${(l.pendientes.length ? l.pendientes : l.tareas).join(' · ')})`
+  const out = [`  - Próximo LOTE: ${nombre(prox)}${prox.modelo ? ` — ${prox.modelo}` : ''}.` +
+    (pend.length > 1 ? ` Después: ${pend.filter(l => l !== prox).slice(0, 3).map(nombre).join(', ')}.` : '') +
+    ' Se hace el LOTE entero en una ventana (también si piden una sola de sus tareas); tarjeta/prompt = «Hacé el lote …».']
+  if (!cola.conCodigo && pend.length > 1)
+    out.push('  - ⚠️ La cola no tiene columna «Código» (qué archivos/áreas toca cada lote): sumarla; sin ella no se ve qué lotes juntar.')
+  const s = solapes(cola.lotes)
+  if (s.length)
+    out.push(`  - ⚠️ Lotes pendientes que tocan el mismo código: ${s.slice(0, 3).join('; ')}${s.length > 3 ? ` (+${s.length - 3})` : ''}. Juntarlos en uno, o escribir «aparte: motivo» en su Código.`)
+  return out
+}
+
 export function resumenPlanes(planes: Plan[]): string[] {
   const vivos = planes
     .filter(p => !cerrado(p.texto))
@@ -48,6 +112,15 @@ export function resumenPlanes(planes: Plan[]): string[] {
     const activas = pend.filter(t => !pausada(t))
     const medias = activas.filter(t => t.marca === '🟡')
     const prox = medias[0] ?? activas[0]
+    const cola = lotes(p.texto)
+    const lineasCola = cola && resumenCola(cola)
+    if (lineasCola) {
+      // Con cola por lotes, el orden lo da la cola (no el del archivo).
+      out.push(`- \`docs/${p.nombre}\`: ${hechas}/${p.ts.length} tareas hechas.`, ...lineasCola)
+      for (const t of medias) if (t.nota) out.push(`  - ${corto(t.titulo)}: ${t.nota}`)
+      if (pausadas.length) out.push(`  - En pausa por decisión tuya: ${pausadas.map(t => corto(t.titulo)).join(', ')}.`)
+      continue
+    }
     out.push(`- \`docs/${p.nombre}\`: ${hechas}/${p.ts.length} hechas. ` + (prox
       ? `${prox.marca === '🟡' ? 'A MEDIAS' : 'Próxima'}: «${prox.titulo}» (línea ${prox.linea}).` +
         (activas.length > 1 ? ` Después: ${activas.filter(t => t !== prox).slice(0, 4).map(t => corto(t.titulo)).join(', ')}.` : '')
@@ -186,6 +259,6 @@ export function armarTablero(d: { planes: Plan[]; pruebas?: string; resumen?: st
   if (err) lineas.push(err)
   const peso = lineaPeso(d)
   if (peso) lineas.push(peso)
-  lineas.push('Si Nacho pide "la próxima tarea", es la de arriba: leer SOLO ese rango del plan.')
+  lineas.push('Si Nacho pide "la próxima tarea", es el lote (o la tarea) de arriba: leer SOLO esos rangos del plan.')
   return lineas.join('\n')
 }

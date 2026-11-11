@@ -64,5 +64,6 @@ Config: `.claude/harness.json` del proyecto MANDA; si no existe o le falta una c
      `own_initiative`, ver «Próximo paso = TARJETA» en las reglas), después del commit + push. En el texto una
      línea: «Te dejé la tarjeta de T3 (Sonnet · medio) — T3 · <título>: <qué hace, 1 frase breve>».
      Si la Nota pide un modelo o esfuerzo MAYOR que el de esta ventana, la app no lo deja: en vez de tarjeta,
-     prompt exacto ENTERO y seguido para copiar («Ventana nueva, Opus, esfuerzo alto: `Hacé la tarea T3 de docs/PLAN-x.md`»)
-     y DESPUÉS, fuera del prompt, «— T3 · <título>: <qué hace>». En modo automático no se hace esto (lo maneja `automatico`).
+     prompt exacto ENTERO y seguido para copiar («Ventana nueva, Opus, esfuerzo alto: `Hacé el lote L3 de docs/PLAN-x.md`»;
+     sin cola por lotes: `Hacé la tarea T3 de …`) y DESPUÉS, fuera del prompt, «— L3 · T5 · T6: <qué gana>».
+     Antes de la tarjeta: si el próximo lote tiene UNA tarea y otro lote ⬜ toca su código (el tablero lo avisa), juntarlos. En modo automático no se hace esto (lo maneja `automatico`).

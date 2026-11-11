@@ -24,6 +24,10 @@ description: >-
    **Lotes** (regla «Lotes»): la cola se escribe como LOTES (L1, L2…) = tareas que tocan el mismo código y entran
    juntas en una sesión, con UNA Nota (modelo/esfuerzo/necesita) por lote y una sola corrida de pruebas caras/bancadas.
    No juntar lo que no comparte código. Una sola cola vigente en la cabecera; la vieja → `docs/archivo/`.
+   Tabla: `| Lote | Tareas (mismo código) | Qué gana Nacho | Modelo | Código |`; «Código» = archivos/carpetas que toca
+   (`nucleo/router.py` · `interfaz/web/`), con «aparte: motivo» si de verdad no se puede juntar con otro que toca lo
+   mismo. El tablero lee esa columna y avisa dos lotes ⬜ con el mismo código. Al SUMAR tareas (tanda de pruebas,
+   ideas): primero buscar el lote ⬜ con su código; lote nuevo solo si no hay ninguno.
    **Pruebas**: si una tarea solo se puede probar con Nacho porque falta una herramienta (simulador, lector de
    registro), el primer lote la construye.
    **Resumen**: sumar cada tarea nueva a `docs/RESUMEN-pendientes.md` (crearlo si falta; ver regla «Resumen de
@@ -33,12 +37,12 @@ description: >-
 6. **Responder**: resumen del plan en 3–6 líneas + decisiones pendientes + Próximo paso de T1. Si no quedan
    decisiones pendientes: **tarjeta** de T1 (ver «Próximo paso = TARJETA» en las reglas); si las hay, primero
    el OK de Nacho y la tarjeta después. Si T1 pide más modelo/esfuerzo que esta ventana: el prompt exacto
-   («Ventana nueva, <modelo>, esfuerzo <x>: "Hacé la tarea T1 de docs/PLAN-<tema>.md"»).
+   («Ventana nueva, <modelo>, esfuerzo <x>: "Hacé el lote L1 de docs/PLAN-<tema>.md"»).
 
 ## Molde
 ```markdown
 # PLAN <tema> — <objetivo en 1 línea> (pedido de Nacho, <fecha>)
-Cada tarea es de UNA sesión nueva: "Hacé la tarea Tn de docs/PLAN-<tema>.md".
+Cada LOTE es de UNA sesión nueva: "Hacé el lote Ln de docs/PLAN-<tema>.md".
 Al terminar cada una: /cerrar-tarea.
 
 ## Diagnóstico / contexto

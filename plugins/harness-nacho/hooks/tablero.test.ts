@@ -1,6 +1,6 @@
 import { expect, test } from 'claude-code/testing'
 
-import { archivosPorcelain, armarTablero, avisoAutomejora, contarPruebas, lineaErrores, lineaNovedades, lineaPeso, lineaResumen, resumenPlanes, tareas, TOPE_KB } from './tablero'
+import { archivosPorcelain, armarTablero, avisoAutomejora, contarPruebas, lineaErrores, lineaNovedades, lineaPeso, lineaResumen, lotes, resumenPlanes, solapes, tareas, TOPE_KB } from './tablero'
 import { leerConfig } from './guardianes'
 
 const ERRORES = [
@@ -76,6 +76,57 @@ test('la pausada por decisión no es «A MEDIAS» ni la próxima; va en una lín
   expect(out).not.toMatch(/no quiere nube/)
   const soloPausa = resumenPlanes([{ nombre: 'PLAN-q.md', texto: '# q\n## T1 — x  🟡\n> ⏸ EN PAUSA (hoy): y', mtimeMs: 1 }]).join('\n')
   expect(soloPausa).toMatch(/0\/1 hechas\. Todo lo pendiente está en pausa\./)
+})
+
+// Jarvis 11/11 (literal): el tablero dijo «Próxima: T34b» (estaba en Superfluo, pero antes en el archivo) y la tarjeta
+// abrió «la tarea A9» sola, aunque A9 y T60c tocaban el mismo código.
+const PLAN_COLA = [
+  '# PLAN j',
+  '## Cola por lotes',
+  '| Lote | Tareas (mismo código) | Qué gana | Modelo | Código |',
+  '|---|---|---|---|---|',
+  '| **L6** ✅ | T22 ✅ · T34 ✅ (resto → T34b, tras T3d) | escribir | Opus · alto | `nucleo/dictado.py` |',
+  '| **L8b** ⬜ | A9 | orden directa | Opus · alto | `nucleo/router.py` · `nucleo/permisos.py` |',
+  '| **L8c** ⬜ | T60c | seguir el hilo | Opus · alto | `nucleo/router.py` · `nucleo/espera.py` |',
+  '| **L9** ⬜ | A8 | ensayo | Opus · medio | `nucleo/router.py` (aparte: necesita L8b probado) |',
+  '| **L10** 🟡 | I15 ✅ · F1 | ventana | Sonnet · alto | `interfaz/web/` |',
+  '',
+  '## T34b — Traducir  ⬜',
+  '## A9 — Orden directa  ⬜',
+  '## T60c — Hilo  ⬜',
+].join('\n')
+
+test('cola por lotes: lee lotes, tareas pendientes, modelo y código', async () => {
+  const c = lotes(PLAN_COLA)!
+  expect(c.conCodigo).toBe(true)
+  expect(c.lotes.map(l => l.id)).toEqual(['L6', 'L8b', 'L8c', 'L9', 'L10'])
+  expect(c.lotes[0].tareas).toEqual(['T22', 'T34'])
+  expect(c.lotes[4].pendientes).toEqual(['F1'])
+  expect(c.lotes[1].codigo).toEqual(['nucleo/router.py', 'nucleo/permisos.py'])
+  expect(c.lotes[3].aparte).toBe(true)
+  expect(lotes('# sin cola\n## T1 — x  ⬜')).toBeUndefined()
+})
+
+test('cola por lotes: lo próximo es el LOTE de la cola (a medias primero), no la primera tarea del archivo', async () => {
+  const out = resumenPlanes([{ nombre: 'PLAN-j.md', texto: PLAN_COLA, mtimeMs: 1 }]).join('\n')
+  expect(out).toMatch(/Próximo LOTE: L10 \(F1\) — Sonnet · alto/)
+  expect(out).toMatch(/Después: L8b \(A9\), L8c \(T60c\), L9 \(A8\)/)
+  expect(out).toMatch(/Hacé el lote/)
+  expect(out).not.toMatch(/T34b/)
+})
+
+test('cola por lotes: dos lotes pendientes que tocan el mismo código se avisan; «aparte» no', async () => {
+  const out = resumenPlanes([{ nombre: 'PLAN-j.md', texto: PLAN_COLA, mtimeMs: 1 }]).join('\n')
+  expect(out).toMatch(/mismo código: L8b y L8c \(nucleo\/router\.py\)\./)
+  expect(out).not.toMatch(/L9 \(nucleo/)
+  expect(out).not.toMatch(/L6 y/) // un lote hecho no cuenta
+  const ls = lotes(PLAN_COLA)!.lotes
+  expect(solapes(ls)).toEqual(['L8b y L8c (nucleo/router.py)'])
+  // otros temas: carpetas iguales, sin solape, y la cola sin columna Código
+  const otra = '| Lote | Tareas | Modelo | Código |\n|---|---|---|---|\n| L1 ⬜ | T1 | Opus | `src/ui/` |\n| L2 ⬜ | T2 | Opus | `src/db.py` |\n| L3 ⬜ | T3 · T4 | Haiku | `src/ui/` · `css/` |'
+  expect(solapes(lotes(otra)!.lotes)).toEqual(['L1 y L3 (src/ui/)'])
+  const sinCod = resumenPlanes([{ nombre: 'PLAN-s.md', texto: '# s\n| Lote | Tareas | Modelo |\n|---|---|---|\n| L1 ⬜ | T1 | Opus |\n| L2 ⬜ | T2 | Opus |\n## T1 — a  ⬜\n## T2 — b  ⬜', mtimeMs: 1 }]).join('\n')
+  expect(sinCod).toMatch(/no tiene columna «Código»/)
 })
 
 test('sin planes pendientes lo dice', async () => {

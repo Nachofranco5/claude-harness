@@ -14,6 +14,9 @@ description: >-
   ese orden, leyendo cada una por rango cuando le toca. Una suite completa al final del lote (tests puntuales entre
   medio), un commit por tarea, `cerrar-tarea` por tarea pero Consejos/tarjeta una sola vez al final. Si el uso no
   alcanza para todas: cerrar las hechas y marcar el lote `🟡` con `> ⏸ Cortado` (cuáles faltan).
+- **Piden UNA tarea que está en un lote con otras ⬜** («hacé la T5») → se hace el LOTE entero (decirlo en una línea).
+  Si la pedida va sola en su lote pero el tablero avisa que otro lote ⬜ toca su código → juntarlos en la cola primero
+  (o «aparte: motivo») y hacer el lote resultante.
 - Un solo Grep `^## ` con `-n` sobre el plan (o sobre `docs/PLAN-*.md` si no se dijo cuál; si el id está en
   más de uno, preguntar): da la línea de la tarea y la del título siguiente. Leer SOLO ese rango + las
   primeras ~5 líneas del plan. "Decisiones" solo si la tarea la nombra o hay dudas.
