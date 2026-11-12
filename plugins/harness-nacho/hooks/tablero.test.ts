@@ -166,11 +166,12 @@ test('tablero completo con git y uso', async () => {
   expect(t).not.toMatch(/tanda de pruebas/)
 })
 
-test('con 6 o más pruebas atrasadas, pide la tanda antes de seguir', async () => {
+test('con 6 o más pruebas atrasadas, avisa pero NO frena la cola (Nacho, 2026-11-12)', async () => {
   const pruebas = Array.from({ length: 6 }, (_, i) => `## ⬜ ${i + 1} · T${i} — algo`).join('\n')
   const t = armarTablero({ planes: [], pruebas })
   expect(t).toMatch(/Pruebas pendientes de Nacho: 6/)
-  expect(t).toMatch(/tanda de pruebas ANTES de la próxima tarea/)
+  expect(t).toMatch(/NO frenan la cola/)
+  expect(t).not.toMatch(/tanda de pruebas ANTES/)
 })
 
 test('git status: no se come la primera letra de la ruta', async () => {

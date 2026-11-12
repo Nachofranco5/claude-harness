@@ -254,7 +254,8 @@ export function armarTablero(d: { planes: Plan[]; pruebas?: string; resumen?: st
   const n = contarPruebas(d.pruebas)
   if (n !== undefined) lineas.push(`- Pruebas pendientes de Nacho: ${n} (\`docs/PRUEBAS-PENDIENTES.md\`).`)
   // Jarvis 21–29/10: con 6–8 pruebas atrasadas, 17 de 41 versiones arreglaron algo ya «hecho»: se construía encima sin probar.
-  if (n !== undefined && n >= TANDA_PRUEBAS) lineas.push(`  - ⚠️ ${n} ≥ ${TANDA_PRUEBAS}: ofrecerle a Nacho la tanda de pruebas ANTES de la próxima tarea (lo nuevo se apoya en lo que no probó).`)
+  // Nacho 2026-11-12: las pruebas NO frenan la cola (le dan fiaca y trababan todo): se sigue y se ofrecen en UNA línea al cierre.
+  if (n !== undefined && n >= TANDA_PRUEBAS) lineas.push(`  - ${n} ≥ ${TANDA_PRUEBAS}: NO frenan la cola (Nacho, 2026-11-12). Seguir con el lote; al cierre, una línea ofreciendo la tanda (sin insistir).`)
   const err = lineaErrores(d.errores)
   if (err) lineas.push(err)
   const peso = lineaPeso(d)

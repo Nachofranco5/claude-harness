@@ -66,8 +66,10 @@ El `CLAUDE.md` del proyecto manda en lo específico. Si sos un subagente: solo a
   las parecidas y sin jerga. **Si falta la herramienta para probar solo** (frases habladas sin micrófono, leer un
   registro), construirla va ANTES que lo nuevo (Nacho, 2026-11-03). Lo que la app anota sola (caídas, tiempos, errores)
   lo lee Claude del registro: nunca es prueba para Nacho, ni lo que dura «un día de uso».
-- Pruebas para Nacho en `docs/PRUEBAS-PENDIENTES.md`, en tandas (al final del plan o con ≥ 6, que el tablero avisa y se
-  le ofrecen ANTES de la próxima tarea; nunca sueltas), SOLO lo pendiente y en el orden en que las hace. Formato, y qué
+- **Las pruebas de Nacho NUNCA frenan la cola** (Nacho, 2026-11-12: «me dan una fiaca tremenda»): se sigue con el plan;
+  solo espera lo que de verdad no se puede hacer sin él (su grabación, su cuenta, una decisión), y eso lo dice la Nota
+  del lote en «Necesita». Pruebas para Nacho en `docs/PRUEBAS-PENDIENTES.md`, en tandas (nunca sueltas), ofrecidas en
+  UNA línea al cierre sin insistir, SOLO lo pendiente y en el orden en que las hace. Formato, y qué
   hacer cuando devuelve resultados (→ `PRUEBAS-REALIZADAS.md`, que es para Claude): skill `cerrar-tarea`, paso 4.
 
 ## Al terminar una tarea (skill `cerrar-tarea`: tiene la checklist completa)
