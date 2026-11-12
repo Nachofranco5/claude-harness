@@ -78,7 +78,10 @@ siempre una tarjeta con el modelo justo: la tarjeta de una ventana Sonnet no pue
    - La app deja arrancar sesiones en un turno que empezó Nacho y en el aviso de fin que viene detrás (si Nacho
      pidió esas tareas en ventanas propias). Probado 2026-10-21: en una ventana que abrió Nacho, P1→P2→P3 se
      encadenaron solas; en una ventana abierta por OTRA sesión, el aviso de fin fue rechazado (por eso el
-     coordinador tiene que ser una ventana que abre Nacho). Si te rechaza: NO
+     coordinador tiene que ser una ventana que abre Nacho). **2026-11-12: cambió** — en una ventana que abrió
+     Nacho el aviso de fin («side-sessions-event») también fue rechazado («Start sessions only on the user's own
+     words»): hoy cada lote necesita un mensaje de Nacho (clic en la tarjeta o «seguí»). Si no hay herramienta
+     `PushNotification`, el aviso al celular va con `SendUserFile` `status:"proactive"` (un .md corto del scratchpad). Si te rechaza: NO
      reintentar ni buscar otra vía (tareas programadas, etc.: el bloqueo es a propósito). Dejar la **tarjeta**:
      `start_session` igual pero `initiation:"own_initiative"` (mismo model/effort/prompt/background, sin
      `wake_when_done`) + `PushNotification` «<id> lista para arrancar: un clic en la tarjeta». Cuando Nacho la
