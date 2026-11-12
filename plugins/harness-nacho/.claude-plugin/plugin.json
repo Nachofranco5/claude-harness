@@ -1,6 +1,6 @@
 {
   "name": "harness-nacho",
-  "version": "0.3.24",
+  "version": "0.3.25",
   "description": "Reglas de trabajo de Nacho (con Perfil y Lecciones) + tablero al arrancar (tareas, git, uso, pruebas, errores de la app, novedades para Claude Code) + scripts sin LLM (buscar_novedades, medir_tokens) + skills (tarea, cerrar-tarea, planificar, proyecto-nuevo, cierre-charla, podar, plugins-proyecto, automejora) y subagentes (explorador, verificador) + guardianes (cierre, lectura cara, versión atrasada)",
   "author": { "name": "Nacho" }
 }

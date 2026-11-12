@@ -159,6 +159,9 @@ Pruebas → 3–8 líneas en `CHANGELOG.md` → `docs/PRUEBAS-PENDIENTES.md` →
   42, «Sleep Reason»). Antes de pedirle una prueba a Nacho, buscar el registro que ya la tiene.
 - 2026-11-04 · Intenté sumarme permisos en `.claude/settings.json` ([Self-Modification], con razón) → Claude NUNCA cambia
   sus propios permisos: le deja a Nacho el cambio exacto (qué línea y por qué) para que lo apruebe él.
+- 2026-11-12 · Un permiso me frenó (leer `.venv`) y lo seguí de largo → **un permiso que traba es PRIORIDAD** (Nacho:
+  «no quiero cuellos de botella»): decirlo EN ESE MOMENTO con el cambio exacto (archivo, línea, qué poner y qué riesgo
+  tiene); lo que no sea mis propios permisos y se pueda arreglar sin pedir (rutas, PATH, una herramienta), arreglarlo ya.
 - 2026-11-08 · Un `def` nuevo pisó otro del mismo nombre en ese archivo (Jarvis `bench/cerebro.py`) → antes de un `def`
   en un archivo grande, grep `def <nombre>`.
 - 2026-11-10 · Un sitio dio 403 a una descarga directa y fui a probar cabeceras para ver cuál pasaba ([Bot Check
