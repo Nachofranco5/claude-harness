@@ -21,17 +21,23 @@ Config: `.claude/harness.json` del proyecto MANDA; si no existe o le falta una c
    Versión: seguir la costumbre del proyecto (mirar las últimas entradas: por tarea o por plan); si no hay
    costumbre y existe `VERSION`, subir el último número (0.1.0 → 0.1.1) y actualizar `VERSION`.
 4. **docs/PRUEBAS-PENDIENTES.md**: solo lo que Claude NO pudo probar solo (voz, celular, reinicio, hardware, gusto);
-   lo demás se prueba acá con evidencia. Si ya hay una prueba parecida, sumar el paso ahí en vez de crear otra (si no hay nada,
-   no agregar). Formato (Markdown prolijo; pasos que se entiendan solos, sin jerga: lo vago no le sirve):
+   lo demás se prueba acá con evidencia. **Las tandas se arman por LO QUE NACHO TIENE A MANO** (el celular, su navegador,
+   solo la voz, un reinicio…), NUNCA una por tarea (Nacho, 2026-11-13: «no siento que se hayan agrupado»; el archivo
+   tenía 9 pruebas, una por tarea, con pasos repetidos). Paso nuevo → a la tanda que pide lo mismo a mano, con `(Tn)` al
+   final; tanda nueva solo si ninguna sirve. Si no hay nada que probar, no agregar.
+   **Al sumar, releer TODAS las tandas**: un paso que esta tarea volvió viejo (ej. «te pregunta ¿Sí o no? → decí no»
+   cuando ya no pregunta) se corrige o se saca; un paso viejo puede mandar algo de verdad. Lo que no es una prueba
+   (una grabación que destraba una tarea, algo que «pasa solo») va al final, con su título diciendo qué es.
+   Formato (Markdown prolijo; pasos que se entiendan solos, sin jerga: lo vago no le sirve):
    ```
-   ## ⬜ <n> · <Tn> — <qué se prueba>
+   ## ⬜ Tanda <n> · <lo que necesitás a mano> — <qué se prueba> (~minutos)
    **Antes:** <lo que tiene que saber/preparar desde el principio (ej. «anotá la hora si no despierta»), o quitar la línea>
-   1. Abrí <X>
-   2. Tocá <Y> → debería pasar <Z>; si pasa <W>, avisame.
+   1. Abrí <X> (T5)
+   2. Tocá <Y> → debería pasar <Z>; si pasa <W>, avisame. (T7)
    **Avisame:** <qué datos devolver; si falla: la frase EXACTA que dijo/escribió y lo que respondió la app (→ test)>
    ```
-   Subpruebas con `### ⬜ <n>a`. Insertarla en el ORDEN en que conviene hacerlas (lo que dura toda la tanda o hay que
-   tener en cuenta desde el principio, primero; renumerar). Si Nacho ya devolvió resultados de alguna:
+   Ordenar las tandas como conviene hacerlas (lo que dura toda la tanda o hay que tener en cuenta desde el principio,
+   primero; renumerar). Si Nacho ya devolvió resultados de alguna:
    sacarla de pendientes y resumirla arriba de `docs/PRUEBAS-REALIZADAS.md` (`## ✅ <fecha> · <Tn> — título`
    + 1–3 viñetas: qué salió y a qué tarea fue cada problema). En pendientes nunca quedan ✅.
 5. **Manual** (`manual` de harness.json, o lo que diga el CLAUDE.md): si cambió algo que el usuario ve,
