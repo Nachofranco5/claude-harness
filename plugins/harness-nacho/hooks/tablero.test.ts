@@ -1,6 +1,6 @@
 import { expect, test } from 'claude-code/testing'
 
-import { archivosPorcelain, armarTablero, avisoAutomejora, contarPruebas, lineaErrores, lineaNovedades, lineaPeso, lineaResumen, lotes, resumenPlanes, solapes, tareas, TOPE_KB } from './tablero'
+import { archivosPorcelain, armarTablero, avisoAutomejora, contarPruebas, difResumen, lineaErrores, lineaNovedades, lineaPeso, lineaResumen, lotes, resumenPlanes, solapes, tareas, tocan, TOPE_KB } from './tablero'
 import { leerConfig } from './guardianes'
 
 const ERRORES = [
@@ -118,7 +118,8 @@ test('cola por lotes: lo próximo es el LOTE de la cola (a medias primero), no l
 test('cola por lotes: dos lotes pendientes que tocan el mismo código se avisan; «aparte» no', async () => {
   const out = resumenPlanes([{ nombre: 'PLAN-j.md', texto: PLAN_COLA, mtimeMs: 1 }]).join('\n')
   expect(out).toMatch(/mismo código: L8b y L8c \(nucleo\/router\.py\)\./)
-  expect(out).not.toMatch(/L9 \(nucleo/)
+  // «aparte» no es error, pero el choque se sigue mostrando para revisarlo (Jarvis 13/11: escondía T56 junto a N2)
+  expect(out).toMatch(/mismo código: L8b y L8c \(nucleo\/router\.py\)\.[^\n]*\n.*dicen «aparte».*L8b y L9 \(nucleo\/router\.py\)/)
   expect(out).not.toMatch(/L6 y/) // un lote hecho no cuenta
   const ls = lotes(PLAN_COLA)!.lotes
   expect(solapes(ls)).toEqual(['L8b y L8c (nucleo/router.py)'])
@@ -127,6 +128,46 @@ test('cola por lotes: dos lotes pendientes que tocan el mismo código se avisan;
   expect(solapes(lotes(otra)!.lotes)).toEqual(['L1 y L3 (src/ui/)'])
   const sinCod = resumenPlanes([{ nombre: 'PLAN-s.md', texto: '# s\n| Lote | Tareas | Modelo |\n|---|---|---|\n| L1 ⬜ | T1 | Opus |\n| L2 ⬜ | T2 | Opus |\n## T1 — a  ⬜\n## T2 — b  ⬜', mtimeMs: 1 }]).join('\n')
   expect(sinCod).toMatch(/no tiene columna «Código»/)
+})
+
+// Jarvis 13/11 (literales): `voz/` no chocaba con `voz/oido.py`; «aparte: modelo nuevo» sin un porqué de verdad;
+// «**L9** 🟡 (seguir: ver ⏸ de A8)» no se leía y el tablero proponía L13; el resumen tenía lotes distintos a la cola.
+test('tocan: carpeta y algo adentro, mismo archivo con y sin carpeta, src/ no cuenta; palabras sueltas no', async () => {
+  expect(tocan('voz/', 'voz/oido.py')).toBe(true)
+  expect(tocan('sistema/fichas/', 'sistema/fichas/pokemon.py')).toBe(true)
+  expect(tocan('partidos.py', 'sistema/partidos.py')).toBe(true)
+  expect(tocan('src/jarvis/nucleo/memoria.py', 'nucleo/memoria.py')).toBe(true)
+  expect(tocan('src/ui/', 'src/ui/boton.tsx')).toBe(true)      // otro proyecto
+  expect(tocan('api/', 'web/api.ts')).toBe(false)
+  expect(tocan('voz/oido.py', 'voz/vad.py')).toBe(false)
+  expect(tocan('textos de todo', 'diseño')).toBe(false)
+})
+
+test('cola: «aparte» solo con un porqué de ≥ 3 palabras; un lote 🟡 con texto después de la marca se lee', async () => {
+  const t = ['| Lote | Tareas | Modelo | Código |', '|---|---|---|---|',
+    '| **L9** 🟡 (seguir: ver ⏸ de A8) | A8 🟡 | Opus · medio | `bench/pasos.py` |',
+    '| **L12** ⬜ | N2 | Opus | `voz/despertador.py` |',
+    '| **L21** ⬜ | T56 | Opus | `voz/` (aparte: modelo nuevo) |',
+    '| **L14** ⬜ | N3 | Opus | `voz/despertador.py` (aparte: necesita N2 y una semana de uso) |',
+    '', '## A8 — x  🟡', '## N2 — x  ⬜', '## T56 — x  ⬜', '## N3 — x  ⬜'].join('\n')
+  const ls = lotes(t)!.lotes
+  expect(ls.map(l => `${l.id}${l.marca}${l.aparte ? 'a' : ''}`)).toEqual(['L9🟡', 'L12⬜', 'L21⬜', 'L14⬜a'])
+  expect(solapes(ls)).toEqual(['L12 y L21 (voz/despertador.py)'])
+  expect(solapes(ls, true)).toEqual(['L12 y L14 (voz/despertador.py)', 'L21 y L14 (voz/)'])
+  expect(resumenPlanes([{ nombre: 'PLAN-j.md', texto: '# j\n' + t, mtimeMs: 1 }]).join('\n')).toMatch(/Próximo LOTE: L9 \(A8\)/)
+})
+
+test('el resumen de Nacho es la cola TAL CUAL: faltan, sobran, otras tareas, otro orden', async () => {
+  const cola = lotes(PLAN_COLA)!.lotes   // pendientes: L8b (A9), L8c (T60c), L9 (A8), L10 (F1)
+  const bien = '# R\n## Importante (en orden)\n1. **L8b · A9** · a\n2. **L8c · T60c** · b\n3. **L9 · A8** · c\n4. **L10 · F1** · d\n## Superfluo\n- **T9c** · x'
+  expect(difResumen(bien, cola)).toEqual([])
+  const mal = '# R\n## Importante\n1. **L8c · T60c** · b\n2. **L8b · A9 · T60c** · a\n3. **L6 · T22** · c\n## Superfluo\n- **L10 · F1** · d'
+  expect(difResumen(mal, cola)).toEqual([
+    'faltan L9, L10', 'sobran L6 (hechos o fuera de la cola)',
+    'L8b dice «A9 · T60c» y la cola «A9»', 'otro orden (la cola: L8b → L8c)'])
+  const out = armarTablero({ planes: [{ nombre: 'PLAN-j.md', texto: PLAN_COLA, mtimeMs: 1 }], resumen: mal })
+  expect(out).toMatch(/El resumen no es igual a la cola: faltan L9, L10; sobran L6/)
+  expect(armarTablero({ planes: [{ nombre: 'PLAN-j.md', texto: PLAN_COLA, mtimeMs: 1 }], resumen: bien })).not.toMatch(/no es igual/)
 })
 
 test('sin planes pendientes lo dice', async () => {

@@ -45,7 +45,7 @@ Config: `.claude/harness.json` del proyecto MANDA; si no existe o le falta una c
 6. **Memoria del proyecto**: si cambió algo estructural (archivo nuevo, API nueva, cómo probar) → mapa del
    `CLAUDE.md` en 1 línea. El detalle de un área va a `.claude/rules/<área>.md` (con `paths:`), no al
    CLAUDE.md. Si el CLAUDE.md pasa de ~100 líneas o 12 KB → sugerir `/podar` en Consejos.
-7. **Plan**: título → `✅ (fecha; resumen de 1 línea)`. Borrar `> ⏸` si quedó. En `docs/RESUMEN-pendientes.md`: borrar la línea de la tarea y sumar la de cada tarea nueva. Lo visto de paso → reglas
+7. **Plan**: título → `✅ (fecha; resumen de 1 línea)`. Borrar `> ⏸` si quedó. En `docs/RESUMEN-pendientes.md` (igual a la cola, una línea por lote): sacar la tarea de la línea de su lote (lote ✅ → borrar la línea); tarea nueva → dentro de la línea de su lote. Lo visto de paso → reglas
    «Lo que NO es de la misma clase» y «La lista no crece sola» (arreglarlo si es chico, sumarlo a la ⬜ del mismo código
    si Nacho lo vería, o nada; NUNCA un id nuevo por algo que no pidió ni vería). Si la tarea es parte de un lote, seguir
    con la próxima del lote en la misma ventana (una suite al final del lote, un commit por tarea). Si todas las tareas quedaron ✅ → `(cerrado)` en el título del plan.

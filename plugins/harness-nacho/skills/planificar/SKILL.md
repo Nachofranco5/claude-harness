@@ -28,6 +28,13 @@ description: >-
    (`nucleo/router.py` · `interfaz/web/`), con «aparte: motivo» si de verdad no se puede juntar con otro que toca lo
    mismo. El tablero lee esa columna y avisa dos lotes ⬜ con el mismo código. Al SUMAR tareas (tanda de pruebas,
    ideas): primero buscar el lote ⬜ con su código; lote nuevo solo si no hay ninguno.
+   **Antes de dar la cola por buena** (Nacho, 2026-11-13: T56 iba sola y usaba la misma grabación de su voz que N2;
+   V4 sola y regeneraba las mismas frases que N1): «Código» = rutas de verdad (archivo o carpeta, nunca «textos de
+   todo» ni «diseño»), y por cada lote de UNA tarea preguntarse qué COMPARTE con otro aunque no sea un archivo: la
+   misma grabación o dato de Nacho, lo mismo que se regenera, la misma bancada cara. Si comparte → al mismo lote.
+   «aparte: motivo» = por qué NO entra en la misma ventana (no entra por tamaño, espera algo de Nacho, necesita que
+   el otro esté hecho), nunca «es otro modelo». `docs/RESUMEN-pendientes.md` repite la cola TAL CUAL: una línea
+   por lote, `N. **Lx · T1 · T2** · qué gana`, mismas tareas y mismo orden (el tablero avisa si difiere).
    **Pruebas**: si una tarea solo se puede probar con Nacho porque falta una herramienta (simulador, lector de
    registro), el primer lote la construye.
    **Resumen**: sumar cada tarea nueva a `docs/RESUMEN-pendientes.md` (crearlo si falta; ver regla «Resumen de

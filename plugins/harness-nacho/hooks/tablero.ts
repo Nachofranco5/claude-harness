@@ -50,7 +50,9 @@ export function lotes(texto: string): { lotes: Lote[]; conCodigo: boolean } | un
   for (const l of lineas.slice(i + 1)) {
     if (!l.trim().startsWith('|')) break
     const c = celdas(l)
-    const m = /^\*{0,2}(L[\w.-]*?)\*{0,2}\s*(⬜|🟡|✅)?$/u.exec(c[0] ?? '')
+    // Jarvis 13/11: «**L9** 🟡 (seguir: ver ⏸ de A8)» no se leía (texto después de la marca) y el tablero salteaba el
+    // lote a medias: decía «Próximo LOTE: L13».
+    const m = /^\*{0,2}(L[\w.-]*?)\*{0,2}\s*(⬜|🟡|✅)?(?:\s.*)?$/u.exec(c[0] ?? '')
     if (!m) continue
     const celdaT = (c[cT >= 0 ? cT : 1] ?? '').replace(/\(.*?\)/gu, '')
     const ids = [...celdaT.matchAll(RE_ID_TAREA)]
@@ -62,21 +64,63 @@ export function lotes(texto: string): { lotes: Lote[]; conCodigo: boolean } | un
       id: m[1], marca, tareas: tareasL, pendientes,
       modelo: cM >= 0 ? c[cM] : undefined,
       codigo: celdaC.replace(/\(.*?\)/gu, '').split(/[·,;]/u).map(s => s.replace(/[`*]/g, '').trim().toLowerCase()).filter(s => s && !/^aparte/u.test(s)),
-      aparte: /aparte/iu.test(celdaC),
+      // Jarvis 13/11: «(aparte: modelo nuevo)» sacaba del control a T56, que tocaba la voz igual que N2. Solo vale con un
+      // motivo de ≥ 3 palabras que diga POR QUÉ no se puede juntar.
+      aparte: /aparte\s*:\s*\S+(?:\s+\S+){2,}/iu.test(celdaC),
     })
   }
   return { lotes: out, conCodigo: cC >= 0 }
 }
 
+// ¿Dos entradas de «Código» tocan lo mismo? Igual, una carpeta y algo adentro (`voz/` y `voz/oido.py`), o el mismo
+// archivo nombrado con y sin carpeta (`partidos.py` y `sistema/partidos.py`). Jarvis 13/11: comparaba texto exacto y
+// `voz/` no chocaba con `voz/oido.py`.
+export function tocan(a: string, b: string): boolean {
+  const x = a.replace(/^\.\//u, ''), y = b.replace(/^\.\//u, '')
+  if (x === y) return true
+  const esRuta = (p: string) => /[\/.]/u.test(p) && !/\s/u.test(p)
+  if (!esRuta(x) || !esRuta(y)) return false
+  const dentro = (dir: string, p: string) => dir.endsWith('/') && (p.startsWith(dir) || p.includes(`/${dir}`))
+  const mismoArchivo = (corta: string, larga: string) => larga.endsWith(`/${corta}`)   // con o sin `src/<paquete>/`
+  return dentro(x, y) || dentro(y, x) || mismoArchivo(x, y) || mismoArchivo(y, x)
+}
+
 // Dos lotes pendientes que tocan lo mismo = una ventana de más (relee contexto y repite la suite).
-export function solapes(ls: Lote[]): string[] {
-  const vivos = ls.filter(l => l.marca !== '✅' && !l.aparte)
+// `conAparte`: los choques donde uno de los dos dice «aparte: motivo» (no son error, pero se muestran para revisarlos:
+// Jarvis 13/11, «aparte» escondía que T56 y N2 usaban la misma grabación de tu voz).
+export function solapes(ls: Lote[], conAparte = false): string[] {
+  const vivos = ls.filter(l => l.marca !== '✅')
   const out: string[] = []
   for (let a = 0; a < vivos.length; a++)
     for (let b = a + 1; b < vivos.length; b++) {
-      const comun = vivos[a].codigo.filter(x => vivos[b].codigo.includes(x))
+      if ((vivos[a].aparte || vivos[b].aparte) !== conAparte) continue
+      const comun = vivos[a].codigo.filter(x => vivos[b].codigo.some(y => tocan(x, y)))
       if (comun.length) out.push(`${vivos[a].id} y ${vivos[b].id} (${comun.slice(0, 3).join(', ')})`)
     }
+  return out
+}
+
+// `docs/RESUMEN-pendientes.md` (el control de Nacho) dice los lotes TAL CUAL la cola: mismo id, mismas tareas
+// pendientes, mismo orden (Nacho, 2026-11-13). Líneas `N. **L9 · A8** · …` de la parte de arriba (antes de «Superfluo»).
+export function difResumen(resumen: string, cola: Lote[]): string[] {
+  const arriba = resumen.split(/^##\s+(?:Superfluo|En pausa)/imu)[0] ?? ''
+  const res = [...arriba.matchAll(/^\s*\d+\w*[.)]\s+\*\*(L[\w.-]+)\s*((?:·[^*]*)?)\*\*/gmu)]
+    .map(m => ({ id: m[1], tareas: m[2].split('·').map(s => s.trim()).filter(Boolean) }))
+  const pend = cola.filter(l => l.marca !== '✅')
+  const out: string[] = []
+  const faltan = pend.filter(l => !res.some(r => r.id === l.id)).map(l => l.id)
+  if (faltan.length) out.push(`faltan ${faltan.join(', ')}`)
+  const sobran = res.filter(r => !pend.some(l => l.id === r.id)).map(r => r.id)
+  if (sobran.length) out.push(`sobran ${sobran.join(', ')} (hechos o fuera de la cola)`)
+  for (const r of res) {
+    const l = pend.find(x => x.id === r.id)
+    const deberia = l ? (l.pendientes.length ? l.pendientes : l.tareas) : []
+    if (l && deberia.join(' · ') !== r.tareas.join(' · '))
+      out.push(`${r.id} dice «${r.tareas.join(' · ')}» y la cola «${deberia.join(' · ')}»`)
+  }
+  const orden = res.map(r => r.id).filter(id => pend.some(l => l.id === id))
+  const esperado = pend.map(l => l.id).filter(id => orden.includes(id))
+  if (orden.join() !== esperado.join()) out.push(`otro orden (la cola: ${esperado.join(' → ')})`)
   return out
 }
 
@@ -92,7 +136,10 @@ function resumenCola(cola: { lotes: Lote[]; conCodigo: boolean }): string[] | un
     out.push('  - ⚠️ La cola no tiene columna «Código» (qué archivos/áreas toca cada lote): sumarla; sin ella no se ve qué lotes juntar.')
   const s = solapes(cola.lotes)
   if (s.length)
-    out.push(`  - ⚠️ Lotes pendientes que tocan el mismo código: ${s.slice(0, 3).join('; ')}${s.length > 3 ? ` (+${s.length - 3})` : ''}. Juntarlos en uno, o escribir «aparte: motivo» en su Código.`)
+    out.push(`  - ⚠️ Lotes pendientes que tocan el mismo código: ${s.slice(0, 3).join('; ')}${s.length > 3 ? ` (+${s.length - 3})` : ''}. Juntarlos en uno, o escribir «aparte: <por qué no entran en la misma ventana>» en su Código.`)
+  const ap = solapes(cola.lotes, true)
+  if (ap.length)
+    out.push(`  - Chocan pero dicen «aparte» (revisar que el motivo siga valiendo): ${ap.slice(0, 3).join('; ')}${ap.length > 3 ? ` (+${ap.length - 3})` : ''}.`)
   return out
 }
 
@@ -251,6 +298,10 @@ export function armarTablero(d: { planes: Plan[]; pruebas?: string; resumen?: st
   ]
   const res = lineaResumen(d.resumen, d.planes.some(p => !cerrado(p.texto) && tareas(p.texto).some(t => t.marca !== '✅')))
   if (res) lineas.push(res)
+  const conCola = d.planes.map(p => lotes(p.texto)).find(c => c && c.lotes.some(l => l.marca !== '✅'))
+  const dif = d.resumen !== undefined && conCola ? difResumen(d.resumen, conCola.lotes) : []
+  if (dif.length)
+    lineas.push(`  - ⚠️ El resumen no es igual a la cola: ${dif.slice(0, 4).join('; ')}${dif.length > 4 ? ` (+${dif.length - 4})` : ''}. Corregirlo YA (una línea por lote, «N. **Lx · T1 · T2** · qué gana»).`)
   const n = contarPruebas(d.pruebas)
   if (n !== undefined) lineas.push(`- Pruebas pendientes de Nacho: ${n} (\`docs/PRUEBAS-PENDIENTES.md\`).`)
   // Jarvis 21–29/10: con 6–8 pruebas atrasadas, 17 de 41 versiones arreglaron algo ya «hecho»: se construía encima sin probar.

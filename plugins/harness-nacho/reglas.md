@@ -58,9 +58,11 @@ El `CLAUDE.md` del proyecto manda en lo específico. Si sos un subagente: solo a
 ## Tablero (marcas que lee el hook al arrancar)
 - Título de tarea en el plan: `## T3 — título  ⬜` (pendiente) · `🟡` (a medias) · `✅ (fecha; resumen)` (hecha). Plan terminado entero: `(cerrado)` en su título.
 - Si se corta a medias: marcar 🟡 y dejar debajo del título `> ⏸ Cortado (fecha): dónde quedó y cómo seguir`. Borrar esa línea al retomarla. Pausada por decisión de Nacho (no por falla): `> ⏸ EN PAUSA (fecha): por qué`; el tablero no la cuenta como próxima.
-- **Resumen de pendientes** (Nacho, 2026-10-23): `docs/RESUMEN-pendientes.md` es SU control: una línea por tarea ⬜/🟡 de
-  TODOS los planes (`N. **T41** · qué gana él, en criollo`) en «## Importante (en orden)» y «## Superfluo». Tarea nueva →
-  su línea; tarea ✅ → se borra; si falta, crearlo. Su orden manda sobre las colas de los planes.
+- **Resumen de pendientes** (Nacho, 2026-10-23 y 11-13): `docs/RESUMEN-pendientes.md` es SU control. Con cola por lotes,
+  «## Importante (en orden)» = la cola TAL CUAL: una línea por lote, `N. **L9 · A8** · qué gana él, en criollo`, mismas
+  tareas y mismo orden (el tablero avisa si difiere); sin cola, una por tarea (`N. **T41** · …`). Lo de fuera de la
+  cola, en «## Superfluo» / «## En pausa». Tarea ✅ → sale de su lote; lote ✅ → se borra la línea. Si Nacho mueve una
+  línea, se mueve igual el lote en la cola (las dos quedan iguales).
 - **Pruebas: Claude prueba todo lo que puede él mismo** (tests, CLI, capturas, bancadas, logs) ANTES de entregar. A Nacho
   le quedan SOLO las que necesitan lo que Claude no tiene (su voz, su celular, un reinicio, hardware, su gusto), juntas
   las parecidas y sin jerga. **Si falta la herramienta para probar solo** (frases habladas sin micrófono, leer un
