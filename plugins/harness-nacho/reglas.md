@@ -171,6 +171,9 @@ Pruebas → 3–8 líneas en `CHANGELOG.md` → `docs/PRUEBAS-PENDIENTES.md` →
   usuario; nunca disfrazar el pedido.
 - 2026-11-17 · Un chequeo flojo (/llue/) dio ✅ con el bug vivo («recordarte avisar que llueve» sin el «si») y la prueba
   salió sola de la lista → todo chequeo de un bug se corre contra la frase MALA literal y tiene que fallar (Jarvis: `mal`).
+- 2026-11-17 · «Hacé L0 y después seguí solo hasta el límite»: hice L0 acá y al querer abrir L1 la app lo rechazó (el
+  turno ya lo había despertado una tarea de fondo, no Nacho) → con «seguí solo», abrir la 1.ª sesión del automático EN
+  EL TURNO del mensaje de Nacho, antes de esperar nada de fondo; lo de esta ventana, después.
 - 2026-11-16 · Auditoría de Jarvis: 8 subagentes (Fable/Opus) leyendo ~10.000 líneas cada uno EN PARALELO gastaron una
   ventana de 5 h y ~16 % semanal y se cortaron sin entregar nada (estimé 10–20 % para todo) → lecturas grandes: un área por
   ventana, a lo sumo 1–2 subagentes, y que cada uno ESCRIBA sus hallazgos a un archivo a medida que salen (si se corta, queda).
