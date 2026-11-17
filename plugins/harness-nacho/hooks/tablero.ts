@@ -269,6 +269,20 @@ export function lineaErrores(e?: Errores): string | undefined {
     (e.resolver ? `; al arreglar uno: \`${e.resolver}\`.` : '.')
 }
 
+// Autoprueba (Jarvis AP2, 2026-11-17): la app se prueba sola (de noche) y deja `docs/AUTOPRUEBA.md` para Claude.
+// Se lee su primera línea de datos: «Última corrida: AAAA-MM-DD HH:MM · **X/Y pruebas bien** · N errores nuevos…».
+export function lineaAutoprueba(texto?: string): string | undefined {
+  if (texto === undefined) return undefined
+  const m = texto.match(/Última corrida: (\d{4}-\d{2}-\d{2})[^·]*· \*\*(\d+)\/(\d+) pruebas bien\*\*(?: · (\d+) errores nuevos)?/u)
+  if (!m) return undefined
+  const [, fecha, bien, total, err] = m
+  const malas = Number(total) - Number(bien)
+  const errores = Number(err ?? 0)
+  if (!malas && !errores) return `- 🤖 Autoprueba (${fecha}): ${bien}/${total} ✅ (\`docs/AUTOPRUEBA.md\`).`
+  return `- 🤖 Autoprueba (${fecha}): ${malas} ❌${errores ? ` · ${errores} errores nuevos de la app` : ''} en \`docs/AUTOPRUEBA.md\`` +
+    ' → leer su sección «Fallaron» y sumar cada causa a la ⬜ del mismo código (no son pruebas para Nacho).'
+}
+
 export const TANDA_PRUEBAS = 6
 
 // Lo que se carga en CADA ventana se mide en peso, no en líneas: el CLAUDE.md de Jarvis cumplía «≤ 100 líneas» con
@@ -285,7 +299,7 @@ export function lineaPeso(d: { claudeMd?: string; reglas?: string }): string | u
     : undefined
 }
 
-export function armarTablero(d: { planes: Plan[]; pruebas?: string; resumen?: string; git?: Git; uso?: Uso[]; ahora?: number; avisos?: string[]; automejora?: string; errores?: Errores; novedades?: string; claudeMd?: string; reglas?: string }): string {
+export function armarTablero(d: { planes: Plan[]; pruebas?: string; resumen?: string; git?: Git; uso?: Uso[]; ahora?: number; avisos?: string[]; automejora?: string; errores?: Errores; novedades?: string; claudeMd?: string; reglas?: string; autoprueba?: string }): string {
   // Con novedades a la vista alcanza con esa línea: también ofrece /automejora.
   const mejora = lineaNovedades(d.novedades) ?? avisoAutomejora(d.automejora, d.ahora ?? Date.now())
   const lineas = [
@@ -309,6 +323,8 @@ export function armarTablero(d: { planes: Plan[]; pruebas?: string; resumen?: st
   if (n !== undefined && n >= TANDA_PRUEBAS) lineas.push(`  - ${n} ≥ ${TANDA_PRUEBAS}: NO frenan la cola (Nacho, 2026-11-12). Seguir con el lote; al cierre, una línea ofreciendo la tanda (sin insistir).`)
   const err = lineaErrores(d.errores)
   if (err) lineas.push(err)
+  const auto = lineaAutoprueba(d.autoprueba)
+  if (auto) lineas.push(auto)
   const peso = lineaPeso(d)
   if (peso) lineas.push(peso)
   lineas.push('Si Nacho pide "la próxima tarea", es el lote (o la tarea) de arriba: leer SOLO esos rangos del plan.')

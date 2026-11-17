@@ -1,6 +1,6 @@
 import { expect, test } from 'claude-code/testing'
 
-import { archivosPorcelain, armarTablero, avisoAutomejora, contarPruebas, difResumen, lineaErrores, lineaNovedades, lineaPeso, lineaResumen, lotes, resumenPlanes, solapes, tareas, tocan, TOPE_KB } from './tablero'
+import { archivosPorcelain, armarTablero, avisoAutomejora, contarPruebas, difResumen, lineaAutoprueba, lineaErrores, lineaNovedades, lineaPeso, lineaResumen, lotes, resumenPlanes, solapes, tareas, tocan, TOPE_KB } from './tablero'
 import { leerConfig } from './guardianes'
 
 const ERRORES = [
@@ -9,6 +9,17 @@ const ERRORES = [
   '## [0f0f0f0f] excepcion · KeyError: x', '', '- ⚠ **VOLVIÓ**: se había dado por arreglado', '',
   '## [12345678] aviso · ⚠ No pude cargar la voz', '',
 ].join('\n')
+
+test('autoprueba (Jarvis AP2): los ❌ y los errores nuevos se ven al abrir; todo bien = una línea corta', async () => {
+  const mal = '# Autoprueba\n\nÚltima corrida: 2026-11-18 03:12 · **10/12 pruebas bien** · 1 errores nuevos de la app. Correr…'
+  const l = lineaAutoprueba(mal)!
+  expect(l).toMatch(/2026-11-18\): 2 ❌ · 1 errores nuevos/)
+  expect(l).toMatch(/«Fallaron»/)
+  expect(lineaAutoprueba('Última corrida: 2026-11-18 03:12 · **12/12 pruebas bien** · 0 errores nuevos de la app.')).toMatch(/12\/12 ✅/)
+  expect(lineaAutoprueba(undefined)).toBe(undefined)
+  expect(lineaAutoprueba('# otra cosa')).toBe(undefined)
+  expect(armarTablero({ planes: [], autoprueba: mal })).toMatch(/🤖 Autoprueba/)
+})
 
 test('errores de la app: cuenta por tipo, avisa los que volvieron y pide arreglarlos antes', async () => {
   const l = lineaErrores({ texto: ERRORES, archivo: 'errores/ERRORES.md', resolver: 'uv run jarvis --errores resuelto <id>' })!
