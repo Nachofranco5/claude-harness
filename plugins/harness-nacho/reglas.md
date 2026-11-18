@@ -177,3 +177,7 @@ Pruebas → 3–8 líneas en `CHANGELOG.md` → `docs/PRUEBAS-PENDIENTES.md` →
 - 2026-11-16 · Auditoría de Jarvis: 8 subagentes (Fable/Opus) leyendo ~10.000 líneas cada uno EN PARALELO gastaron una
   ventana de 5 h y ~16 % semanal y se cortaron sin entregar nada (estimé 10–20 % para todo) → lecturas grandes: un área por
   ventana, a lo sumo 1–2 subagentes, y que cada uno ESCRIBA sus hallazgos a un archivo a medida que salen (si se corta, queda).
+- 2026-11-18 · El «⏸ Cortado» de A8 (13/11) seguía igual tras 4 sesiones más (partes 14–18 ya hechas) y casi rehago lo
+  hecho → al retomar una 🟡, `git log --grep <id>` ANTES de creerle al ⏸; y quien trabaja una 🟡 reescribe su ⏸ al cerrar.
+- 2026-11-18 · Un ✅ del ensayo escondía un bug («sin pendrive copié Tesis a Descargas»): el chequeo solo miraba que dijera
+  «pendrive» → leer lo que DIJO e HIZO cada ✅, no solo contar ✅/❌.
