@@ -154,9 +154,8 @@ Pruebas → 3–8 líneas en `CHANGELOG.md` → `docs/PRUEBAS-PENDIENTES.md` →
   <carpeta>`; descripciones largas como `description: >-`.
 - 2026-11-03 · Le puse EcoQoS al PID de `Popen` y era el LANZADOR del venv de uv (el Python real es otro proceso, no hereda)
   → lo que se aplica a un Python hijo lo hace el hijo sobre sí mismo; verificar que llegó antes de medir.
-- 2026-11-03 y 11-09 · Cortar algo de fondo (`kill` de Git Bash, y también `TaskStop` de un `uv run pytest`) dejó vivos a
-  los nietos (trabajadores de pytest, Chrome de Playwright; bloquearon bancadas) → después de cortar, mirar con
-  `Get-CimInstance Win32_Process` (no `tasklist | grep`) y cortar el árbol: `taskkill /PID <raíz> /T /F`.
+- 2026-11-03, 11-09 y 11-18 · `kill` de Git Bash y `TaskStop` (de un pytest o de un Monitor: su `tail -f`) dejan vivos
+  a los nietos → después de cortar, `procesos_colgados.py` (los ve; mira todo lo vivo) y `--cortar` hasta «OK».
 - 2026-11-03 · `powercfg /requests` pide admin → si la PC se durmió sola lo dice el Visor de eventos (System, Kernel-Power
   42, «Sleep Reason»). Antes de pedirle una prueba a Nacho, buscar el registro que ya la tiene.
 - 2026-11-04 · Intenté sumarme permisos en `.claude/settings.json` ([Self-Modification], con razón) → Claude NUNCA cambia
