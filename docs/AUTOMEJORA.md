@@ -1,7 +1,7 @@
 # Automejora del harness (skill `/harness-nacho:automejora`)
 Última pasada: 2026-11-19
 Claude Code visto: 2.1.326 en el CHANGELOG (la app trae 2.1.325; `claude` de consola = `~\.local\bin\claude.cmd`)
-A re-medir: A/B Sonnet (I15, I17c, T65b) cuando se hagan · Codex (si Nacho lo instala): ¿sus revisiones encuentran algo que el verificador no?
+A re-medir: A/B Sonnet (I15, I17c, T65b) cuando se hagan · **Codex: 4 revisiones o 2026-12-04** → decidir con `docs/MEDICION-codex.md` (criterio fijado el 20/11) · TokenEconomizer apagado 20/11 (desinstalar si nadie lo extraña).
 Descartado (no volver a proponer salvo que cambie algo): de la 1.ª lista corta (2/11): pixelfx, founder-skill, bama, animate, day-trader-skill, replica-skill, cleanyourtv, free-my-tv (un dominio, no el harness) · new-term-radar (duplica `buscar_novedades.py`) · my-claude-code-mods (mods personales) · CodeRabbit (cuenta externa) · groundwork-specflow, Roll Call, AI Skills (duplican el harness) · LocalLore (duplica la memoria) · Kobiton (móvil) · Exa (ya hay WebSearch) · coding-agent-skills, py-pit (pisan superpowers/uv) · claude-telegram-voice, plugin oficial de Telegram (Jarvis tiene su bot) · code-review-harness (lo cubre el verificador) · AnythingMCP (nube de terceros) · (10/11) best-agent-memory-mcp (ranking; duplica la memoria) · agent-autoloop (duplica `automatico`) · champion-kit, xcode (otro uso) · (19/11) lot-map (la app ya muestra tareas y subagentes) · 9routerx (gateway de terceros en el medio de Claude) · Brain4Agent (memoria CJK) · article2media, phonebox, agentes-chat, ste80-humanizer, cinematic-skill, sap-ux-fiori-tools, theme-examples (otro uso).
 
 ## Historial (lo más nuevo arriba; ≤ 8 líneas por pasada)

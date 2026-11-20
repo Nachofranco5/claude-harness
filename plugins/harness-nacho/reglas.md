@@ -134,11 +134,10 @@ Pruebas → 3–8 líneas en `CHANGELOG.md` → `docs/PRUEBAS-PENDIENTES.md` →
   `%LOCALAPPDATA%\Claude-Data\…`); `claude` de consola = `~\.local\bin\claude.cmd` (lo deja `instalar.ps1`) y NO tiene
   sesión propia: en una PC nueva `claude -p` dice «Not logged in» hasta que Nacho corra `claude` → `/login` una vez en
   una terminal (en la notebook ya está, 2026-11-01: TokenEconomizer con `microskills=on`; en otra PC, `envfacts` hasta el login).
-- Plugins de todos los proyectos: harness-nacho, uso-widget, semáforo, automático y `codex@openai-codex` (20/11:
-  `/codex:adversarial-review` = 2.ª opinión de otra familia al cerrar lotes de seguridad; NO `/codex:rescue` para
-  escribir: dos escritores; CLI vía `~\.local\bin\codex.cmd`; login de ChatGPT de Nacho). TokenEconomizer: SACAR (medido
-  19/11 en Jarvis: contexto base +1,6k, ningún ahorro; se apaga a mano, ver `docs/AUTOMEJORA.md`). Medir cualquier
-  plugin: `scripts/medir_tokens.py`.
+- Plugins de todos los proyectos: harness-nacho, uso-widget, semáforo y automático. **Codex A PRUEBA** (20/11 →
+  4 revisiones o 04/12): en cada lote de riesgo, suite verde y antes del último commit, `/codex:adversarial-review`
+  (nunca `/codex:rescue`), verificar cada hallazgo y anotar la fila en `docs/MEDICION-codex.md` del harness (criterio
+  ahí). TokenEconomizer apagado (19/11: cero ahorro). Medir cualquier plugin: `scripts/medir_tokens.py`.
 - Programas: Git for Windows (Bash), GitHub CLI, Python 3.12 global (+ `uv` por proyecto), Node (nvm), FFmpeg, Brave,
   AIMP, Steam. NO tiene Paint; en pruebas que abren apps: la Calculadora (nunca el Bloc de notas). Su IPv6 se cae a
   ráfagas: todo HTTP con tope por dirección.
