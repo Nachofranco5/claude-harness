@@ -10,7 +10,7 @@
 #   3) Cerrá Claude del todo y abrilo de nuevo. En cualquier proyecto, la primera respuesta ya trae el tablero.
 #
 # Qué hace: agrega el marketplace privado Nachofranco5/claude-harness, instala harness-nacho + uso-widget +
-# automatico (alcance usuario), prende la auto-actualización, crea el CLAUDE.md global mínimo (sin pisar
+# (alcance usuario), prende la auto-actualización, crea el CLAUDE.md global mínimo (sin pisar
 # uno que ya exista), deja `claude` en la línea de comandos (~\.local\bin\claude.cmd) e instala TokenEconomizer
 # (Microsoft: gasta menos tokens). Repetirlo también ACTUALIZA los plugins (si la auto-actualización no los bajó).
 # Respeta CLAUDE_CONFIG_DIR (sirve para probarlo en una carpeta vacía).
@@ -18,7 +18,7 @@
 $ErrorActionPreference = 'Stop'
 $Repo = 'Nachofranco5/claude-harness'
 $Market = 'claude-harness'
-$Plugins = @('harness-nacho', 'uso-widget', 'automatico')  # semaforo: sacado el 2026-11-20 (le comía lugar al chat)
+$Plugins = @('harness-nacho', 'uso-widget')  # semaforo y automatico: sacados el 2026-11-20 (botones que le comían lugar al chat; el automático ya no podía encadenar)
 
 function Paso($t) { Write-Host "`n== $t" -ForegroundColor Cyan }
 function Ok($t) { Write-Host "   OK: $t" -ForegroundColor Green }

@@ -30,8 +30,8 @@ El `CLAUDE.md` del proyecto manda en lo específico. Si sos un subagente: solo a
 - **Lo que se lee siempre, liviano**: CLAUDE.md, reglas y cabecera de planes = solo lo vivo; lo hecho, una línea.
 - Flujo: planificar con el modelo fuerte; cada LOTE en ventana NUEVA («Hacé el lote L2 de docs/PLAN-X.md»: todas sus
   tareas, una suite al final, un commit por tarea; uno del lote si su código quedó entrelazado y separarlo deja un
-  commit que no arranca), sin cambiar de modelo adentro. **Modo automático** (skill
-  `automatico`, botón 🤖) encadena la cola: por eso cada Nota dice modelo, esfuerzo y si necesita a Nacho ANTES.
+  commit que no arranca), sin cambiar de modelo adentro. Cada Nota dice modelo, esfuerzo y si necesita a Nacho ANTES
+  (la tarjeta se arma con eso). Sin modo automático (sacado 20/11: la app no deja que una ventana abra la siguiente sola).
 
 ## Ejecutar como un profesional
 - **"Listo" = probado con evidencia**: decir qué se corrió y qué dio (tests, captura, log). Nunca "debería andar". Lo que no se pudo probar se declara, con cómo probarlo.
@@ -81,7 +81,7 @@ Pruebas → 3–8 líneas en `CHANGELOG.md` → `docs/PRUEBAS-PENDIENTES.md` →
 - Modelo/esfuerzo que alcanzaba o que convenía. Uso semanal (`get_usage`): si sobra mucho para los días que faltan, sugerir uno mejor como 2.ª opción; si viene justo, avisar.
 - Si no se logró lo esperado: qué modelo/enfoque probar; NO insistir con el mismo.
 - Cómo promptear mejor, ventana nueva vs seguir, atajos, riesgos que no ve, skills/plugins/MCP útiles que no conoce.
-- **Siempre, al final, «Próximo paso» = TARJETA** (Nacho, 2026-10-21; en automático lo hace `automatico`): la próxima
+- **Siempre, al final, «Próximo paso» = TARJETA** (Nacho, 2026-10-21): la próxima
   LOTE (o tarea, si el plan no tiene cola) como tarjeta de un clic, DESPUÉS del commit + push: `start_session` `initiation:"own_initiative"`,
   `context:"fresh"`, `use_worktree:false`, `title:"<lote> · <tareas>"`, `prompt:"Hacé el lote <Lx> de <plan>"`,
   `model`/`effort` de su Nota (bajo→low, medio→medium, alto→high, muy alto→xhigh, máximo→max) y `background` (≥ 80
@@ -90,9 +90,8 @@ Pruebas → 3–8 líneas en `CHANGELOG.md` → `docs/PRUEBAS-PENDIENTES.md` →
   - **Límite de la app**: la tarjeta solo abre un modelo/esfuerzo IGUAL o MÁS BARATO que esta ventana (Haiku < Sonnet <
     Opus; uno más caro se ignora sin aviso). Si la Nota pide más → sin tarjeta: el **prompt ENTERO para copiar** («Ventana
     nueva, Opus, esfuerzo alto: «Hacé el lote L2 de docs/PLAN-X.md»») y DESPUÉS, fuera de él, lote + tareas + 1 frase.
-  - Sin tarjeta si se sigue en esta ventana, si no queda tarea, si la próxima necesita algo de Nacho antes (decirlo), o si
-    esta ventana la abrió una coordinadora (lo dice su `background`). Lo recomendado: arrancar el día con Opus alto y
-    «coordiná» (skill `automatico`, modo tarjeta): nunca choca con el límite.
+  - Sin tarjeta si se sigue en esta ventana, si no queda tarea, o si la próxima necesita algo de Nacho antes (decirlo). Lo
+    recomendado: trabajar en ventanas Opus alto, así la tarjeta nunca choca con el límite.
 - Cuando Nacho cierra la charla: skill `cierre-charla` (decisiones al plan, lo que quedó sin hacer, tarjeta o prompt).
 
 ## Herramientas (proactivo)
@@ -134,7 +133,7 @@ Pruebas → 3–8 líneas en `CHANGELOG.md` → `docs/PRUEBAS-PENDIENTES.md` →
   `%LOCALAPPDATA%\Claude-Data\…`); `claude` de consola = `~\.local\bin\claude.cmd` (lo deja `instalar.ps1`) y NO tiene
   sesión propia: en una PC nueva `claude -p` dice «Not logged in» hasta que Nacho corra `claude` → `/login` una vez en
   una terminal (en la notebook ya está, 2026-11-01: TokenEconomizer con `microskills=on`; en otra PC, `envfacts` hasta el login).
-- Plugins de todos los proyectos: harness-nacho, uso-widget y automático (semáforo sacado 20/11). **Codex A PRUEBA** (20/11 →
+- Plugins de todos los proyectos: harness-nacho y uso-widget (semáforo y automático sacados 20/11). **Codex A PRUEBA** (20/11 →
   4 revisiones o 04/12): en cada lote de riesgo, suite verde y antes del último commit, `/codex:adversarial-review`
   (> 2 archivos en Windows: `scripts/codex_revision.mjs`, ver MEDICION; nunca `/codex:rescue`), verificar cada hallazgo y anotar la fila en `docs/MEDICION-codex.md` del harness (criterio
   ahí). TokenEconomizer apagado (19/11: cero ahorro). Medir cualquier plugin: `scripts/medir_tokens.py`.
@@ -172,9 +171,6 @@ Pruebas → 3–8 líneas en `CHANGELOG.md` → `docs/PRUEBAS-PENDIENTES.md` →
   usuario; nunca disfrazar el pedido.
 - 2026-11-17 · Un chequeo flojo (/llue/) dio ✅ con el bug vivo («recordarte avisar que llueve» sin el «si») y la prueba
   salió sola de la lista → todo chequeo de un bug se corre contra la frase MALA literal y tiene que fallar (Jarvis: `mal`).
-- 2026-11-17 · «Hacé L0 y después seguí solo hasta el límite»: hice L0 acá y al querer abrir L1 la app lo rechazó (el
-  turno ya lo había despertado una tarea de fondo, no Nacho) → con «seguí solo», abrir la 1.ª sesión del automático EN
-  EL TURNO del mensaje de Nacho, antes de esperar nada de fondo; lo de esta ventana, después.
 - 2026-11-16 · Auditoría de Jarvis: 8 subagentes (Fable/Opus) leyendo ~10.000 líneas cada uno EN PARALELO gastaron una
   ventana de 5 h y ~16 % semanal y se cortaron sin entregar nada (estimé 10–20 % para todo) → lecturas grandes: un área por
   ventana, a lo sumo 1–2 subagentes, y que cada uno ESCRIBA sus hallazgos a un archivo a medida que salen (si se corta, queda).
