@@ -12,7 +12,8 @@ Descartado (no volver a proponer salvo que cambie algo): de la 1.ª lista corta 
 - Claude Code 2.1.321–326: `"decision": "block"` de un hook frena en más casos → ningún hook del harness lo imprime (grep). Nada rompe.
 - Propuesto: plugin `openai/codex-plugin-cc` (oficial de OpenAI, 35k ⭐): `/codex:adversarial-review` como 2.ª opinión de
   OTRA familia de modelos al cerrar lotes de seguridad, sin gastar cupo de Claude. Necesita cuenta de ChatGPT (Free sirve,
-  cupo chico) + Node ≥ 18.18 → Nacho decide. No usar `/codex:rescue` para escribir código: dos escritores en el mismo repo.
+  cupo chico) + Node ≥ 18.18 → **Nacho dijo sí (20/11)**: plugin instalado (user) + `@openai/codex` 0.171.0 por npm;
+  atajo `~\.local\bin\codex.cmd` (el npm -g de nvm no está en el PATH). Falta su `codex login`. No usar `/codex:rescue`.
 - Pendiente de mirar con uso holgado: Fable 5.2 / Mythos 5.2 (HN 9/11) en las Notas de modelo de `planificar`.
 ### 2026-11-10 — pasada corta (lista del 9/11)
 - Hecho: `.claude/settings.local.json` al `.gitignore` del harness (HN 7/11: «No preguntar de nuevo» guarda comandos con

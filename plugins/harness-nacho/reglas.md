@@ -134,7 +134,9 @@ Pruebas → 3–8 líneas en `CHANGELOG.md` → `docs/PRUEBAS-PENDIENTES.md` →
   `%LOCALAPPDATA%\Claude-Data\…`); `claude` de consola = `~\.local\bin\claude.cmd` (lo deja `instalar.ps1`) y NO tiene
   sesión propia: en una PC nueva `claude -p` dice «Not logged in» hasta que Nacho corra `claude` → `/login` una vez en
   una terminal (en la notebook ya está, 2026-11-01: TokenEconomizer con `microskills=on`; en otra PC, `envfacts` hasta el login).
-- Plugins de todos los proyectos: harness-nacho, uso-widget, semáforo y automático. TokenEconomizer: SACAR (medido
+- Plugins de todos los proyectos: harness-nacho, uso-widget, semáforo, automático y `codex@openai-codex` (20/11:
+  `/codex:adversarial-review` = 2.ª opinión de otra familia al cerrar lotes de seguridad; NO `/codex:rescue` para
+  escribir: dos escritores; CLI vía `~\.local\bin\codex.cmd`; login de ChatGPT de Nacho). TokenEconomizer: SACAR (medido
   19/11 en Jarvis: contexto base +1,6k, ningún ahorro; se apaga a mano, ver `docs/AUTOMEJORA.md`). Medir cualquier
   plugin: `scripts/medir_tokens.py`.
 - Programas: Git for Windows (Bash), GitHub CLI, Python 3.12 global (+ `uv` por proyecto), Node (nvm), FFmpeg, Brave,
