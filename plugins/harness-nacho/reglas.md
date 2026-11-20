@@ -134,10 +134,9 @@ Pruebas → 3–8 líneas en `CHANGELOG.md` → `docs/PRUEBAS-PENDIENTES.md` →
   `%LOCALAPPDATA%\Claude-Data\…`); `claude` de consola = `~\.local\bin\claude.cmd` (lo deja `instalar.ps1`) y NO tiene
   sesión propia: en una PC nueva `claude -p` dice «Not logged in» hasta que Nacho corra `claude` → `/login` una vez en
   una terminal (en la notebook ya está, 2026-11-01: TokenEconomizer con `microskills=on`; en otra PC, `envfacts` hasta el login).
-- Plugins de todos los proyectos: harness-nacho, uso-widget, semáforo, automático y TokenEconomizer (Microsoft:
-  poda herramientas que un repo no usa, aprende hechos del repo, frena bucles; config `~\.tokeneconomizer\config.json`,
-  comandos `/tokeneconomizer:status`, `…:toolprune restore` si falta una herramienta). TE está A PRUEBA hasta el
-  2026-11-16 (medido: 0 ahorro todavía, +0,5 s por herramienta). Medir cualquier plugin: `scripts/medir_tokens.py`.
+- Plugins de todos los proyectos: harness-nacho, uso-widget, semáforo y automático. TokenEconomizer: SACAR (medido
+  19/11 en Jarvis: contexto base +1,6k, ningún ahorro; se apaga a mano, ver `docs/AUTOMEJORA.md`). Medir cualquier
+  plugin: `scripts/medir_tokens.py`.
 - Programas: Git for Windows (Bash), GitHub CLI, Python 3.12 global (+ `uv` por proyecto), Node (nvm), FFmpeg, Brave,
   AIMP, Steam. NO tiene Paint; en pruebas que abren apps: la Calculadora (nunca el Bloc de notas). Su IPv6 se cae a
   ráfagas: todo HTTP con tope por dirección.
