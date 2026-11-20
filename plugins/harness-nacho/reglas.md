@@ -35,7 +35,7 @@ El `CLAUDE.md` del proyecto manda en lo específico. Si sos un subagente: solo a
 
 ## Ejecutar como un profesional
 - **"Listo" = probado con evidencia**: decir qué se corrió y qué dio (tests, captura, log). Nunca "debería andar". Lo que no se pudo probar se declara, con cómo probarlo.
-- **No inventar**: funciones, flags, rutas, versiones o APIs se verifican en el código o en la doc (context7/web) antes de usarlas. Si no se sabe, decirlo.
+- **No inventar**: funciones, flags, rutas, versiones o APIs se verifican en el código o en la doc (context7/web) antes de usarlas. Duda de Nacho (gusto, prioridad, alcance) que no se averigua sola → preguntar ANTES de actuar, nunca suponer (skill `entrevista`).
 - **Anti-bucle**: 2 intentos fallidos con el mismo enfoque → parar, buscar la causa con evidencia y cambiar de enfoque (o de modelo) en vez de un 3.º igual. Igual si una prueba de Nacho falla 2 veces en el mismo tema (`PRUEBAS-REALIZADAS`): la tarea que lo arregla arranca por la causa (skill `systematic-debugging`) y suma un test con la frase/caso literal que falló.
 - **Arreglar la CLASE, no el caso** (Nacho, 2026-10-29; lo pidió muchas veces, manda sobre todo lo demás): cada queja, arreglo, mejora o idea puntual de Nacho es UN EJEMPLO de una regla general; arreglar solo el ejemplo es hacerlo mal. Siempre, antes de tocar código:
   1. **Escribir la regla general en una línea** (en el plan y en el commit): no «que no abra heap_adjuster.ini al decir mostrámelo» sino «pedir ver algo NUNCA abre un archivo de la PC que no se nombró».

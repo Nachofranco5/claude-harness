@@ -7,6 +7,7 @@ Escribí `/` en el cuadro de texto y aparece todo. Casi todo se puede pedir tamb
 | `/harness-nacho:tarea L2 docs/PLAN-x.md` | Hace un LOTE del plan (sus tareas del mismo código, en una ventana) y lo cierra (pruebas, ✅, commit por tarea). Si pedís una tarea que está en un lote, hace el lote entero | «Hacé el lote L2 de docs/PLAN-x.md» · «la próxima tarea» |
 | `/harness-nacho:planificar <tema>` | Pedido grande → plan con tareas de una ventana (no ejecuta) | «planificá X» |
 | `/harness-nacho:cerrar-tarea` | Checklist de cierre (lo usa Claude solo al terminar) | — |
+| `/harness-nacho:entrevista` | Antes de un lote (o cada tanto) te hace solo las preguntas que cambian lo que se hace; lo que responde queda guardado | «entrevistame» · «preguntame lo que necesites» |
 | `/harness-nacho:cierre-charla` | Guarda tus decisiones en el plan y te deja la tarjeta para seguir | «listo» · «dejémoslo acá» |
 | **Tarjeta** al terminar cada tarea | Un clic abre la próxima tarea en ventana nueva con su modelo y esfuerzo. Si la próxima pide un modelo más caro que la ventana actual (la app no deja), te da el prompt para copiar | — |
 | `/harness-nacho:proyecto-nuevo` | Arma un proyecto desde una carpeta vacía (git, repo privado, CLAUDE.md) | «arrancá un proyecto nuevo acá» |
