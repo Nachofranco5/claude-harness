@@ -180,3 +180,5 @@ Pruebas → 3–8 líneas en `CHANGELOG.md` → `docs/PRUEBAS-PENDIENTES.md` →
   hecho → al retomar una 🟡, `git log --grep <id>` ANTES de creerle al ⏸; y quien trabaja una 🟡 reescribe su ⏸ al cerrar.
 - 2026-11-18 · Un ✅ del ensayo escondía un bug («sin pendrive copié Tesis a Descargas»): el chequeo solo miraba que dijera
   «pendrive» → leer lo que DIJO e HIZO cada ✅, no solo contar ✅/❌.
+- 2026-11-20 · `pytest … | tail -2 && git commit` commiteó con un test rojo (el `&&` mira a `tail`, no a pytest) → correr
+  las pruebas, LEER el resultado y recién ahí el commit, en otro comando.
