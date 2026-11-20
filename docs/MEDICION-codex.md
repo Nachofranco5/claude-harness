@@ -21,7 +21,8 @@ Instalado el 20/11 (plugin user + `@openai/codex` 0.171.0, sesión de ChatGPT de
 Con más de 2 archivos cambiados, `/codex:adversarial-review` no le pasa el diff a Codex: le pide que lo lea con git, y el
 modo solo-lectura de Codex en Windows se lo bloquea («no pude inspeccionar el diff», cero hallazgos). Usar
 `node plugins/harness-nacho/scripts/codex_revision.mjs "$(pwd -W)" <base> "<foco>"` (mismas funciones del plugin, con
-el diff incluido; tope 256 KB) en segundo plano. Una corrida fallida así NO cuenta como revisión. Al terminar queda
+el diff incluido; tope 256 KB) en segundo plano. Una corrida fallida así NO cuenta como revisión.
+Al terminar deja VIVO su `node … app-server-broker` (20/11): `procesos_colgados.py . --cortar <PID>` antes del commit. Al terminar queda
 vivo su `app-server-broker` (node): `procesos_colgados.py` lo muestra y se corta con `--cortar`.
 
 ## Registro
