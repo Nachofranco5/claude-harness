@@ -142,6 +142,8 @@ Pruebas → 3–8 líneas en `CHANGELOG.md` → `docs/PRUEBAS-PENDIENTES.md` →
   AIMP, Steam. NO tiene Paint; en pruebas que abren apps: la Calculadora (nunca el Bloc de notas). Su IPv6 se cae a
   ráfagas: todo HTTP con tope por dirección.
 - Forma de trabajar: prueba en tandas (no pruebas sueltas); en procesos largos quiere cada aviso con cuánto falta.
+  Lo de VARIAS HORAS (bancadas, afinados, GPU) NUNCA de noche (duerme al lado de la PC: el ruido): solo cuando sale
+  de casa → preguntarle «¿cuándo salís?» y planearlo ahí. Entrevista (`entrevista`) 1 vez por semana.
   Cuando deja a Claude trabajando solo, está en el mismo cuarto con el VOLUMEN BAJO: ninguna prueba automática sube el
   volumen ni pone música (si una necesita sonar, suena al volumen que hay). Tampoco lo «devuelve» al terminar: si lo
   bajó mientras corría, devolverlo se lo SUBE. Vale para todo ajuste: una prueba solo deshace lo que ELLA cambió,

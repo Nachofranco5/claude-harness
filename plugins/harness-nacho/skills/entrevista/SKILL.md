@@ -22,8 +22,9 @@ después). Lo que sí se puede averiguar solo, se averigua: preguntarlo es hacer
   (ahí se asume la recomendada y se anota como supuesto).
 
 ## Cómo
-1. **Juntar antes** (barato): plan del lote, `Decisiones` del plan, memoria, `PRUEBAS-REALIZADAS`. Tachar toda duda
-   que ya tenga respuesta.
+1. **Juntar antes** (barato): plan del lote, `Decisiones` del plan, memoria, `PRUEBAS-REALIZADAS` y el ESTADO REAL
+   (config, código: un comentario del plan puede estar viejo). Tachar toda duda que ya tenga respuesta (20/11: pregunté
+   por una autoprueba nocturna que la config ya tenía apagada desde el 18/11).
 2. **Filtrar**: cada pregunta pasa SOLO si cumple las tres:
    - es de Nacho (gusto, prioridad, plata, privacidad, riesgo que acepta), no algo técnico que decide Claude;
    - su respuesta cambia lo que se hace (si cualquier respuesta lleva a lo mismo, no se pregunta);
