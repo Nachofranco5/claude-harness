@@ -134,7 +134,7 @@ Pruebas → 3–8 líneas en `CHANGELOG.md` → `docs/PRUEBAS-PENDIENTES.md` →
   `%LOCALAPPDATA%\Claude-Data\…`); `claude` de consola = `~\.local\bin\claude.cmd` (lo deja `instalar.ps1`) y NO tiene
   sesión propia: en una PC nueva `claude -p` dice «Not logged in» hasta que Nacho corra `claude` → `/login` una vez en
   una terminal (en la notebook ya está, 2026-11-01: TokenEconomizer con `microskills=on`; en otra PC, `envfacts` hasta el login).
-- Plugins de todos los proyectos: harness-nacho, uso-widget, semáforo y automático. **Codex A PRUEBA** (20/11 →
+- Plugins de todos los proyectos: harness-nacho, uso-widget y automático (semáforo sacado 20/11). **Codex A PRUEBA** (20/11 →
   4 revisiones o 04/12): en cada lote de riesgo, suite verde y antes del último commit, `/codex:adversarial-review`
   (> 2 archivos en Windows: `scripts/codex_revision.mjs`, ver MEDICION; nunca `/codex:rescue`), verificar cada hallazgo y anotar la fila en `docs/MEDICION-codex.md` del harness (criterio
   ahí). TokenEconomizer apagado (19/11: cero ahorro). Medir cualquier plugin: `scripts/medir_tokens.py`.

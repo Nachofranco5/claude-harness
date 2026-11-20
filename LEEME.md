@@ -1,7 +1,6 @@
 # claude-harness — el "cómo trabaja la IA" de Nacho
 Marketplace público de Claude Code (sin secretos: nunca subir tokens ni datos de clientes acá): `harness-nacho` (reglas de trabajo + tablero del proyecto al abrir cada
-ventana + skills + guardianes), `uso-widget` (barra de uso 5 h / semanal) `semaforo` (rojo trabajando /
-verde listo) y `automatico` (encadena las tareas del plan solo, hasta un tope de uso).
+ventana + skills + guardianes), `uso-widget` (barra de uso 5 h / semanal) y `automatico` (encadena las tareas del plan solo, hasta un tope de uso).
 
 ## PC nueva (una sola vez)
 1. Instalar la app de escritorio de Claude, Git y GitHub CLI. En una terminal: `gh auth login`, después
