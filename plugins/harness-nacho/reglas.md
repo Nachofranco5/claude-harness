@@ -136,7 +136,7 @@ Pruebas → 3–8 líneas en `CHANGELOG.md` → `docs/PRUEBAS-PENDIENTES.md` →
   una terminal (en la notebook ya está, 2026-11-01: TokenEconomizer con `microskills=on`; en otra PC, `envfacts` hasta el login).
 - Plugins de todos los proyectos: harness-nacho, uso-widget, semáforo y automático. **Codex A PRUEBA** (20/11 →
   4 revisiones o 04/12): en cada lote de riesgo, suite verde y antes del último commit, `/codex:adversarial-review`
-  (nunca `/codex:rescue`), verificar cada hallazgo y anotar la fila en `docs/MEDICION-codex.md` del harness (criterio
+  (> 2 archivos en Windows: `scripts/codex_revision.mjs`, ver MEDICION; nunca `/codex:rescue`), verificar cada hallazgo y anotar la fila en `docs/MEDICION-codex.md` del harness (criterio
   ahí). TokenEconomizer apagado (19/11: cero ahorro). Medir cualquier plugin: `scripts/medir_tokens.py`.
 - Programas: Git for Windows (Bash), GitHub CLI, Python 3.12 global (+ `uv` por proyecto), Node (nvm), FFmpeg, Brave,
   AIMP, Steam. NO tiene Paint; en pruebas que abren apps: la Calculadora (nunca el Bloc de notas). Su IPv6 se cae a

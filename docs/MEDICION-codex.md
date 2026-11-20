@@ -17,6 +17,13 @@ Instalado el 20/11 (plugin user + `@openai/codex` 0.171.0, sesión de ChatGPT de
 - También cuenta en contra: si leer y verificar sus hallazgos gasta > 1 % semanal por revisión, o si el cupo gratis de
   Codex no alcanza para una revisión por lote.
 
+## En Windows: el comando solo no alcanza (20/11)
+Con más de 2 archivos cambiados, `/codex:adversarial-review` no le pasa el diff a Codex: le pide que lo lea con git, y el
+modo solo-lectura de Codex en Windows se lo bloquea («no pude inspeccionar el diff», cero hallazgos). Usar
+`node plugins/harness-nacho/scripts/codex_revision.mjs "$(pwd -W)" <base> "<foco>"` (mismas funciones del plugin, con
+el diff incluido; tope 256 KB) en segundo plano. Una corrida fallida así NO cuenta como revisión.
+
 ## Registro
 | Fecha | Proyecto · lote | Hallazgos | Reales nuevos | Ya vistos | Falsos | Minutos | % semanal de Claude | Notas |
 |---|---|---|---|---|---|---|---|---|
+| 2026-11-20 | Jarvis · L29 (AU5 · AU6; 19 archivos, 61 KB) | 1 | 1 | 0 | 0 | ~8 (2 corridas) | ~1 % (verificar + arreglar + test) | Media, confianza 0,94: en `ventana._a_la_pagina` el chequeo de «cerrándose» y el `run_js` iban separados. Verificado en pywebview (`run_js` = `Invoke` + semáforo): con la X, el hilo de la ventana esperaba 2 s al puente que lo esperaba a él, y el envío pendiente chocaba con la ventana destruida (la línea de AUD-03). Arreglado con test. La 1.ª corrida (comando del plugin) no revisó nada: ver arriba. |
