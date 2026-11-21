@@ -180,3 +180,5 @@ Pruebas → 3–8 líneas en `CHANGELOG.md` → `docs/PRUEBAS-PENDIENTES.md` →
   «pendrive» → leer lo que DIJO e HIZO cada ✅, no solo contar ✅/❌.
 - 2026-11-20 · `pytest … | tail -2 && git commit` commiteó con un test rojo (el `&&` mira a `tail`, no a pytest) → correr
   las pruebas, LEER el resultado y recién ahí el commit, en otro comando.
+- 2026-11-21 · Dos Monitor rotos: corren en bash, que se come el `$var` de un `powershell -Command "…"` → el vigía va en
+  un `.ps1` con `-File` (y `-cmatch`: `-match` no distingue mayúsculas, «FALL» calzaba en «fallo»).
