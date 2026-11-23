@@ -26,6 +26,10 @@ Al terminar deja VIVO su `node … app-server-broker` (20/11): `procesos_colgado
 vivo su `app-server-broker` (node): `procesos_colgados.py` lo muestra y se corta con `--cortar`.
 
 ## Registro
+> 23/11 (Nacho preguntó cómo va): 2 de 4 revisiones, ambas del 20/11. **Hueco**: L37 G1 (21/11: lo tuyo que sale a
+> Gemini = lote de riesgo) se cerró SIN revisión. Próximas que cuentan: L38 G2 (lee webs/YouTube: prompt-injection) y
+> L33 (seguridad del navegador). Con 1 real y 1 falso está justo en el borde del criterio.
+
 | Fecha | Proyecto · lote | Hallazgos | Reales nuevos | Ya vistos | Falsos | Minutos | % semanal de Claude | Notas |
 |---|---|---|---|---|---|---|---|---|
 | 2026-11-20 | Jarvis · L29 (AU5 · AU6; 19 archivos, 61 KB) | 1 | 1 | 0 | 0 | ~8 (2 corridas) | ~1 % (verificar + arreglar + test) | Media, confianza 0,94: en `ventana._a_la_pagina` el chequeo de «cerrándose» y el `run_js` iban separados. Verificado en pywebview (`run_js` = `Invoke` + semáforo): con la X, el hilo de la ventana esperaba 2 s al puente que lo esperaba a él, y el envío pendiente chocaba con la ventana destruida (la línea de AUD-03). Arreglado con test. La 1.ª corrida (comando del plugin) no revisó nada: ver arriba. |
