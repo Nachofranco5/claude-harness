@@ -33,8 +33,12 @@ description: >-
    todo» ni «diseño»), y por cada lote de UNA tarea preguntarse qué COMPARTE con otro aunque no sea un archivo: la
    misma grabación o dato de Nacho, lo mismo que se regenera, la misma bancada cara. Si comparte → al mismo lote.
    «aparte: motivo» = por qué NO entra en la misma ventana (no entra por tamaño, espera algo de Nacho, necesita que
-   el otro esté hecho), nunca «es otro modelo». `docs/RESUMEN-pendientes.md` repite la cola TAL CUAL: una línea
-   por lote, `N. **Lx · T1 · T2** · qué gana`, mismas tareas y mismo orden (el tablero avisa si difiere).
+   el otro esté hecho), nunca «es otro modelo». `docs/RESUMEN-pendientes.md` repite la cola TAL CUAL en
+   «## Importante (en orden)»: una línea por lote, `N. **Lx · T1 · T2** · qué gana él, en criollo`, mismas tareas y
+   mismo orden (el tablero avisa si difiere); sin cola, una por tarea (`N. **T41** · …`). Lo de fuera de la cola, en
+   «## Superfluo» / «## En pausa». Tarea ✅ → sale de su lote; lote ✅ → se borra la línea. Si Nacho mueve una línea,
+   se mueve igual el lote en la cola (las dos quedan iguales). Cada ventana relee el contexto y repite la suite: por eso
+   lotes de 1 tarea del mismo código que otro son un error (11/11: 5 lotes de 1 tarea, 2 del mismo código).
    **Pruebas**: si una tarea solo se puede probar con Nacho porque falta una herramienta (simulador, lector de
    registro), el primer lote la construye.
    **Resumen**: sumar cada tarea nueva a `docs/RESUMEN-pendientes.md` (crearlo si falta; ver regla «Resumen de
@@ -42,7 +46,7 @@ description: >-
 5. **Commit aparte del plan** según `git` de `.claude/harness.json` (`"Plan <tema>: …"`). No arrancar
    ninguna tarea.
 6. **Responder**: resumen del plan en 3–6 líneas + decisiones pendientes + Próximo paso de T1. Si no quedan
-   decisiones pendientes: **tarjeta** de T1 (ver «Próximo paso = TARJETA» en las reglas); si las hay, primero
+   decisiones pendientes: **tarjeta** de T1 (campos en `cerrar-tarea`, paso 9); si las hay, primero
    el OK de Nacho y la tarjeta después. Si T1 pide más modelo/esfuerzo que esta ventana: el prompt exacto
    («Ventana nueva, <modelo>, esfuerzo <x>: "Hacé el lote L1 de docs/PLAN-<tema>.md"»).
 

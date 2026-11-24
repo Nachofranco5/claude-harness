@@ -20,7 +20,7 @@ description: Cuando Nacho cierra la charla (opina, decide, "listo", "dejémoslo 
 4. **Responder** (corto):
    - Qué quedó guardado (decisiones, estado de la tarea).
    - Lo que quedó sin ejecutar y con qué modelo.
-   - **Tarjeta** SOLO de la próxima tarea (ver «Próximo paso = TARJETA» en las reglas: `start_session`
+   - **Tarjeta** SOLO de la próxima tarea (campos en `cerrar-tarea`, paso 9: `start_session`
      `own_initiative` con el modelo y esfuerzo de su Nota) + una línea «Te dejé la tarjeta de Tn (<modelo> · <esfuerzo>)
      — Tn · <título>: <qué hace>». Si la Nota pide más modelo/esfuerzo que esta ventana (la app no lo deja),
      el prompt exacto en un bloque de código para copiar:

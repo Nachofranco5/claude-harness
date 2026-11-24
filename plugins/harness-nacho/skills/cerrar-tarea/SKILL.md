@@ -68,9 +68,14 @@ Config: `.claude/harness.json` del proyecto MANDA; si no existe o le falta una c
    - Lo que no se pudo probar y cómo probarlo.
    - **Consejos** (1–4 líneas) + **Próximo paso**: la siguiente `⬜` del plan con el modelo y esfuerzo de su
      Nota (si a la Nota le falta algo, elegirlo con el criterio de `planificar`) como **TARJETA** (`start_session`
-     `own_initiative`, ver «Próximo paso = TARJETA» en las reglas), después del commit + push. En el texto una
-     línea: «Te dejé la tarjeta de T3 (Sonnet · medio) — T3 · <título>: <qué hace, 1 frase breve>».
-     Si la Nota pide un modelo o esfuerzo MAYOR que el de esta ventana, la app no lo deja: en vez de tarjeta,
+     `own_initiative`), después del commit + push. Campos: `context:"fresh"`, `use_worktree:false`,
+     `title:"<lote> · <tareas>"`, `prompt:"Hacé el lote <Lx> de <plan>"`, `model`/`effort` de su Nota (bajo→low,
+     medio→medium, alto→high, muy alto→xhigh, máximo→max) y `background` (≥ 80 caracteres: proyecto, qué lote de qué
+     plan, que lo cierre con `cerrar-tarea`). En el texto una línea: «Te dejé la tarjeta de L2 (Opus · alto) — L2 · T5 ·
+     T6: <qué gana, 1 frase breve>». Sin tarjeta si se sigue en esta ventana, si no queda tarea o si la próxima
+     necesita algo de Nacho antes (decirlo). Lo recomendado: ventanas Opus alto, así nunca choca con el límite.
+     **Límite de la app**: la tarjeta solo abre un modelo/esfuerzo IGUAL o MÁS BARATO que esta ventana (Haiku < Sonnet <
+     Opus; uno más caro se ignora sin aviso). Si la Nota pide un modelo o esfuerzo MAYOR, en vez de tarjeta,
      prompt exacto ENTERO y seguido para copiar («Ventana nueva, Opus, esfuerzo alto: `Hacé el lote L3 de docs/PLAN-x.md`»;
      sin cola por lotes: `Hacé la tarea T3 de …`) y DESPUÉS, fuera del prompt, «— L3 · T5 · T6: <qué gana>».
      Antes de la tarjeta: si el próximo lote tiene UNA tarea y otro lote ⬜ toca su código (el tablero lo avisa), juntarlos. En modo automático no se hace esto (lo maneja `automatico`).

@@ -17,11 +17,9 @@ El `CLAUDE.md` del proyecto manda en lo específico. Si sos un subagente: solo a
 - Pedido grande o ambiguo → NO ejecutar: dividirlo en tareas de UNA sesión en `docs/PLAN-<tema>.md` y esperar OK. Cambios grandes: plan corto + OK (salvo "no preguntes").
 - Cada tarea: alcance, qué NO entra, "terminado =", cómo se prueba, y **Nota para Nacho**: modelo (planificar/arquitectura/bugs difíciles → Opus; punto bien especificado → Sonnet; mecánico → Haiku), esfuerzo, por qué, y **Necesita**: lo que pide de la PC o de Nacho (GPU, reinicio, micrófono, una decisión; «nada» si no).
 - **Todo local** (Nacho, 2026-10-21): se trabaja SOLO en esta PC. No proponer ni abrir sesiones en la nube (`start_session` con `target: "cloud"`, «move to cloud», tareas «Dónde: nube»); si Nacho quiere algo en la nube, lo hace él a mano. Planes viejos con «Dónde: nube» = local.
-- **Lotes** (Nacho, 2026-11-03: «siento que no avanzamos»): la cola es de LOTES = tareas del MISMO código que entran en
-  UNA sesión (cada ventana relee el contexto y repite la suite). Una ventana = un lote, una tarjeta por lote; lo que no
-  comparte código va en otro lote. UNA sola cola vigente en la cabecera del plan, con columna «Código» (detalle: skill
-  `planificar`). Tarea nueva o de una tanda → DENTRO del lote ⬜ que toca su código, nunca un lote propio al lado (11/11:
-  5 lotes de 1 tarea, 2 del mismo código). Pedir una tarea de un lote = hacer el lote. El tablero avisa los solapes.
+- **Lotes** (Nacho, 2026-11-03): la cola es de LOTES = tareas del MISMO código que entran en UNA sesión; una ventana =
+  un lote. Tarea nueva → DENTRO del lote ⬜ que toca su código, nunca un lote propio al lado. Pedir una tarea de un lote
+  = hacer el lote. Cómo se arma la cola (columna «Código», «aparte: motivo»): skill `planificar`.
 - **La lista no crece sola** (Nacho, 2026-11-03): una tarea nueva nace SOLO de un pedido de Nacho o de una falla real que
   él vería. Lo demás se hace dentro del lote si es de la misma clase y entra, o no se anota. Una falla de una tanda de
   pruebas se suma a la ⬜ del mismo código (o a su lote), no a un id nuevo.
@@ -58,11 +56,8 @@ El `CLAUDE.md` del proyecto manda en lo específico. Si sos un subagente: solo a
 ## Tablero (marcas que lee el hook al arrancar)
 - Título de tarea en el plan: `## T3 — título  ⬜` (pendiente) · `🟡` (a medias) · `✅ (fecha; resumen)` (hecha). Plan terminado entero: `(cerrado)` en su título.
 - Si se corta a medias: marcar 🟡 y dejar debajo del título `> ⏸ Cortado (fecha): dónde quedó y cómo seguir`. Borrar esa línea al retomarla. Pausada por decisión de Nacho (no por falla): `> ⏸ EN PAUSA (fecha): por qué`; el tablero no la cuenta como próxima.
-- **Resumen de pendientes** (Nacho, 2026-10-23 y 11-13): `docs/RESUMEN-pendientes.md` es SU control. Con cola por lotes,
-  «## Importante (en orden)» = la cola TAL CUAL: una línea por lote, `N. **L9 · A8** · qué gana él, en criollo`, mismas
-  tareas y mismo orden (el tablero avisa si difiere); sin cola, una por tarea (`N. **T41** · …`). Lo de fuera de la
-  cola, en «## Superfluo» / «## En pausa». Tarea ✅ → sale de su lote; lote ✅ → se borra la línea. Si Nacho mueve una
-  línea, se mueve igual el lote en la cola (las dos quedan iguales).
+- **Resumen de pendientes** (Nacho, 2026-10-23 y 11-13): `docs/RESUMEN-pendientes.md` es SU control y repite la cola TAL
+  CUAL (una línea por lote, en criollo); si Nacho mueve una línea, se mueve igual el lote. Formato: skill `planificar`.
 - **Pruebas: Claude prueba todo lo que puede él mismo** (tests, CLI, capturas, bancadas, logs) ANTES de entregar. A Nacho
   le quedan SOLO las que necesitan lo que Claude no tiene (su voz, su celular, un reinicio, hardware, su gusto), juntas
   las parecidas y sin jerga. **Si falta la herramienta para probar solo** (frases habladas sin micrófono, leer un
@@ -75,23 +70,17 @@ El `CLAUDE.md` del proyecto manda en lo específico. Si sos un subagente: solo a
   hacer cuando devuelve resultados (→ `PRUEBAS-REALIZADAS.md`, que es para Claude): skill `cerrar-tarea`, paso 4.
 
 ## Al terminar una tarea (skill `cerrar-tarea`: tiene la checklist completa)
-Pruebas → 3–8 líneas en `CHANGELOG.md` → `docs/PRUEBAS-PENDIENTES.md` → estado/mapa del `CLAUDE.md` si cambió algo estructural → ✅ en el plan → **nada colgado** (`scripts/procesos_colgados.py` del harness: lo que Claude lanzó y ya no sirve se corta) → commit en español ("T2: qué se hizo") + push si el proyecto lo autorizó. Antes del commit mirar `git status`: nunca subir modelos, binarios pesados, `.venv`, datos de clientes ni respaldos. Docs viejos → `docs/archivo/` (bloqueado en deny).
+Pruebas → `CHANGELOG.md` → `PRUEBAS-PENDIENTES.md` → `CLAUDE.md` si cambió algo estructural → ✅ en el plan → nada
+colgado (`procesos_colgados.py`) → `git status` (nunca modelos, binarios, `.venv`, datos de clientes) → commit + push.
 
 ## Cierre de cada respuesta: "Consejos" (1–4 líneas, solo si aportan algo concreto)
 - Modelo/esfuerzo que alcanzaba o que convenía. Uso semanal (`get_usage`): si sobra mucho para los días que faltan, sugerir uno mejor como 2.ª opción; si viene justo, avisar.
 - Si no se logró lo esperado: qué modelo/enfoque probar; NO insistir con el mismo.
 - Cómo promptear mejor, ventana nueva vs seguir, atajos, riesgos que no ve, skills/plugins/MCP útiles que no conoce.
-- **Siempre, al final, «Próximo paso» = TARJETA** (Nacho, 2026-10-21): la próxima
-  LOTE (o tarea, si el plan no tiene cola) como tarjeta de un clic, DESPUÉS del commit + push: `start_session` `initiation:"own_initiative"`,
-  `context:"fresh"`, `use_worktree:false`, `title:"<lote> · <tareas>"`, `prompt:"Hacé el lote <Lx> de <plan>"`,
-  `model`/`effort` de su Nota (bajo→low, medio→medium, alto→high, muy alto→xhigh, máximo→max) y `background` (≥ 80
-  caracteres: proyecto, tarea de qué plan, que la cierre con `cerrar-tarea`). En el texto una línea: «Te dejé la tarjeta
-  de L2 (Opus · alto) — L2 · T5 · T6: <qué gana>». Una sola, la del próximo lote.
-  - **Límite de la app**: la tarjeta solo abre un modelo/esfuerzo IGUAL o MÁS BARATO que esta ventana (Haiku < Sonnet <
-    Opus; uno más caro se ignora sin aviso). Si la Nota pide más → sin tarjeta: el **prompt ENTERO para copiar** («Ventana
-    nueva, Opus, esfuerzo alto: «Hacé el lote L2 de docs/PLAN-X.md»») y DESPUÉS, fuera de él, lote + tareas + 1 frase.
-  - Sin tarjeta si se sigue en esta ventana, si no queda tarea, o si la próxima necesita algo de Nacho antes (decirlo). Lo
-    recomendado: trabajar en ventanas Opus alto, así la tarjeta nunca choca con el límite.
+- **Siempre, al final, «Próximo paso» = TARJETA** (Nacho, 2026-10-21): el próximo LOTE como tarjeta de un clic con el
+  modelo/esfuerzo de su Nota, después del commit + push; una sola. Si la Nota pide un modelo MÁS CARO que esta ventana
+  (la app no lo deja), el prompt ENTERO para copiar. Sin tarjeta si se sigue acá, si no queda tarea o si la próxima
+  necesita algo de Nacho antes. Cómo se arma (campos de `start_session`): skill `cerrar-tarea`, paso 9.
 - Cuando Nacho cierra la charla: skill `cierre-charla` (decisiones al plan, lo que quedó sin hacer, tarjeta o prompt).
 
 ## Herramientas (proactivo)
@@ -133,10 +122,9 @@ Pruebas → 3–8 líneas en `CHANGELOG.md` → `docs/PRUEBAS-PENDIENTES.md` →
   `%LOCALAPPDATA%\Claude-Data\…`); `claude` de consola = `~\.local\bin\claude.cmd` (lo deja `instalar.ps1`) y NO tiene
   sesión propia: en una PC nueva `claude -p` dice «Not logged in» hasta que Nacho corra `claude` → `/login` una vez en
   una terminal (en la notebook ya está, 2026-11-01: TokenEconomizer con `microskills=on`; en otra PC, `envfacts` hasta el login).
-- Plugins de todos los proyectos: harness-nacho y uso-widget (semáforo y automático sacados 20/11). **Codex A PRUEBA** (20/11 →
-  4 revisiones o 04/12): en cada lote de riesgo, suite verde y antes del último commit, `/codex:adversarial-review`
-  (> 2 archivos en Windows: `scripts/codex_revision.mjs`, ver MEDICION; nunca `/codex:rescue`), verificar cada hallazgo y anotar la fila en `docs/MEDICION-codex.md` del harness (criterio
-  ahí). TokenEconomizer apagado (19/11: cero ahorro). Medir cualquier plugin: `scripts/medir_tokens.py`.
+- Plugins de todos los proyectos: harness-nacho y uso-widget (semáforo y automático sacados 20/11). **Codex**: prueba terminada
+  (24/11, 4 revisiones, cumple justo); hasta que la decida `/automejora`, en lotes de riesgo se usa como dice
+  `docs/MEDICION-codex.md` del harness. TokenEconomizer apagado (19/11). Medir un plugin: `scripts/medir_tokens.py`.
 - Programas: Git for Windows (Bash), GitHub CLI, Python 3.12 global (+ `uv` por proyecto), Node (nvm), FFmpeg, Brave,
   AIMP, Steam. NO tiene Paint; en pruebas que abren apps: la Calculadora (nunca el Bloc de notas). Su IPv6 se cae a
   ráfagas: todo HTTP con tope por dirección.
@@ -159,25 +147,22 @@ Pruebas → 3–8 líneas en `CHANGELOG.md` → `docs/PRUEBAS-PENDIENTES.md` →
   a los nietos → después de cortar, `procesos_colgados.py` (los ve; mira todo lo vivo) y `--cortar` hasta «OK».
 - 2026-11-03 · `powercfg /requests` pide admin → si la PC se durmió sola lo dice el Visor de eventos (System, Kernel-Power
   42, «Sleep Reason»). Antes de pedirle una prueba a Nacho, buscar el registro que ya la tiene.
-- 2026-11-04 · Intenté sumarme permisos en `.claude/settings.json` ([Self-Modification], con razón) → Claude NUNCA cambia
-  sus propios permisos: le deja a Nacho el cambio exacto (qué línea y por qué) para que lo apruebe él.
-- 2026-11-12 · Un permiso me frenó (leer `.venv`) y lo seguí de largo → **un permiso que traba es PRIORIDAD** (Nacho:
-  «no quiero cuellos de botella»): decirlo EN ESE MOMENTO con el cambio exacto (archivo, línea, qué poner y qué riesgo
-  tiene); lo que no sea mis propios permisos y se pueda arreglar sin pedir (rutas, PATH, una herramienta), arreglarlo ya.
+- 2026-11-04 y 11-12 · Intenté sumarme permisos (frenado, con razón) y otro permiso que me trababa lo seguí de largo →
+  Claude NUNCA cambia sus propios permisos, pero **un permiso que traba es PRIORIDAD**: decirlo EN ESE MOMENTO con el
+  cambio exacto (archivo, línea, qué poner, qué riesgo); lo que no sean mis permisos (rutas, PATH), arreglarlo ya.
 - 2026-11-08 · Un `def` nuevo pisó otro del mismo nombre en ese archivo (Jarvis `bench/cerebro.py`) → antes de un `def`
   en un archivo grande, grep `def <nombre>`.
 - 2026-11-10 · Un sitio dio 403 a una descarga directa y fui a probar cabeceras para ver cuál pasaba ([Bot Check
   Circumvention], con razón) → si un sitio solo deja a navegadores, el camino es un navegador real como lo haría el
   usuario; nunca disfrazar el pedido.
-- 2026-11-17 · Un chequeo flojo (/llue/) dio ✅ con el bug vivo («recordarte avisar que llueve» sin el «si») y la prueba
-  salió sola de la lista → todo chequeo de un bug se corre contra la frase MALA literal y tiene que fallar (Jarvis: `mal`).
+- 2026-11-17 y 11-18 · Chequeos flojos dieron ✅ con el bug vivo (/llue/ sin el «si»; «pendrive» dicho pero copió a
+  Descargas) → todo chequeo de un bug se corre contra la frase MALA literal y tiene que fallar (Jarvis: `mal`); leer lo
+  que DIJO e HIZO cada ✅, no solo contar ✅/❌.
 - 2026-11-16 · Auditoría de Jarvis: 8 subagentes (Fable/Opus) leyendo ~10.000 líneas cada uno EN PARALELO gastaron una
   ventana de 5 h y ~16 % semanal y se cortaron sin entregar nada (estimé 10–20 % para todo) → lecturas grandes: un área por
   ventana, a lo sumo 1–2 subagentes, y que cada uno ESCRIBA sus hallazgos a un archivo a medida que salen (si se corta, queda).
 - 2026-11-18 · El «⏸ Cortado» de A8 (13/11) seguía igual tras 4 sesiones más (partes 14–18 ya hechas) y casi rehago lo
   hecho → al retomar una 🟡, `git log --grep <id>` ANTES de creerle al ⏸; y quien trabaja una 🟡 reescribe su ⏸ al cerrar.
-- 2026-11-18 · Un ✅ del ensayo escondía un bug («sin pendrive copié Tesis a Descargas»): el chequeo solo miraba que dijera
-  «pendrive» → leer lo que DIJO e HIZO cada ✅, no solo contar ✅/❌.
 - 2026-11-20 · `pytest … | tail -2 && git commit` commiteó con un test rojo (el `&&` mira a `tail`, no a pytest) → correr
   las pruebas, LEER el resultado y recién ahí el commit, en otro comando.
 - 2026-11-21 · Dos Monitor rotos: corren en bash, que se come el `$var` de un `powershell -Command "…"` → el vigía va en
