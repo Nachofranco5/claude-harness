@@ -1,10 +1,20 @@
 # Automejora del harness (skill `/harness-nacho:automejora`)
-Última pasada: 2026-11-19
-Claude Code visto: 2.1.326 en el CHANGELOG (la app trae 2.1.325; `claude` de consola = `~\.local\bin\claude.cmd`)
-A re-medir: A/B Sonnet (I15, I17c, T65b) cuando se hagan · **Codex: 4 revisiones o 2026-12-04** → decidir con `docs/MEDICION-codex.md` (criterio fijado el 20/11) · TokenEconomizer apagado 20/11 (desinstalar si nadie lo extraña).
+Última pasada: 2026-11-24
+Claude Code visto: 2.1.331 en el CHANGELOG (la app trae 2.1.330; `claude` de consola = `~\.local\bin\claude.cmd`)
+A re-medir: A/B Sonnet (I15, I17c, T65b) cuando se hagan · Codex: solo si deja de servir (3 lotes de riesgo seguidos sin nada real, o cupo) · TokenEconomizer apagado y fuera del instalador (desinstalarlo de esta PC cuando Nacho quiera).
 Descartado (no volver a proponer salvo que cambie algo): de la 1.ª lista corta (2/11): pixelfx, founder-skill, bama, animate, day-trader-skill, replica-skill, cleanyourtv, free-my-tv (un dominio, no el harness) · new-term-radar (duplica `buscar_novedades.py`) · my-claude-code-mods (mods personales) · CodeRabbit (cuenta externa) · groundwork-specflow, Roll Call, AI Skills (duplican el harness) · LocalLore (duplica la memoria) · Kobiton (móvil) · Exa (ya hay WebSearch) · coding-agent-skills, py-pit (pisan superpowers/uv) · claude-telegram-voice, plugin oficial de Telegram (Jarvis tiene su bot) · code-review-harness (lo cubre el verificador) · AnythingMCP (nube de terceros) · (10/11) best-agent-memory-mcp (ranking; duplica la memoria) · agent-autoloop (duplica `automatico`) · champion-kit, xcode (otro uso) · (19/11) lot-map (la app ya muestra tareas y subagentes) · 9routerx (gateway de terceros en el medio de Claude) · Brain4Agent (memoria CJK) · article2media, phonebox, agentes-chat, ste80-humanizer, cinematic-skill, sap-ux-fiori-tools, theme-examples (otro uso) · (23/11, los trajo Nacho) Memanto (memoria: nube por defecto; local = Docker + Ollama, que pelea la VRAM de Jarvis; duplica CLAUDE.md + memoria + planes) · Ruflo, ex claude-flow (enjambres de agentes con ~300 herramientas MCP: la lección del 16/11 — muchos agentes en paralelo gastan la ventana sin entregar — y duplica `automatico`) · codebase-memory-mcp (índice de código en grafo: su «120× menos tokens» compara contra leer archivo por archivo, no contra Grep + `mapa.md`; solo volvería con un A/B de `medir_tokens.py` que muestre ahorro).
 
 ## Historial (lo más nuevo arriba; ≤ 8 líneas por pasada)
+### 2026-11-24 (0.3.35) — Codex permanente
+- **Codex se queda** (Nacho: «hizo un buen trabajo»; 5 reales en 5 revisiones, 1 falso de 6): paso 1b de `cerrar-tarea`,
+  Perfil de reglas, GUIA, `MEDICION-codex.md` cerrado. `instalar.ps1` ahora instala plugin + CLI (npm) + `codex.cmd` y
+  avisa si falta `codex login`; TokenEconomizer sale del instalador. Corrido entero en esta PC: OK; `codex --version` 0.171.0.
+- Bug del instalador: la flecha de `marketplace list` llega como 3 caracteres en PowerShell 5.1 y la regex `^\s*>?\s*` no
+  calzaba NUNCA (siempre `marketplace add`) → `TieneMarket` con `(?:\S+\s+)?`, probada 6/6 contra la salida real.
+- Claude Code 2.1.327–331: nada rompe el harness (ningún hook lee la transcripción; ninguna skill tiene `model`). easel = solo macOS/Linux.
+- Descartado: `optionalDependencies` (lo cubre `instalar.ps1`) · fast-anything, rust-anything, safe-anything, antialgorithm, craft,
+  claude-multi-desktop (Mac), DSH-projects, lemo-animi, mobile-agent-testers, boring-marketing (otro uso) · agent-crop (duplica automejora + medir_tokens).
+- Propuesto: `sybil-solutions/inference-optimisation-skill` (subir tok/s de un LLM local con controles intercalados) para Jarvis, si Nacho quiere.
 ### 2026-11-19 — pasada liviana (semanal al 88 %; lista del 16/11 + pedido de Nacho)
 - TokenEconomizer medido (`medir_tokens.py --corte 2026-11-01T18:26`, Jarvis): contexto base 88,7k → 90,3k (+1,6k),
   pond/llamada 33,3k → 40,0k, fallas c/100 4,3 → 2,0 (cambiaron también 4 versiones de Claude Code: no se le atribuye).

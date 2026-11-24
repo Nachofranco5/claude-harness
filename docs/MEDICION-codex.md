@@ -2,7 +2,13 @@
 Pedido de Nacho (2026-11-20): «es una prueba para ver si aporta, hay que medir si vale la pena quedárnoslo».
 Instalado el 20/11 (plugin user + `@openai/codex` 0.171.0, sesión de ChatGPT de Nacho). TokenEconomizer apagado el mismo día.
 
-## Cómo se usa durante la prueba
+> **DECIDIDO (2026-11-24, Nacho): se queda, permanente** («me parece que hizo un buen trabajo»). 5 reales nuevos en 5
+> revisiones, 1 falso de 6 hallazgos, ≤ 1 % semanal cada una. Cómo se usa ahora: paso **1b de `cerrar-tarea`** (allá
+> manda; lo de abajo es la historia). Lo instala `instalar.ps1` en una PC nueva (falta solo `codex login`, que es de
+> Nacho). Ya no hace falta una fila por revisión; se vuelve a mirar solo si deja de servir (3 lotes de riesgo seguidos
+> sin nada real, o el cupo gratis no alcanza): anotarlo acá abajo con fecha.
+
+## Cómo se usaba durante la prueba
 - En cada lote de riesgo (Opus · alto que toque permisos, secretos, lo que sale de la PC o el cerebro; en Jarvis: L29,
   L33, L34, L35, L37…), con la suite ya verde y ANTES del último commit: `/codex:adversarial-review` sobre el cambio
   del lote. Solo revisa: nunca `/codex:rescue` ni que escriba código.

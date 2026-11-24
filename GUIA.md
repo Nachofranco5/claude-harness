@@ -32,8 +32,10 @@ automático se sacó el 20/11: la app no deja que una ventana abra la siguiente 
 - **Busca novedades solo**: una vez por semana, sin gastar tokens, junta lo nuevo para Claude Code (GitHub, plugins,
   changelog, Hacker News) y el tablero te ofrece `/automejora` con esa lista corta. Si ves algo en YouTube, pasale el canal
   a Claude y lo suma a la búsqueda.
-- **TokenEconomizer** (Microsoft): A PRUEBA hasta el 16/11 (medido el 2/11: todavía no ahorró nada y suma ~0,5 s por herramienta;
-  detalle en `docs/MEDICION-tokens.md`). Si alguna vez falta una herramienta: `/tokeneconomizer:toolprune restore`.
+- **Codex** (OpenAI, permanente desde 24/11): al cerrar cada lote de riesgo (permisos, secretos, lo que sale de la PC),
+  otra familia de modelos revisa el cambio y Claude verifica y arregla lo que encuentre. No gasta cupo de Claude. En una
+  PC nueva lo instala `INSTALAR.bat`; vos solo corrés `codex login` una vez.
+- **TokenEconomizer**: apagado (19/11; medido, no ahorraba nada) y ya no se instala en PCs nuevas.
 - **Medidor de tokens** (sin gastar tokens): `python plugins/harness-nacho/scripts/medir_tokens.py` en este repo → cuánto
   gastó cada sesión, de qué está hecho el contexto (`--contexto`) y antes vs después de un cambio (`--corte FECHA`).
 - **Procesos colgados**: `python plugins/harness-nacho/scripts/procesos_colgados.py <carpeta del proyecto>` → lo que

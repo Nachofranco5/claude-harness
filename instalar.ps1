@@ -9,10 +9,11 @@
 #      (o decile a Claude: "Corré instalar.ps1 de Documents\Trabajos\claude-harness y decime qué salió").
 #   3) Cerrá Claude del todo y abrilo de nuevo. En cualquier proyecto, la primera respuesta ya trae el tablero.
 #
-# Qué hace: agrega el marketplace privado Nachofranco5/claude-harness, instala harness-nacho + uso-widget +
+# Qué hace: agrega el marketplace privado Nachofranco5/claude-harness, instala harness-nacho + uso-widget
 # (alcance usuario), prende la auto-actualización, crea el CLAUDE.md global mínimo (sin pisar
-# uno que ya exista), deja `claude` en la línea de comandos (~\.local\bin\claude.cmd) e instala TokenEconomizer
-# (Microsoft: gasta menos tokens). Repetirlo también ACTUALIZA los plugins (si la auto-actualización no los bajó).
+# uno que ya exista), deja `claude` en la línea de comandos (~\.local\bin\claude.cmd) e instala Codex (OpenAI:
+# revisa cada lote de riesgo; permanente desde 2026-11-24). Repetirlo también ACTUALIZA los plugins.
+# TokenEconomizer ya no se instala (2026-11-24: medido, 0 ahorro; apagado desde el 19/11).
 # Respeta CLAUDE_CONFIG_DIR (sirve para probarlo en una carpeta vacía).
 
 $ErrorActionPreference = 'Stop'
@@ -23,6 +24,10 @@ $Plugins = @('harness-nacho', 'uso-widget')  # semaforo y automatico: sacados el
 function Paso($t) { Write-Host "`n== $t" -ForegroundColor Cyan }
 function Ok($t) { Write-Host "   OK: $t" -ForegroundColor Green }
 function Falla($t) { Write-Host "`nERROR: $t" -ForegroundColor Red; exit 1 }
+function Aviso($t) { Write-Host "   AVISO: $t" -ForegroundColor Yellow }
+# ¿Ya está ese marketplace? `marketplace list` pone una flecha antes del nombre, que en PowerShell 5.1 llega como 3
+# caracteres raros (UTF-8 leído como ANSI): la vieja `^\s*>?\s*nombre` no calzaba NUNCA (probado 2026-11-24).
+function TieneMarket($nombre) { $l = (& $Claude plugin marketplace list) -join "`n"; return ($l -match "(?m)^\s*(?:\S+\s+)?$([regex]::Escape($nombre))\s*$") }
 
 # --- 1. Claude Code (CLI en el PATH o el que trae la app de escritorio) ---
 Paso 'Buscando Claude Code'
@@ -70,8 +75,7 @@ Ok "puedo leer github.com/$Repo"
 
 # --- 3. Marketplace (agregar o actualizar) ---
 Paso "Marketplace $Market"
-$lista = (& $Claude plugin marketplace list) -join "`n"
-if ($lista -match "(?m)^\s*>?\s*$Market\s*$") {
+if (TieneMarket $Market) {
     & $Claude plugin marketplace update $Market
 } else {
     & $Claude plugin marketplace add $Repo --scope user
@@ -128,35 +132,33 @@ if (-not (Test-Path $global)) {
     Ok 'ya existía: le agregué el bloque del harness al final'
 } else { Ok 'ya estaba' }
 
-# --- 7. TokenEconomizer (Microsoft, Apache 2.0): menos tokens. Herramientas que un repo nunca usa quedan afuera,
-#        hechos del repo aprendidos de las sesiones, y aviso si una vuelta se queda en un bucle de fallas.
-#        Se instala desde un clon local (así lo pide su README) en Documents\Trabajos\TokenEconomizer. ---
-Paso 'TokenEconomizer'
-$te = Join-Path $env:USERPROFILE 'Documents\Trabajos\TokenEconomizer'
-if (Test-Path (Join-Path $te '.git')) { & git -C $te pull --ff-only *> $null }
-else { & git clone --depth 1 https://github.com/microsoft/TokenEconomizer.git $te }
-if (-not (Test-Path (Join-Path $te '.claude-plugin\marketplace.json'))) { Falla 'No pude bajar TokenEconomizer (mensaje arriba).' }
-$lista = (& $Claude plugin marketplace list) -join "`n"
-if ($lista -notmatch '(?m)^\s*>?\s*tokeneconomizer\s*$') { & $Claude plugin marketplace add ($te -replace '\\', '/') --scope user }
-& $Claude plugin install 'tokeneconomizer@tokeneconomizer' --scope user
-if ($LASTEXITCODE -ne 0) { Falla 'No pude instalar TokenEconomizer (mensaje arriba).' }
-$teCfg = Join-Path $env:USERPROFILE '.tokeneconomizer\config.json'
-if (-not (Test-Path $teCfg)) {
-    New-Item -ItemType Directory -Force (Split-Path $teCfg) | Out-Null
-    # microskills=envfacts: aprende sin llamar a ningún modelo. Lo que nunca se poda: MCP que el harness usa a propósito
-    # pocas veces (huggingface en /buscar-modelos, microsoft-learn, context7), las tarjetas de sesión y los del navegador.
-    $cfg = [ordered]@{ microskills = 'envfacts'; toolprune_protect = (@(
-        'mcp__huggingface__*', 'mcp__microsoft-learn__*', 'mcp__plugin_context7_context7__*', 'mcp__ccd_*',
-        'mcp__automatico__*', 'mcp__claude-in-chrome__*', 'mcp__Claude_Browser__*', 'Skill', 'Agent',
-        'AskUserQuestion', 'WebSearch', 'WebFetch', 'Artifact', 'ToolSearch', 'EnterPlanMode', 'ExitPlanMode') -join ',') }
-    [IO.File]::WriteAllText($teCfg, ($cfg | ConvertTo-Json), (New-Object Text.UTF8Encoding $false))
+# --- 7. Codex (OpenAI): segunda opinión de otra familia de modelos en cada lote de riesgo (paso 1b de cerrar-tarea;
+#        permanente desde 2026-11-24). Plugin oficial + la CLI por npm + el atajo ~\.local\bin\codex.cmd (el npm -g
+#        de nvm no está en el PATH). Sin Node avisa y sigue: el resto del harness no lo necesita. ---
+Paso 'Codex'
+if (-not (TieneMarket 'openai-codex')) { & $Claude plugin marketplace add 'openai/codex-plugin-cc' --scope user }
+& $Claude plugin install 'codex@openai-codex' --scope user
+if ($LASTEXITCODE -ne 0) { Falla 'No pude instalar el plugin de Codex (mensaje arriba).' }
+$cmdTexto = (Get-Content (Join-Path $PSScriptRoot 'herramientas\codex.cmd') -Raw) -replace "`r?`n", "`r`n"
+[IO.File]::WriteAllText((Join-Path $bin 'codex.cmd'), $cmdTexto, [Text.Encoding]::ASCII)
+if (-not (Get-Command npm -ErrorAction SilentlyContinue)) {
+    Aviso 'falta Node (npm, versión 18.18 o más): instalalo con nvm y volvé a correr esto para tener la CLI de Codex.'
+} else {
+    $npmG = ((& npm prefix -g) | Select-Object -First 1).Trim()
+    if (-not (Test-Path (Join-Path $npmG 'codex.cmd'))) {
+        & npm install -g '@openai/codex'
+        if ($LASTEXITCODE -ne 0) { Falla 'No pude instalar la CLI de Codex con npm (mensaje arriba).' }
+    }
+    Ok "CLI de Codex en $npmG (atajo codex.cmd en $bin)"
 }
-Ok 'instalado (config en ~\.tokeneconomizer\config.json)'
+if (-not (Test-Path (Join-Path $env:USERPROFILE '.codex\auth.json'))) {
+    Aviso 'Codex no tiene sesión: corré "codex login" UNA vez en una terminal (con tu cuenta de ChatGPT; la gratis sirve).'
+}
 
 # --- 8. Verificar ---
 Paso 'Verificando'
 $inst = (& $Claude plugin list) -join "`n"
-$faltan = @(@($Plugins | ForEach-Object { "$_@$Market" }) + 'tokeneconomizer@tokeneconomizer' |
+$faltan = @(@($Plugins | ForEach-Object { "$_@$Market" }) + 'codex@openai-codex' |
     Where-Object { $inst -notmatch [regex]::Escape($_) })
 if ($faltan.Count) { Falla ("No aparecen instalados: " + ($faltan -join ', ')) }
 Ok 'todos los plugins aparecen instalados'

@@ -12,6 +12,14 @@ Config: `.claude/harness.json` del proyecto MANDA; si no existe o le falta una c
 1. **Pruebas** → subagente `verificador` (si no está disponible, correr vos el comando `pruebas`). Si algo
    falla: arreglar y volver a correr; NO se cierra con pruebas rojas. Lo que no se pudo probar (GPU, app
    real, red) se declara con cómo probarlo.
+1b. **Revisión de Codex** (permanente desde 24/11, Nacho) en todo lote de riesgo: Opus · alto que toque permisos, secretos,
+   lo que sale de la PC o el cerebro. Con la suite verde y el lote COMMITEADO (con base `HEAD` y cambios sin commitear el
+   diff sale vacío), ANTES del push, en segundo plano:
+   `node <base de esta skill>/../../scripts/codex_revision.mjs "$(pwd -W)" <commit de antes del lote> "<foco: qué puede romper>"`
+   (no `/codex:adversarial-review` solo: en Windows con > 2 archivos no ve el diff). Cada hallazgo se verifica (leer el
+   código o un test que lo pruebe): real → se arregla con su test en un commit más; falso → una línea en el docstring de
+   por qué no aplica. Al terminar, `procesos_colgados.py --cortar` su `app-server-broker` (node). Nunca `/codex:rescue`
+   ni que Codex escriba código. Si no hay `codex` o su cupo no alcanza: decirlo y seguir (no frena el cierre).
 2. **Bug arreglado** → test que lo hubiera atrapado (si el proyecto tiene tests). **¿Se arregló la CLASE?** (regla
    «Arreglar la CLASE, no el caso»): regla general escrita, todos los lugares donde aplica revisados, test con el literal +
    ≥ 3 casos de otros temas. Si no, NO se cierra: completarlo o partir lo que falta en una tarea ⬜.

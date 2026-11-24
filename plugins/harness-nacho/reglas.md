@@ -122,9 +122,8 @@ colgado (`procesos_colgados.py`) → `git status` (nunca modelos, binarios, `.ve
   `%LOCALAPPDATA%\Claude-Data\…`); `claude` de consola = `~\.local\bin\claude.cmd` (lo deja `instalar.ps1`) y NO tiene
   sesión propia: en una PC nueva `claude -p` dice «Not logged in» hasta que Nacho corra `claude` → `/login` una vez en
   una terminal (en la notebook ya está, 2026-11-01: TokenEconomizer con `microskills=on`; en otra PC, `envfacts` hasta el login).
-- Plugins de todos los proyectos: harness-nacho y uso-widget (semáforo y automático sacados 20/11). **Codex**: prueba terminada
-  (24/11, 4 revisiones, cumple justo); hasta que la decida `/automejora`, en lotes de riesgo se usa como dice
-  `docs/MEDICION-codex.md` del harness. TokenEconomizer apagado (19/11). Medir un plugin: `scripts/medir_tokens.py`.
+- Plugins de todos los proyectos: harness-nacho, uso-widget y **Codex** (permanente desde 24/11, Nacho: 5 bugs reales en 5
+  revisiones; revisa cada lote de riesgo, paso 1b de `cerrar-tarea`). TokenEconomizer apagado (19/11). Medir un plugin: `scripts/medir_tokens.py`.
 - Programas: Git for Windows (Bash), GitHub CLI, Python 3.12 global (+ `uv` por proyecto), Node (nvm), FFmpeg, Brave,
   AIMP, Steam. NO tiene Paint; en pruebas que abren apps: la Calculadora (nunca el Bloc de notas). Su IPv6 se cae a
   ráfagas: todo HTTP con tope por dirección.
