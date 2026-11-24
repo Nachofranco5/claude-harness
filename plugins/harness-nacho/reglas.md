@@ -182,3 +182,5 @@ Pruebas → 3–8 líneas en `CHANGELOG.md` → `docs/PRUEBAS-PENDIENTES.md` →
   las pruebas, LEER el resultado y recién ahí el commit, en otro comando.
 - 2026-11-21 · Dos Monitor rotos: corren en bash, que se come el `$var` de un `powershell -Command "…"` → el vigía va en
   un `.ps1` con `-File` (y `-cmatch`: `-match` no distingue mayúsculas, «FALL» calzaba en «fallo»).
+- 2026-11-24 · Quise probar una librería con `uv run --with <paquete>` y el clasificador lo frenó (bajar código nuevo)
+  → una dependencia nueva es decisión de Nacho: medir primero sin ella y, si hace falta, proponerla con el motivo.
