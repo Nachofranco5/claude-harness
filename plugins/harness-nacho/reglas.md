@@ -171,3 +171,5 @@ colgado (`procesos_colgados.py`) → `git status` (nunca modelos, binarios, `.ve
 - 2026-11-25 · Pasé `subprocess.run` a otra función y un test que tapaba la vieja corrió `shutdown /s` DE VERDAD
   (cancelado a tiempo) → al mover una llamada, grep de los tests que la tapan (`setattr(…, "run"`) ANTES de correrlos;
   todo proyecto con tests tiene una traba en conftest que frena apagar/reiniciar (Jarvis: `_nunca_apagar_la_pc`).
+- 2026-11-25 · Una bancada con LLM bajó 114→102; corrí el código VIEJO solo en los casos que fallaron y «ganó» 11 a 5
+  (los elegidos por fallar mejoran solos) → A/B = los MISMOS casos, viejo y nuevo, en la misma tanda (dio 11 = 11).
