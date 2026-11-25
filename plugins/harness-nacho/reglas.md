@@ -168,3 +168,6 @@ colgado (`procesos_colgados.py`) → `git status` (nunca modelos, binarios, `.ve
   un `.ps1` con `-File` (y `-cmatch`: `-match` no distingue mayúsculas, «FALL» calzaba en «fallo»).
 - 2026-11-24 · Quise probar una librería con `uv run --with <paquete>` y el clasificador lo frenó (bajar código nuevo)
   → una dependencia nueva es decisión de Nacho: medir primero sin ella y, si hace falta, proponerla con el motivo.
+- 2026-11-25 · Pasé `subprocess.run` a otra función y un test que tapaba la vieja corrió `shutdown /s` DE VERDAD
+  (cancelado a tiempo) → al mover una llamada, grep de los tests que la tapan (`setattr(…, "run"`) ANTES de correrlos;
+  todo proyecto con tests tiene una traba en conftest que frena apagar/reiniciar (Jarvis: `_nunca_apagar_la_pc`).
