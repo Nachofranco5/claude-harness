@@ -176,7 +176,9 @@ colgado (`procesos_colgados.py`) → `git status` (nunca modelos, binarios, `.ve
 - 2026-11-26 · Suite completa (6 procesos) + tests locales + una bancada de GPU seguidos apagaron la PC (Kernel-Power 41,
   bugcheck 0) y la rama de git quedó en CEROS («current branch appears to be broken») → entre una suite y una bancada,
   pausa (o la bancada al salir Nacho); tras un apagón: `.git/refs/heads/<rama>` + reflog, `git fsck --full`, nada en
-  ceros, y recién ahí seguir (la rama se repara con el último commit del reflog, sin `reset`).
+  ceros, y recién ahí seguir (la rama se repara con el último commit del reflog, sin `reset`). También 10 min SEGUIDOS
+  de síntesis de voz + Whisper (Jarvis V4) la apagaron → todo script que repite trabajo GPU+CPU guarda cada toma AL
+  MOMENTO (si se corta, retoma) y descansa ~1:1 (80 s de trabajo / 75 s quieto) desde el primer intento.
 - 2026-11-25 · Pasé `subprocess.run` a otra función y un test que tapaba la vieja corrió `shutdown /s` DE VERDAD
   (cancelado a tiempo) → al mover una llamada, grep de los tests que la tapan (`setattr(…, "run"`) ANTES de correrlos;
   todo proyecto con tests tiene una traba en conftest que frena apagar/reiniciar (Jarvis: `_nunca_apagar_la_pc`).
