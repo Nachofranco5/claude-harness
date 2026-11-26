@@ -168,6 +168,8 @@ colgado (`procesos_colgados.py`) → `git status` (nunca modelos, binarios, `.ve
   un `.ps1` con `-File` (y `-cmatch`: `-match` no distingue mayúsculas, «FALL» calzaba en «fallo»).
 - 2026-11-24 · Quise probar una librería con `uv run --with <paquete>` y el clasificador lo frenó (bajar código nuevo)
   → una dependencia nueva es decisión de Nacho: medir primero sin ella y, si hace falta, proponerla con el motivo.
+- 2026-11-26 · Un Edit con `new_string` vacío para borrar un comentario de fin de línea se comió el salto (3 `def`
+  pegados a su docstring) → para sacar el final de una línea, reemplazar la línea ENTERA; y compilar/correr un test ya.
 - 2026-11-25 · Write/Edit convierten el escape de un carácter invisible («barra u 200b») en el carácter REAL: un Edit
   «no cambió nada» y un test quedó con el invisible escrito tal cual → en código, armarlo con `chr(0x200B)` o con un
   `.py` que reemplace por código de carácter; después buscar el carácter (ruff PLE2515 lo ve).
