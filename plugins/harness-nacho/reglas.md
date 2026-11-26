@@ -173,6 +173,9 @@ colgado (`procesos_colgados.py`) → `git status` (nunca modelos, binarios, `.ve
 - 2026-11-25 · Write/Edit convierten el escape de un carácter invisible («barra u 200b») en el carácter REAL: un Edit
   «no cambió nada» y un test quedó con el invisible escrito tal cual → en código, armarlo con `chr(0x200B)` o con un
   `.py` que reemplace por código de carácter; después buscar el carácter (ruff PLE2515 lo ve).
+- 2026-11-26 · Jarvis N1 le puso `?nombre=` a la URL de la ventana: el test (Playwright/Chromium) pasó, pero WebView2
+  (.NET) dio «File not found» y Nacho abrió la app rota → lo que cambia cómo ARRANCA la app se prueba con el motor REAL
+  y el camino real (la URL que arma la app, no una escrita en el test), y la app avisa sola si su pantalla no cargó.
 - 2026-11-26 · Suite completa (6 procesos) + tests locales + una bancada de GPU seguidos apagaron la PC (Kernel-Power 41,
   bugcheck 0) y la rama de git quedó en CEROS («current branch appears to be broken») → entre una suite y una bancada,
   pausa (o la bancada al salir Nacho); tras un apagón: `.git/refs/heads/<rama>` + reflog, `git fsck --full`, nada en
