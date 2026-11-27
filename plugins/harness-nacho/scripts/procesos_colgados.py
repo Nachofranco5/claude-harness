@@ -54,7 +54,8 @@ def ancestros(todos: dict[int, dict], pid: int) -> set[int]:
 def procesos() -> dict[int, dict]:
     salida = subprocess.run(["powershell", "-NoProfile", "-NonInteractive", "-Command", PS],
                             capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=60).stdout
-    datos = json.loads(salida or "[]")
+    # strict=False: PowerShell 5.1 deja caracteres de control sin escapar si una línea de comando los trae (27/11)
+    datos = json.loads(salida or "[]", strict=False)
     return {p["ProcessId"]: p for p in (datos if isinstance(datos, list) else [datos])}
 
 
